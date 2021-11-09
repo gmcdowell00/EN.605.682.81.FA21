@@ -1,0 +1,122 @@
+@charset "ISO-8859-1";
+
+body {
+	background-color:#FFF6EE;
+	font-family: Helvetica, sans-serif;
+	color: #724029;
+}
+
+h1 {
+	font-variant: small-caps;
+}
+
+section {
+	padding: 1em 1em 1em 2em;
+}
+
+div {
+	
+}
+
+.menu-font {
+	font-variant: small-caps;
+}
+
+.menu-table-1 {
+	width: 100%;
+	border-bottom: .1em solid #724029;
+	border-collapse: collapse;
+}
+
+.menu-table-2 {
+	width: 100%;
+	border-bottom: .1em solid #724029;
+	border-collapse: collapse;
+}
+
+td.menu-1 {
+	text-align: center;
+}
+
+td.menu-2 {
+	/*border: .01em solid #724029; */
+	text-align: center;
+	width: 20%;
+}
+
+.logo {
+	font-family: Papyrus, fantasy;
+	font-size: 3em;
+	font-weight: bold;
+	/*width: 50%;*/
+	text-align: left;
+}
+
+.search {
+	border: .01em solid #724029;
+	border-radius: 5em;
+	background-color: #FFF9F6;
+	background-image: url('../images/search-icon.png');
+	background-size: 1em 1em;
+ 	background-repeat: no-repeat;
+ 	background-position: .5em;
+  	padding: .65em .5em .5em 1.75em;
+  	font-style: italic;
+  	width: 19em;
+}
+
+.cart-pic {
+	width: 4em;
+	height: 4em;
+}
+
+.cart {
+	/*width: 5%;*/
+}
+
+.login {
+	background-color:#FFF6EE;
+	text-align: center;
+	border: 0.01em solid #724029;
+	border-radius: 0.25em;
+	color:#724029;
+	font-family: Helvetica, sans-serif;
+	height: 5em;
+	transition-duration: 0.4s;
+}
+
+.menu-button {
+	background-color:#FFF6EE;
+	text-align: center;
+	border: 0.01em solid #FFF6EE;
+	border-radius: 0.25em;
+	color:#724029;
+	font-family: Helvetica, sans-serif;
+	height: 2em;
+	width: 100%;
+	transition-duration: 0.4s;
+}
+
+.login:hover, .menu-button:hover {
+ 	background-color: #724029;
+  	color: #FFF6EE;
+  	cursor: pointer;
+}
+
+.book-grid-table {
+	width: 100%;
+	text-align: center;
+}
+
+.book-grid {
+	padding: 0.5em 0em 3em 0em;
+}
+
+.book-grid-item {
+	text-decoration: none;
+	color: #724029;
+}
+
+.book-img-grid {
+	height: 7em;
+}
