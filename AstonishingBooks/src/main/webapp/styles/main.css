@@ -14,8 +14,10 @@ section {
 	padding: 1em 1em 1em 2em;
 }
 
-div {
-	
+hr {
+	background-color: #724029;
+	width: 100%;
+	text-align: left;
 }
 
 .menu-font {
@@ -97,7 +99,7 @@ td.menu-2 {
 	transition-duration: 0.4s;
 }
 
-.login:hover, .menu-button:hover {
+.login:hover, .menu-button:hover, .book-info-button:hover {
  	background-color: #724029;
   	color: #FFF6EE;
   	cursor: pointer;
@@ -119,4 +121,41 @@ td.menu-2 {
 
 .book-img-grid {
 	height: 7em;
+}
+
+.book-info-table {
+	width: 90%;
+}
+
+.book-info-img {
+	padding: 1em 0em 0em 0em;
+	width: 100%;
+}
+
+.book-info-button {
+	width: 100%;
+	height: 3em;
+	text-align: center;
+	border: 0.01em solid #FFF6EE;
+	border-radius: 0.25em;
+	font-family: Helvetica, sans-serif;
+	transition-duration: 0.4s;
+	font-variant: small-caps;
+	font-weight:bold;
+}
+
+.add-cart-button {
+	background-color:#DE7340;
+	color:#FFF6EE;
+}
+
+.save-list-button {
+	background-color:#DFE0DF;
+	color:#724029;
+}
+
+.book-info {
+	padding: 0em 0em 0em 2em;
+	vertical-align: text-top;
+	width: 80%;
 }
