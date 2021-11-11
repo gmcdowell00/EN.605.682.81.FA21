@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/header.jsp" />
 
-<form id="homepage" action="" method="POST">
+<form id="homepage" action="" method="post">
 	<input type="hidden" name="action" value="home">
 </form>
 

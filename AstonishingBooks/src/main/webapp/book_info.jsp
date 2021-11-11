@@ -8,11 +8,11 @@
 			<td>
 				<img src="images/test-book-cover.jpg" class="book-info-img"><br><br>
 				<form>
-					<input type="hidden" name="action" value="add-cart">
+					<input type="hidden" name="action" value="addCart">
 					<input type="submit" class="book-info-button add-cart-button" value="Add to Cart"><br><br>
 				</form>
 				<form>
-					<input type="hidden" name="action" value="save-list">
+					<input type="hidden" name="action" value="saveList">
 					<input type="submit" class="book-info-button save-list-button" value="Save to List"><br><br>
 				</form>
 			</td>
