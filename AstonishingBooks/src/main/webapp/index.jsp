@@ -2,52 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/header.jsp" />
 
-<section>
-	<h1>New Books</h1>
-	
-	<table class="book-grid-table">
-		<!--  loop over books here -->
-		<tr>
-			<c:forEach items="1,2,3,4,5,6,7,8,9,10" var="book" end="3">
-				<td>
-					<div class="book-grid">
-						<a href="" class="book-grid-item">
-						<img class="book-img-grid" alt="" src="images/test-book-cover.jpg"><br>
-						${book}<br>
-						author<br>
-						</a>
-					</div>
-				</td>
-			</c:forEach>
-		</tr>
-		<tr>
-			<c:forEach items="1,2,3,4,5,6,7,8,9,10" var="book" begin="4" end="7">
-				<td>
-					<div class="book-grid">
-						<a href="" class="book-grid-item">
-						<img class="book-img-grid" alt="" src="images/test-book-cover.jpg"><br>
-						${book}<br>
-						author<br>
-						</a>
-					</div>
-				</td>
-			</c:forEach>
-		</tr>
-		<tr>
-			<c:forEach items="1,2,3,4,5,6,7,8,9,10,11,12" var="book" begin="8" end="11">
-				<td>
-					<div class="book-grid">
-						<a href="" class="book-grid-item">
-						<img class="book-img-grid" alt="" src="images/test-book-cover.jpg"><br>
-						${book}<br>
-						author<br>
-						</a>
-					</div>
-				</td>
-			</c:forEach>
-		</tr>
-	</table>
-</section>
+<form id="homepage" action="" method="POST">
+	<input type="hidden" name="action" value="home">
+</form>
 
+<!-- <script type="text/javascript">
+    document.getElementById("homepage").submit();
+</script>-->
 
 <c:import url="/footer.jsp" />
