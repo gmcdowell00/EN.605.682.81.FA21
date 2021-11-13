@@ -8,7 +8,7 @@
 	<table class="book-grid-table">
 		<!--  loop over books here -->
 		<tr>
-			<c:forEach items="1,2,3,4,5,6,7,8,9,10" var="book" end="3">
+			<c:forEach items="1,2,3,4,5,6,7,8,9,10" var="book" end="3"> <!-- ${get list of books that query applies to} -->
 				<td>
 					<div class="book-grid">
 						<form action="" method="post" class="book-grid-item" id="${book}"> 
@@ -60,6 +60,5 @@
 		</tr>
 	</table>
 </section>
-
 
 <c:import url="/footer.jsp" />

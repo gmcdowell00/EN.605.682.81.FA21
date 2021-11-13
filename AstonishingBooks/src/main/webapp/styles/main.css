@@ -64,7 +64,14 @@ td.menu-2 {
  	background-position: .5em;
   	padding: .65em .5em .5em 1.75em;
   	font-style: italic;
-  	width: 19em;
+}
+
+.menu-search {
+	width: 19em;
+}
+
+.search-bar {
+	width:90%;
 }
 
 .cart-pic {
@@ -105,6 +112,23 @@ td.menu-2 {
   	cursor: pointer;
 }
 
+.book-search-table {
+	width:90%;
+	padding-left: 3em;
+}
+
+.book-search-info {
+	text-align: left;
+	border-bottom: 0.01em solid #724029;
+}
+
+.book-search-img {
+	text-align: center;
+	border-bottom: 0.01em solid #724029;
+	width: 20%;
+	padding: 1em 0em 1em 0em;
+}
+
 .book-grid-table {
 	width: 100%;
 	text-align: center;
@@ -112,6 +136,10 @@ td.menu-2 {
 
 .book-grid {
 	padding: 0.5em 0em 3em 0em;
+}
+
+.book-grid-row {
+	background-color: #DFE0DF;
 }
 
 .book-grid-item {
