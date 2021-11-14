@@ -34,7 +34,7 @@
 	<table class="menu-table">
 		<tr>
 			<td class="menu-2 menu-font">
-				<form action="" method="post">
+				<form action="AstonishingServlet" method="post">
 					<input type="hidden" name="action" value="goToHome">
 					<input type="submit" value="Home" class="menu-button menu-font">
 				</form>
