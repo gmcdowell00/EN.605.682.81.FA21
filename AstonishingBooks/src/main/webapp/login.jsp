@@ -12,19 +12,20 @@
 				<td class="label"><label>Email:</label></td>
 				<td class="input"><input type="email" name="email" value="${user.email}" class="user-input" required></td> 
 			</tr>
-		<tr>
-			<td class="label"><label>Password:</label></td>
-			<td class="input"><input type="password" name="password" value="${user.password}" class="user-input" required></td> 
-		</tr>
+			<tr>
+				<td class="label"><label>Password:</label></td>
+				<td class="input"><input type="password" name="password" value="${user.password}" class="user-input" required></td> 
+			</tr>
 		</table>
-		<br>
 		<br>
 		<input type="submit" value="Login" class="orange-button submit-button">
 	</form>
 	<br>
 	<hr>
 	<br>
-	<a href="">Click here to create an account</a>
+	<form action="" method="post">
+		<input type="submit" value="Create an Account" class="grey-button submit-button">
+	</form>
 
 </section>
 

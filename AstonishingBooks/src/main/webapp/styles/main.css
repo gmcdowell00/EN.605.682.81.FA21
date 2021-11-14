@@ -40,10 +40,12 @@ a {
 
 td.label {
 	text-align: right;
+	padding-bottom: 1em;
 }
 
 td.input {
 	text-align: left;
+	padding-bottom: 1em;
 }
 
 .menu-font {
@@ -206,14 +208,14 @@ input[type=submit]:hover {
 }
 
 .submit-button {
-	height: 2.5em;
+	height: 3em;
 	width: 10em;
 	text-align: center;
 	font-variant: small-caps;
 	font-family: Helvetica, sans-serif;
 	transition-duration: 0.4s;
 	font-weight:bold;
-	border: 0.01em solid #DE7340;
+	border: 0.01em solid #FFF6EE;
 	border-radius: 0.25em;
 }
 
