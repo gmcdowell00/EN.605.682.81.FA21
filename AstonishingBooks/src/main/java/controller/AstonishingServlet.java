@@ -33,7 +33,7 @@ public class AstonishingServlet extends HttpServlet
 	}
 
 	
-	// doPost processes requests and redirects based on the submitted servletAction and other inputs 
+	// doPost processes requests and redirects based on the submitted action and other inputs 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 
@@ -41,10 +41,10 @@ public class AstonishingServlet extends HttpServlet
 	    String url = "/index.jsp";
 	    
 	    // extract values from the request object
-	    String servletAction = request.getParameter("servletAction");
+	    String action = request.getParameter("action");
 	    
 	    // pull books from the database and redirect to the landing page
-	    if (servletAction.equals("landingPage"))
+	    if (action.equals("landingPage"))
 	    {
 	    	// pull some books from the database (based on date or rating)
 	    	
@@ -53,10 +53,10 @@ public class AstonishingServlet extends HttpServlet
 	    	// add the booksForDisplay object to the session object
 	    	
 	    	// set the url for the landing page
-	    	url = "/landingPage.jsp";
+	    	url = "/index.jsp";
 	    }
 
-	    else if (servletAction.equals("showBookInfo"))
+	    else if (action.equals("showBookInfo"))
 	    {
 	    	// get the ID of the book to display
 	    	String bookID = request.getParameter("bookID");
@@ -70,7 +70,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// set the url for the book info page
 	    	url = "/bookInfo.jsp";	    	
 	    }
-	    else if (servletAction.equals("bookSearch"))
+	    else if (action.equals("bookSearch"))
 	    {
 	    	// get the search term
 	    	String searchTerm = request.getParameter("searchTerm");
@@ -88,17 +88,17 @@ public class AstonishingServlet extends HttpServlet
 	    	// set the url for the search results page	    	
 	    	url = "/searchResults.jsp";	    	
 	    }
-	    else if (servletAction.equals("signIn"))
+	    else if (action.equals("signIn"))
 	    {
 	    	// set the url for the sign-in page
 	    	url = "/signIn.jsp";
 	    }
-	    else if (servletAction.equals("createAccount"))
+	    else if (action.equals("createAccount"))
 	    {
 	    	// set the url for the account creation page
 	    	url = "/createAccount.jsp";
 	    }
-	    else if (servletAction.equals("newAccount"))
+	    else if (action.equals("newAccount"))
 	    {
 	    	// get the account parameters entered by the user
 	    	String firstName = request.getParameter("firstName");
@@ -116,7 +116,20 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to the new account confirmation page
 	    	url = "/newAccountConfirmation.jsp";
 	    }
-	    else if (servletAction.equals("showProfile"))
+	    else if (action.equals("save-list"))
+	    {
+	    	String userID = request.getParameter("userID");
+	    	
+	    	// get the user's wish list from the database
+	    	
+	    	// add the selected book to the wish list
+	    	
+	    	// add the userProfile object to the session
+	    	
+	    	// redirect to show profile page
+	    	url = "/showProfile.jsp";
+	    }
+	    else if (action.equals("showProfile"))
 	    {
 	    	String userID = request.getParameter("userID");
 	    	
@@ -129,7 +142,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to show profile page
 	    	url = "/showProfile.jsp";
 	    }
-	    else if (servletAction.equals("editProfile"))
+	    else if (action.equals("editProfile"))
 	    {
 	    	String userID = request.getParameter("userID");
 	    	
@@ -142,7 +155,18 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to edit profile page
 	    	url = "/editProfile.jsp";
 	    }
-	    else if (servletAction.equals("cart"))
+	    else if (action.equals("add-cart"))
+	    {
+	    	// get cart contents from session object? or from database?
+	    	
+	    	// add the selected book to the cart
+	    	
+	    	// save the cart contents in an object and save to the session
+	    	
+	    	// redirect to cart page
+	    	url = "/cart.jsp";
+	    }
+	    else if (action.equals("cart"))
 	    {
 	    	// get cart contents from session object? or from database?
 	    	
@@ -151,7 +175,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to cart page
 	    	url = "/cart.jsp";
 	    }
-	    else if (servletAction.equals("checkout"))
+	    else if (action.equals("checkout"))
 	    {
 	    	// activate SSL connection
 	    	
@@ -169,7 +193,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to the checkout page
 	    	url = "/checkout.jsp";	    	
 	    }
-	    else if (servletAction.equals("reviewInfo"))
+	    else if (action.equals("reviewInfo"))
 	    {
 	    	// get user and cart info from session object?
 	    	
@@ -178,7 +202,7 @@ public class AstonishingServlet extends HttpServlet
 	    	//redirect to review information page
 	    	url = "/reviewInfo.jsp";
 	    }
-	    else if (servletAction.equals("orderConfirmation"))
+	    else if (action.equals("orderConfirmation"))
 	    {
 	    	// pull user info from session object or database?
 	    	
@@ -187,7 +211,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to confirmation page
 	    	url = "/orderConfirmation.jsp";
 	    }
-	    else if (servletAction.equals("adminBookInfo"))
+	    else if (action.equals("adminBookInfo"))
 	    {
 	    	// confirm admin user
 	    	
@@ -201,7 +225,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to adminBookInfo 
 	    	url = "/adminBookInfo.jsp";
 	    }
-	    else if (servletAction.equals("adminBookDelete"))
+	    else if (action.equals("adminBookDelete"))
 	    {
 	    	// get book ID
 	    	String bookID = request.getParameter("bookID");
@@ -213,7 +237,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to adminBookDeleteConfirmation page
 	    	url = "/adminBookDeleteConfirmation.jsp";	    	
 	    }
-	    else if (servletAction.equals("adminSaveBookChanges"))
+	    else if (action.equals("adminSaveBookChanges"))
 	    {
 	    	// get updated book info from request object
 	    	String bookID = request.getParameter("bookID");
@@ -230,17 +254,17 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to update confirmation page
 	    	url = "/adminBookUpdateConfirmation.jsp";
 	    }
-	    else if (servletAction.equals("adminSettings"))
+	    else if (action.equals("adminSettings"))
 	    {
 	    	// redirect to admin settings page
 	    	url = "/adminSettings.jsp";
 	    }
-	    else if (servletAction.equals("adminManageInventory"))
+	    else if (action.equals("adminManageInventory"))
 	    {
 	    	// redirect to admin manage inventory page
 	    	url = "/adminManageInventory.jsp";
 	    }
-	    else if (servletAction.equals("adminAddAdministrator"))
+	    else if (action.equals("adminAddAdministrator"))
 	    {
 	    	// redirect to admin add administrator page
 	    	url = "/adminAddAdministrator.jsp";
