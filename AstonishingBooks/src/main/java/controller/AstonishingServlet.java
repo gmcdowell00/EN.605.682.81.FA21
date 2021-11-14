@@ -2,6 +2,8 @@ package controller;
 
 // default imports
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,23 +45,27 @@ public class AstonishingServlet extends HttpServlet
 	    // extract values from the request object
 	    String action = request.getParameter("action");
 	    
+	    // copy the registrant object from the session
+	    HttpSession session = request.getSession();
+	    
 	    // pull books from the database and redirect to the landing page
-	    if (action.equals("landingPage"))
+	    if (action.equals("home") || action.equals("goToHome"))
 	    {
-	    	// pull some books from the database (based on date or rating)
-	    	
-	    	// create a booksForDisplay object and add the pulled books
-	    	
-	    	// add the booksForDisplay object to the session object
-	    	
-	    	// set the url for the landing page
-	    	url = "/index.jsp";
+			// Get the initial list of books to display on the index page
+			//     BookDBWorker BookIO = new BookDBWorker();             // need a DB worker object of some kind?
+			//     ArrayList<Book> initialBooks = BookIO.getInitialBooks();  // get an ArrayList of book objects
+			
+	    	// add the initialBooks object to the session object
+			//     session.setAttribute("initialBooks", initialBooks);
+			
+	    	// set the url for the home page
+	    	url = "/home.jsp";
 	    }
 
 	    else if (action.equals("showBookInfo"))
 	    {
 	    	// get the ID of the book to display
-	    	String bookID = request.getParameter("bookID");
+	    	//     String bookID = request.getParameter("bookID");
 	    	
 	    	// pull the book info from the database
 	    	
@@ -68,12 +74,12 @@ public class AstonishingServlet extends HttpServlet
 	    	// add the bookInfo object to the session object
 	    	
 	    	// set the url for the book info page
-	    	url = "/bookInfo.jsp";	    	
+	    	url = "/book_info.jsp";	    	
 	    }
-	    else if (action.equals("bookSearch"))
+	    else if (action.equals("search"))
 	    {
 	    	// get the search term
-	    	String searchTerm = request.getParameter("searchTerm");
+	    	  String searchTerm = request.getParameter("searchQuery");
 	    	
 	    	// search the database using the searchTerm
 	    	
@@ -86,7 +92,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// add the searchResult object to the session object
 	    	
 	    	// set the url for the search results page	    	
-	    	url = "/searchResults.jsp";	    	
+	    	url = "/search.jsp";	    	
 	    }
 	    else if (action.equals("signIn"))
 	    {
@@ -116,7 +122,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to the new account confirmation page
 	    	url = "/newAccountConfirmation.jsp";
 	    }
-	    else if (action.equals("save-list"))
+	    else if (action.equals("saveList"))
 	    {
 	    	String userID = request.getParameter("userID");
 	    	
@@ -129,9 +135,9 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to show profile page
 	    	url = "/showProfile.jsp";
 	    }
-	    else if (action.equals("showProfile"))
+	    else if (action.equals("viewProfile"))
 	    {
-	    	String userID = request.getParameter("userID");
+	    	//     String userID = request.getParameter("userID");
 	    	
 	    	// get the user's profile data from the database
 	    	
@@ -155,7 +161,7 @@ public class AstonishingServlet extends HttpServlet
 	    	// redirect to edit profile page
 	    	url = "/editProfile.jsp";
 	    }
-	    else if (action.equals("add-cart"))
+	    else if (action.equals("addCart"))
 	    {
 	    	// get cart contents from session object? or from database?
 	    	
