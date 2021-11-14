@@ -14,35 +14,52 @@ section {
 	padding: 1em 1em 1em 2em;
 }
 
+section.center {
+	text-align: center;
+}
+
 hr {
 	background-color: #724029;
 	width: 100%;
 	text-align: left;
 }
 
+a {
+	color: #724029;
+}
+
+.user-input {
+	height: 2em;
+	padding-left: 0.5em;
+	border: .1em solid #724029;
+	border-radius: 0.25em;
+	margin-left: 1em;
+	text-align:left;
+	width: 20em;
+}
+
+td.label {
+	text-align: right;
+	padding-bottom: 1em;
+}
+
+td.input {
+	text-align: left;
+	padding-bottom: 1em;
+}
+
 .menu-font {
 	font-variant: small-caps;
 }
 
-.menu-table-1 {
+.menu-table {
 	width: 100%;
 	border-bottom: .1em solid #724029;
 	border-collapse: collapse;
-}
-
-.menu-table-2 {
-	width: 100%;
-	border-bottom: .1em solid #724029;
-	border-collapse: collapse;
-}
-
-td.menu-1 {
 	text-align: center;
 }
 
 td.menu-2 {
-	/*border: .01em solid #724029; */
-	text-align: center;
 	width: 20%;
 }
 
@@ -64,19 +81,23 @@ td.menu-2 {
  	background-position: .5em;
   	padding: .65em .5em .5em 1.75em;
   	font-style: italic;
-  	width: 19em;
+}
+
+.menu-search {
+	width: 19em;
+}
+
+.search-bar {
+	width:90%;
 }
 
 .cart-pic {
 	width: 4em;
 	height: 4em;
+	
 }
 
-.cart {
-	/*width: 5%;*/
-}
-
-.login {
+.login-menu {
 	background-color:#FFF6EE;
 	text-align: center;
 	border: 0.01em solid #724029;
@@ -99,10 +120,27 @@ td.menu-2 {
 	transition-duration: 0.4s;
 }
 
-.login:hover, .menu-button:hover, .book-info-button:hover {
+input[type=submit]:hover {
  	background-color: #724029;
   	color: #FFF6EE;
   	cursor: pointer;
+}
+
+.book-search-table {
+	width:90%;
+	padding-left: 3em;
+}
+
+.book-search-info {
+	text-align: left;
+	border-bottom: 0.01em solid #724029;
+}
+
+.book-search-img {
+	text-align: center;
+	border-bottom: 0.01em solid #724029;
+	width: 20%;
+	padding: 1em 0em 1em 0em;
 }
 
 .book-grid-table {
@@ -112,6 +150,10 @@ td.menu-2 {
 
 .book-grid {
 	padding: 0.5em 0em 3em 0em;
+}
+
+.book-grid-row {
+	background-color: #DFE0DF;
 }
 
 .book-grid-item {
@@ -144,12 +186,12 @@ td.menu-2 {
 	font-weight:bold;
 }
 
-.add-cart-button {
+.orange-button {
 	background-color:#DE7340;
 	color:#FFF6EE;
 }
 
-.save-list-button {
+.grey-button {
 	background-color:#DFE0DF;
 	color:#724029;
 }
@@ -159,3 +201,21 @@ td.menu-2 {
 	vertical-align: text-top;
 	width: 80%;
 }
+
+.login {
+	width: 100%;
+	padding-left: 25%;
+}
+
+.submit-button {
+	height: 3em;
+	width: 10em;
+	text-align: center;
+	font-variant: small-caps;
+	font-family: Helvetica, sans-serif;
+	transition-duration: 0.4s;
+	font-weight:bold;
+	border: 0.01em solid #FFF6EE;
+	border-radius: 0.25em;
+}
+

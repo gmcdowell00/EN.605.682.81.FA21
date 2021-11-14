@@ -6,26 +6,62 @@
 	<link rel="stylesheet" href="styles/main.css" type="text/css"/>
 </head>
 <body>
-	<table class="menu-table-1">
+	<table class="menu-table">
 		<tr>
 			<td class="logo">Astonishing Books</td>
-			<td class="menu-1">
-				<form>
-					<input type="text" class="search" name="search" placeholder="Search for book by title, author, or genre...">
+			<td>
+				<form action="" method="post">
+					<input type="hidden" name="action" value="search">
+					<input type="text" class="search menu-search" name="searchQuery" placeholder="Search for book by title, author, or genre...">
 				</form>
 			</td>
-			<td class="menu-1">
-				<form><input type="submit" value="Login/Profile" class="login menu-font"></form>
+			<td>
+				<form action="" method="post">
+					<input type="hidden" name="action" value="viewProfile">
+					<input type="submit" value="${loggedIn ? 'Profile' : 'Login' }" class="login-menu menu-font">
+				</form>
 			</td>
-			<td class="cart menu-1"><a href=""><img src="./images/cart-icon-brown.png" alt="Shopping Cart" class="cart-pic"></a></td>
+			<td class="cart">
+				<form action="" method="post" id="menuCart"> 
+					<a href="#" onclick="alert('hello')"> <!-- document.getElementbyId('menuCart').submit() -->
+						<input type="hidden" name="action" value="showCart">
+						<img src="./images/cart-icon-brown.png" alt="Shopping Cart" class="cart-pic">
+					</a>
+				</form>
+			</td>
 		</tr>
 	</table>
-	<table class="menu-table-2">
+	<table class="menu-table">
 		<tr>
-			<td class="menu-2 menu-font"><form><input type="submit" name="home" value="Home" class="menu-button menu-font"></form></td>
-			<td class="menu-2 menu-font"><form><input type="submit" name="fiction" value="Fiction" class="menu-button menu-font"></form></td>
-			<td class="menu-2 menu-font"><form><input type="submit" name="non-fiction" value="Non-Fiction" class="menu-button menu-font"></form></td>
-			<td class="menu-2 menu-font"><form><input type="submit" name="magazine" value="Magazine" class="menu-button menu-font"></form></td>
-			<td class="menu-2 menu-font"><form><input type="submit" name="reference" value="Reference" class="menu-button menu-font"></form></td>
+			<td class="menu-2 menu-font">
+				<form action="" method="post">
+					<input type="hidden" name="action" value="goToHome">
+					<input type="submit" value="Home" class="menu-button menu-font">
+				</form>
+			</td>
+			<td class="menu-2 menu-font">
+				<form action="" method="post">
+					<input type="hidden" name="action" value="goToFiction">
+					<input type="submit" value="Fiction" class="menu-button menu-font">
+				</form>
+			</td>
+			<td class="menu-2 menu-font">
+				<form action="" method="post">
+					<input type="hidden" name="action" value="goToNonFiction">
+					<input type="submit" value="Non-Fiction" class="menu-button menu-font">
+				</form>
+			</td>
+			<td class="menu-2 menu-font">
+				<form action="" method="post">
+					<input type="hidden" name="action" value="goToMagazine">
+					<input type="submit" value="Magazine" class="menu-button menu-font">
+				</form>
+			</td>
+			<td class="menu-2 menu-font">
+				<form action="" method="post">
+					<input type="hidden" name="action" value="goToReference">
+					<input type="submit" value="Reference" class="menu-button menu-font">
+				</form>
+			</td>
 		</tr>
 	</table>
