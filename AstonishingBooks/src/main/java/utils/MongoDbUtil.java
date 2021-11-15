@@ -12,6 +12,7 @@ import mongobusiness.Cart;
 import mongobusiness.Payment;
 import mongobusiness.Test;
 import mongobusiness.User;
+import utils.Constants;
 
 public class MongoDbUtil {
 
@@ -40,7 +41,7 @@ public class MongoDbUtil {
 		if (bookNames != null && bookNames.size() != 0) {
 			
 			// Get list of books 
-			allBooks = mongoOperation.findAll(Book.class);
+			allBooks = this.findAllBooks(mongoOperation);
 			
 			// Add selected book names to book list
 			List<Book> books = new ArrayList<Book>();
@@ -91,16 +92,28 @@ public class MongoDbUtil {
 				
 		// Find existing cart information
 		Cart dbCart = mongoOperation.findOne(query, Cart.class);
+		
+		// If cart does not exists
 		if (dbCart == null) {
+			// Assign cart to dbCart
 			dbCart = cart;
 		}
 		else {
+			// Else
+			// Update current info
 			dbCart.setOrderdate(new DateUtil().GetDateTimeNow());
 			dbCart.setBooks(cart.getBooks());	
 		}
+		
+		// Save to databse
 		mongoOperation.save(dbCart);
+		
+		// Find user
 		User user = this.GetUserByEmail(email, mongoOperation);
+		
+		// If user exists
 		if (user != null) {
+			// Update info and save to database
 			user.setCart(dbCart);
 			mongoOperation.save(user);
 		} 
@@ -134,19 +147,22 @@ public class MongoDbUtil {
 				dbPayment.setCardType(payment.getCardType());
 				dbPayment.setExperiationMonth(payment.getExperiationMonth());
 				dbPayment.setExperiationYear(payment.getExperiationYear());
-				
-				// Save to DB 
-				//mongoOperation.save(dbPayment);
 			}
 			else {
 				// Else
-				// Save new payment to DB
-				//mongoOperation.save(payment);	
+				// Assign payment to dbPayment
 				dbPayment = payment;
 			}
+			
+			// Save payment to db
 			mongoOperation.save(dbPayment);
+			
+			// Query user by email
 			User user = this.GetUserByEmail(email, mongoOperation);
+			
+			// If user exists
 			if (user != null) {
+				// Set payment and save to DB
 				user.setPayment(dbPayment);;
 				mongoOperation.save(user);
 			}
@@ -212,10 +228,33 @@ public class MongoDbUtil {
 	 * @param name
 	 * @param mongoOperation
 	 */
-	public void DeleteBookFromBookStore(String name, MongoTemplate mongoOperation)
-	{
-		Query query = new Query(Criteria.where("name").is(name));
-	    mongoOperation.remove(query, Book.class);
+	public void AddOrDeleteBook(String action, Book book, MongoTemplate mongoOperation){
+		
+		Query query = new Query(Criteria.where("name").is(book.getName()));
+		switch (action)
+		{
+			case Constants.ADD:
+				 mongoOperation.save(book);
+				 this.allBooks.add(book);
+				break;
+			case Constants.DELETE:
+				mongoOperation.remove(query, Book.class);
+				break;
+			default:
+				System.out.println("Could not determine action.");
+			break;
+			
+		}
+	}
+	
+
+	/**
+	 * Returns a list of all books.
+	 * @param mongoOperation
+	 * @return
+	 */
+	public List<Book> findAllBooks(MongoTemplate mongoOperation){
+		return mongoOperation.findAll(Book.class);
 	}
 	
 	
