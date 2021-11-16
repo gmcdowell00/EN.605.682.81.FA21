@@ -16,6 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
+
+import utils.Constants;
+import utils.MongoDbUtil;
+
 
 /**
  * Servlet implementation class AstonishingServlet
@@ -284,6 +289,52 @@ public class AstonishingServlet extends HttpServlet
 	    dispatcher.forward(request, response);
 	    
 	    
+	}
+	
+	public void test() {
+		// TODO Auto-generated method stub
+				MongoTemplate ops = (MongoTemplate)getServletContext().getAttribute(Constants.DATABASE);  
+				MongoDbUtil mongoUtil = new MongoDbUtil();
+				
+			
+				// Books
+				/*
+				List<String> books = new ArrayList<String>();
+				books.add("The Fastest Man Alive");
+				books.add("The Speed Force");
+
+				// Payment
+				Payment payment = new Payment();
+				payment.setCardNumber("1111-2222-3333-4444");
+				payment.setCardname("Main");
+				payment.setCardType(CardType.VISA);
+				payment.setExperiationMonth(06);
+				payment.setExperiationYear(2025);
+				//payment.setEmail("ballen@jla.com");
+				payment.setEmail("bwayne@jla.com");
+				
+				// User
+				User user = new User();
+				user.setFirstname("Barry");
+				user.setLastname("Allen");
+				user.setUsername("ScarlettSpeedster007");
+				user.setEmail("ballen@jla.com");
+				user.setAdmin(false);
+				user.setPayment(payment);
+				//mongoUtil.SaveOrUpdateUser(user, books, ops);
+				
+				
+				// User
+				User user2 = new User();
+				user2.setFirstname("Bruce");
+				user2.setLastname("Wayne");
+				user2.setUsername("DarkKnight");
+				user2.setEmail("bwayne@jla.com");
+				user2.setAdmin(false);
+				//mongoUtil.SaveOrUpdateUser(user2, books, ops);
+				
+				mongoUtil.SaveOrUpdatePayment(payment, user2.getEmail(), ops);
+				*/
 	}
 
 }
