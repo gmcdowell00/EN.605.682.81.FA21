@@ -3,9 +3,11 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.BulkOperations.BulkMode;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.core.BulkOperations;
 
 import mongobusiness.Book;
 import mongobusiness.Cart;
@@ -245,6 +247,11 @@ public class MongoDbUtil {
 			break;
 			
 		}
+	}
+	
+	public int BulkInsertBook(List<Book> books, MongoTemplate mongoOperation) {
+		return mongoOperation.bulkOps(BulkMode.UNORDERED, Book.class)
+			.insert(books).execute().getInsertedCount();
 	}
 	
 
