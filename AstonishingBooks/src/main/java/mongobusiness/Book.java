@@ -49,17 +49,41 @@ public class Book {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDescription() {
-		return description;
+	public String getAuthor() {
+		return author;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	public String getPublishedDate() {
+		return publishedDate;
+	}
+	public void setPublishedDate(String publishedDate) {
+		this.publishedDate = publishedDate;
+	}
+	public String getGenre() {
+		return genre;
+	}
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 	public double getPrice() {
 		return price;
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public String getCoverImageLink() {
+		return coverImageLink;
+	}
+	public void setCoverImageLink(String coverImageLink) {
+		this.coverImageLink = coverImageLink;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	
