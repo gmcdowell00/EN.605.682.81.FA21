@@ -16,8 +16,5 @@
 	<listener>
 		<listener-class>contextlisteners.DbContextListener</listener-class>
 	</listener>
-	
-	<listener>
-		<listener-class>contextlisteners.IndexContextListener</listener-class>
-	</listener>
+
 </web-app>

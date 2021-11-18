@@ -3,6 +3,8 @@ package controller;
 // default imports
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 
 //import javax.mail.MessagingException;   // need to add mail jar
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import mongobusiness.Book;
 import utils.Constants;
 import utils.MongoDbUtil;
 
@@ -50,7 +54,7 @@ public class AstonishingServlet extends HttpServlet
 	    // extract values from the request object
 	    String action = request.getParameter("action");
 	    
-	    // copy the registrant object from the session
+	    // get a session object
 	    HttpSession session = request.getSession();
 	    
 	    // pull books from the database and redirect to the landing page
@@ -62,6 +66,13 @@ public class AstonishingServlet extends HttpServlet
 			
 	    	// add the initialBooks object to the session object
 			//     session.setAttribute("initialBooks", initialBooks);
+	    	
+	    	ServletContext context = getServletContext();
+	    	
+	    	List<Book> books = (List<Book>) context.getAttribute(Constants.BOOKS);
+	    	
+	    	System.out.println(books);
+	    	
 			
 	    	// set the url for the home page
 	    	url = "/home.jsp";
