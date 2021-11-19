@@ -23,10 +23,8 @@
 			</td>
 			<td class="cart">
 				<form action="AstonishingServlet" method="post" id="menuCart"> 
-					<a href="#" onclick="alert('hello')"> <!-- document.getElementbyId('menuCart').submit() -->
-						<input type="hidden" name="action" value="cart">
-						<img src="./images/cart-icon-brown.png" alt="Shopping Cart" class="cart-pic">
-					</a>
+					<input type="hidden" name="action" value="cart">
+					<input type="image" class="cart-pic" src="images/cart-icon-brown.png" alt="Cart">
 				</form>
 			</td>
 		</tr>
