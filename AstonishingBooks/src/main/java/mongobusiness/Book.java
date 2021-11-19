@@ -15,7 +15,7 @@ public class Book {
 	@Field
 	private String author;
 	@Field
-	private String publishedDate;  // mm/dd/yyyy  
+	private Date publishedDate;  // mm/dd/yyyy  
 	@Field
 	private String genre;
 	@Field
@@ -28,7 +28,7 @@ public class Book {
 	
 	public Book() {}
 	
-	public Book(String name, String author, String publishedDate, String genre, double price, 
+	public Book(String name, String author, Date publishedDate, String genre, double price, 
 				String coverImageLink, String description) {	
 		this.name = name;
 		this.author = author;
@@ -55,10 +55,10 @@ public class Book {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public String getPublishedDate() {
+	public Date getPublishedDate() {
 		return publishedDate;
 	}
-	public void setPublishedDate(String publishedDate) {
+	public void setPublishedDate(Date publishedDate) {
 		this.publishedDate = publishedDate;
 	}
 	public String getGenre() {
