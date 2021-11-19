@@ -10,6 +10,13 @@ h1 {
 	font-variant: small-caps;
 }
 
+h3 {
+	font-variant: small-caps;
+	text-align: center;
+	font-weight: bold;
+	margin: 0em;
+}
+
 section {
 	padding: 1em 1em 1em 2em;
 }
@@ -81,6 +88,11 @@ td.menu-2 {
  	background-position: .5em;
   	padding: .65em .5em .5em 1.75em;
   	font-style: italic;
+}
+
+.delete-pic {
+	width: 2em;
+	height: 2em;
 }
 
 .menu-search {
@@ -217,5 +229,26 @@ input[type=submit]:hover {
 	font-weight:bold;
 	border: 0.01em solid #FFF6EE;
 	border-radius: 0.25em;
+}
+
+.left {
+	float: left;
+	border: 0.01em solid #724029;
+	border-radius: 0.25em;
+	margin: 3em 1em 2em 3em;
+	padding: 2em;
+	width: 35%;
+	background-color: #FFF9F6;
+}
+
+.right {
+	float: right;
+	border: 0.01em solid #724029;
+	border-radius: 0.25em;
+	margin: 3em 3em 2em 1em;
+	padding: 2em;
+	width: 35%;
+	background-color: #FFF9F6;
+	text-align: left;
 }
 

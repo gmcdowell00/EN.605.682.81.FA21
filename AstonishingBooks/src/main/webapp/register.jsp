@@ -9,8 +9,12 @@
 	<form action="AstonishingServlet" method="post">
 		<table>
 			<tr>
-				<td class="label"><label>Name:</label></td>
-				<td class="input"><input type="text" name="name" value="${user.name}" class="user-input" required></td> 
+				<td class="label"><label>First Name:</label></td>
+				<td class="input"><input type="text" name="firstname" value="${user.firstname}" class="user-input" required></td> 
+			</tr>
+			<tr>
+				<td class="label"><label>Last Name:</label></td>
+				<td class="input"><input type="text" name="lastname" value="${user.lastname}" class="user-input" required></td> 
 			</tr>
 			<tr>
 				<td class="label"><label>Email:</label></td>
