@@ -6,7 +6,7 @@
 
 	<h1>Create a New Account</h1>
 	
-	<form action="" method="post">
+	<form action="AstonishingServlet" method="post">
 		<table>
 			<tr>
 				<td class="label"><label>Name:</label></td>
@@ -44,6 +44,7 @@
 		<br>
 		<br>
 		<section class="center"><input type="submit" value="Create Account" class="orange-button submit-button"></section>
+		<input type="hidden" name="action" value="newAccount">
 	</form>
 
 </section>

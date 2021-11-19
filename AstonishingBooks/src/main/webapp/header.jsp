@@ -10,21 +10,21 @@
 		<tr>
 			<td class="logo">Astonishing Books</td>
 			<td>
-				<form action="" method="post">
+				<form action="AstonishingServlet" method="post">
 					<input type="hidden" name="action" value="search">
 					<input type="text" class="search menu-search" name="searchQuery" placeholder="Search for book by title, author, or genre...">
 				</form>
 			</td>
 			<td>
-				<form action="" method="post">
+				<form action="AstonishingServlet" method="post">
 					<input type="hidden" name="action" value="viewProfile">
 					<input type="submit" value="${loggedIn ? 'Profile' : 'Login' }" class="login-menu menu-font">
 				</form>
 			</td>
 			<td class="cart">
-				<form action="" method="post" id="menuCart"> 
+				<form action="AstonishingServlet" method="post" id="menuCart"> 
 					<a href="#" onclick="alert('hello')"> <!-- document.getElementbyId('menuCart').submit() -->
-						<input type="hidden" name="action" value="showCart">
+						<input type="hidden" name="action" value="cart">
 						<img src="./images/cart-icon-brown.png" alt="Shopping Cart" class="cart-pic">
 					</a>
 				</form>

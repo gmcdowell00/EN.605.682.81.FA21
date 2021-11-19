@@ -18,12 +18,14 @@
 			</tr>
 		</table>
 		<br>
+		<input type="hidden" name="action" value="loginAccount">
 		<input type="submit" value="Login" class="orange-button submit-button">
 	</form>
 	<br>
 	<hr>
 	<br>
-	<form action="" method="post">
+	<form action="AstonishingServlet" method="post">
+		<input type="hidden" name="action" value="createAccount">
 		<input type="submit" value="Create an Account" class="grey-button submit-button">
 	</form>
 
