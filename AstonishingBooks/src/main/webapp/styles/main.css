@@ -45,6 +45,17 @@ a {
 	width: 20em;
 }
 
+.user-input-short {
+	height: 2em;
+	padding-left: 0.5em;
+	border: .1em solid #724029;
+	border-radius: 0.25em;
+	margin-left: 1em;
+	margin-right: 1em;
+	text-align:left;
+	width: 5em;
+}
+
 td.label {
 	text-align: right;
 	padding-bottom: 1em;
