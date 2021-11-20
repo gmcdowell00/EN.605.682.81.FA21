@@ -9,6 +9,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -37,7 +38,10 @@ public class DbContextListener implements ServletContextListener {
 			System.out.println("Databse initalized");
 			
 			System.out.println("Querying books");
-			List<Book> books = ops.findAll(Book.class);
+			Query query = new Query();
+			query.limit(12);
+			
+			List<Book> books = ops.find(query, Book.class);
 			System.out.println("Queried " + books.size() + " books" );
 
 			context.setAttribute(Constants.BOOKS, books);
