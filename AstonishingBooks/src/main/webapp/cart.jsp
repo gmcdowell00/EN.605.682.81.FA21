@@ -2,28 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/header.jsp" />
 
-<section class="left">
-	<h3>My Information</h3>
+<section>
+	<h1>My Cart</h1>
 	<br>
 	<br>
-	Name: ${user.firstname} ${user.lastname}
-	<br>
-	<br>
-	Email: ${user.email}
-	<br>
-	<br>
-	Address: 
-</section>
-
-<section class="right">
-	<h3>My List</h3>
-	<br>
-	<br>
-	<table class="book-grid-table">
+	<table class="book-grid-table center">
 		<c:forEach items="1,2,3,4,5" var="book">
 			<tr>
 				<td class="book-list-img"><img class="book-img-list" alt="" src="images/test-book-cover.jpg"></td>
 				<td class="book-list-info">book title by book author</td>
+				<td class="book-list-info">price</td>
 				<td class="book-list-info">
 					<form action="" method="post">
 						<input type="hidden" name="action" value="removeFromList">
@@ -33,7 +21,18 @@
 				</td>
 			</tr>
 		</c:forEach>
-	</table>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td><br><br><b>Total: $</b></td>
+			<td></td>
+		</tr>
+	</table>
+	<hr>
+	<form action="AstonishingServlet" method="post" class="center">
+		<input type="hidden" name="action" value="checkout">
+		<input type="submit" value="Checkout" class="submit-button orange-button">
+	</form>	
 </section>
 
 
