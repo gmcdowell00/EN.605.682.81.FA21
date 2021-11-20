@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import mongobusiness.Book;
+import mongobusiness.User;
 import utils.Constants;
 import utils.MongoDbUtil;
 
@@ -53,11 +54,12 @@ public class AstonishingServlet extends HttpServlet {
 		// extract values from the request object
 		String action = request.getParameter("action");
 
-		// copy the registrant object from the session
+		// get the session object
 		HttpSession session = request.getSession();
 
 		// pull books from the database and redirect to the landing page
 		if (action.equals("home") || action.equals("goToHome")) {
+			
 			// Get the initial list of books to display on the index page
 			// BookDBWorker BookIO = new BookDBWorker(); // need a DB worker object of some
 			// kind?
@@ -69,7 +71,8 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// set the url for the home page
 			url = "/home.jsp";
-			this.test();
+			
+			// this.test();
 		}
 
 		else if (action.equals("showBookInfo")) {
@@ -117,6 +120,17 @@ public class AstonishingServlet extends HttpServlet {
 			String state = request.getParameter("state");
 			String country = request.getParameter("country");
 			String zipCode = request.getParameter("zipCode");
+
+			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
+			MongoDbUtil mongoUtil = new MongoDbUtil();
+
+			if (mongoUtil.GetUserByEmail(email,ops).equals(null)){
+				// user does not exist => create the user
+				
+				// User user = new User(firstName, lastName, ) 
+				
+				
+			}
 
 			// add the user to the database
 
@@ -1045,7 +1059,7 @@ public class AstonishingServlet extends HttpServlet {
 		 * payment.setExperiationYear(2025); //payment.setEmail("ballen@jla.com");
 		 * payment.setEmail("bwayne@jla.com");
 		 * 
-		 * // User User user = new User(); user.setFirstname("Barry");
+		 * // User User user = new User(); us\er.setFirstname("Barry");
 		 * user.setLastname("Allen"); user.setUsername("ScarlettSpeedster007");
 		 * user.setEmail("ballen@jla.com"); user.setAdmin(false);
 		 * user.setPayment(payment); //mongoUtil.SaveOrUpdateUser(user, books, ops);
