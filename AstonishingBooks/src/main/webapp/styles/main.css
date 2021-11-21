@@ -60,6 +60,18 @@ a {
 	width: 5em;
 }
 
+.user-input-big {
+	height: 15em;
+	padding-left: 0.5em;
+	border: .1em solid #724029;
+	border-radius: 0.25em;
+	margin-left: 1em;
+	margin-right: 1em;
+	text-align:left;
+	vertical-align: top;
+	width: 30em;
+}
+
 td.label {
 	text-align: right;
 	padding-bottom: 1em;
@@ -247,6 +259,10 @@ input[type=submit]:hover {
 	padding: 0em 0em 0em 2em;
 	vertical-align: text-top;
 	width: 80%;
+}
+
+.align-top {
+	vertical-align: top;
 }
 
 .login {
