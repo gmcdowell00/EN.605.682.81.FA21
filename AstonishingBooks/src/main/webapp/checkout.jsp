@@ -41,6 +41,10 @@
 				<td class="input"><input type="number" name="zip" value="${user.zip}" class="user-input" required></td> 
 			</tr>
 			<tr>
+				<td></td>
+				<td><hr><br></td>
+			</tr>
+			<tr>
 				<td class="label"><label>Credit Card Type:</label></td>
 				<td class="input">
 					<select name="creditCardType" class="user-input">
@@ -51,6 +55,10 @@
 						<option value="DINERS">Diners</option>
 					</select>
 				</td> 
+			</tr>
+			<tr>
+				<td class="label"><label>Name on Card:</label></td>
+				<td class="input"><input type="text" name="cardName" value="${user.payment.cardName}" class="user-input" required></td> 
 			</tr>
 			<tr>
 				<td class="label"><label>Card Number:</label></td>

@@ -2,17 +2,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/header.jsp" />
 
+<section class="title">
+	<h1>My Profile</h1>
+</section>
+
 <section class="left">
 	<h3>My Information</h3>
-	<br>
-	<br>
-	Name: ${user.firstname} ${user.lastname}
-	<br>
-	<br>
-	Email: ${user.email}
-	<br>
-	<br>
-	Address: 
+	<table>
+		<tr>
+			<td><br>Name:</td>
+			<td><br>${user.firstname} ${user.lastname }</td> 
+		</tr>
+		<tr>
+			<td><br>Email:</td>
+			<td><br>${user.email}</td> 
+		</tr>
+		<tr>
+			<td><br>Address:</td>
+			<td><br>${user.address}</td> 
+		</tr>
+	</table>
 </section>
 
 <section class="right">

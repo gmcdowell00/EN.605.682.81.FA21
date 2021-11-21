@@ -21,6 +21,10 @@ section {
 	padding: 1em 1em 1em 2em;
 }
 
+section.title {
+	padding: 1em 1em 0em 2em;
+}
+
 section.centertext {
 	text-align: center;
 }
@@ -266,21 +270,23 @@ input[type=submit]:hover {
 	float: left;
 	border: 0.01em solid #724029;
 	border-radius: 0.25em;
-	margin: 3em 1em 2em 3em;
+	margin: 1em 1em 2em 3em;
 	padding: 2em;
 	width: 35%;
 	background-color: #FFF9F6;
+	position: relative;
 }
 
 .right {
 	float: right;
 	border: 0.01em solid #724029;
 	border-radius: 0.25em;
-	margin: 3em 3em 2em 1em;
+	margin: 1em 3em 2em 1em;
 	padding: 2em;
 	width: 35%;
 	background-color: #FFF9F6;
 	text-align: left;
+	position: relative;
 }
 
 .center {
@@ -295,4 +301,8 @@ input[type=submit]:hover {
 .register {
 	padding-left: 5em;
 	padding-right: 5em;
+}
+
+.inline {
+	display: inline;
 }
