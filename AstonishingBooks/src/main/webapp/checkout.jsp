@@ -5,7 +5,7 @@
 
 <section>
 
-	<h1>Create a New Account</h1>
+	<h1>Checkout</h1>
 	
 	<form action="AstonishingServlet" method="post" class="register">
 		<table>
@@ -20,10 +20,6 @@
 			<tr>
 				<td class="label"><label>Email:</label></td>
 				<td class="input"><input type="email" name="email" value="${user.email}" class="user-input" required></td> 
-			</tr>
-			<tr>
-				<td class="label"><label>Password:</label></td>
-				<td class="input"><input type="password" name="password" value="${user.password}" class="user-input" required></td> 
 			</tr>
 			<tr>
 				<td class="label"><label>Address:</label></td>
@@ -45,12 +41,44 @@
 				<td class="label"><label>Zip Code:</label></td>
 				<td class="input"><input type="number" name="zip" value="${user.zip}" class="user-input" required></td> 
 			</tr>
+			<tr>
+				<td></td>
+				<td><hr><br></td>
+			</tr>
+			<tr>
+				<td class="label"><label>Credit Card Type:</label></td>
+				<td class="input">
+					<select name="creditCardType" class="user-input">
+						<option value="MASTER" required>MasterCard</option>
+						<option value="VISA">Visa</option>
+						<option value="DISCOVERY">Discovery</option>
+						<option value="AMEX">American Express</option>
+						<option value="DINERS">Diners</option>
+					</select>
+				</td> 
+			</tr>
+			<tr>
+				<td class="label"><label>Name on Card:</label></td>
+				<td class="input"><input type="text" name="cardName" value="${user.payment.cardName}" class="user-input" required></td> 
+			</tr>
+			<tr>
+				<td class="label"><label>Card Number:</label></td>
+				<td class="input"><input type="number" name="cardNumber" value="${user.payment.cardnumber}" class="user-input" required></td> 
+			</tr>
+			<tr>
+				<td class="label"><label>Expiration Date:</label></td>
+				<td class="input">
+					<input type="number" name="expireMonth" value="${user.payment.expirationMonth}" class="user-input-short" required>
+					/
+					<input type="number" name="expireYear" value="${user.payment.expirationYear}" class="user-input-short" required>
+				</td> 
+			</tr>
 		</table>
 		<br>
 		<hr>
 		<br>
-		<section class="center"><input type="submit" value="Create Account" class="orange-button submit-button"></section>
-		<input type="hidden" name="action" value="newAccount">
+		<section class="center"><input type="submit" value="Review Information" class="orange-button submit-button"></section>
+		<input type="hidden" name="action" value="reviewInfo">
 	</form>
 
 </section>

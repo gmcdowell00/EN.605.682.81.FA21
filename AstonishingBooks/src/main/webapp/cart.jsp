@@ -3,37 +3,16 @@
 <c:import url="/header.jsp" />
 <c:import url="/menu.jsp" />
 
-<section class="title">
-	<h1>My Profile</h1>
-</section>
-
-<section class="left">
-	<h3>My Information</h3>
-	<table>
-		<tr>
-			<td><br>Name:</td>
-			<td><br>${user.firstname} ${user.lastname }</td> 
-		</tr>
-		<tr>
-			<td><br>Email:</td>
-			<td><br>${user.email}</td> 
-		</tr>
-		<tr>
-			<td><br>Address:</td>
-			<td><br>${user.address}</td> 
-		</tr>
-	</table>
-</section>
-
-<section class="right">
-	<h3>My List</h3>
+<section>
+	<h1>My Cart</h1>
 	<br>
 	<br>
-	<table class="book-grid-table">
+	<table class="book-grid-table center">
 		<c:forEach items="1,2,3,4,5" var="book">
 			<tr>
 				<td class="book-list-img"><img class="book-img-list" alt="" src="images/test-book-cover.jpg"></td>
 				<td class="book-list-info">book title by book author</td>
+				<td class="book-list-info">price</td>
 				<td class="book-list-info">
 					<form action="" method="post">
 						<input type="hidden" name="action" value="removeFromList">
@@ -43,7 +22,18 @@
 				</td>
 			</tr>
 		</c:forEach>
-	</table>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td><br><br><b>Total: $</b></td>
+			<td></td>
+		</tr>
+	</table>
+	<hr>
+	<form action="AstonishingServlet" method="post" class="center">
+		<input type="hidden" name="action" value="checkout">
+		<input type="submit" value="Checkout" class="submit-button orange-button">
+	</form>	
 </section>
 
 

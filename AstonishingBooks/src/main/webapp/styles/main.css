@@ -21,7 +21,11 @@ section {
 	padding: 1em 1em 1em 2em;
 }
 
-section.center {
+section.title {
+	padding: 1em 1em 0em 2em;
+}
+
+section.centertext {
 	text-align: center;
 }
 
@@ -43,6 +47,29 @@ a {
 	margin-left: 1em;
 	text-align:left;
 	width: 20em;
+}
+
+.user-input-short {
+	height: 2em;
+	padding-left: 0.5em;
+	border: .1em solid #724029;
+	border-radius: 0.25em;
+	margin-left: 1em;
+	margin-right: 1em;
+	text-align:left;
+	width: 5em;
+}
+
+.user-input-big {
+	height: 15em;
+	padding-left: 0.5em;
+	border: .1em solid #724029;
+	border-radius: 0.25em;
+	margin-left: 1em;
+	margin-right: 1em;
+	text-align:left;
+	vertical-align: top;
+	width: 30em;
 }
 
 td.label {
@@ -155,9 +182,29 @@ input[type=submit]:hover {
 	padding: 1em 0em 1em 0em;
 }
 
+.book-list-img {
+	text-align: center;
+	border-bottom: 0.01em solid #724029;
+	border-top: 0.01em solid #724029;
+	width: 20%;
+	padding: 1em 0em 1em 0em;
+}
+
+.book-img-list {
+	height: 3em;
+}
+
+.book-list-info {
+	text-align: center;
+	border-bottom: 0.01em solid #724029;
+	border-top: 0.01em solid #724029;
+}
+
+
 .book-grid-table {
 	width: 100%;
 	text-align: center;
+	border-collapse: collapse;
 }
 
 .book-grid {
@@ -165,7 +212,7 @@ input[type=submit]:hover {
 }
 
 .book-grid-row {
-	background-color: #DFE0DF;
+	background-color: #FFF9F6;
 }
 
 .book-grid-item {
@@ -214,6 +261,10 @@ input[type=submit]:hover {
 	width: 80%;
 }
 
+.align-top {
+	vertical-align: top;
+}
+
 .login {
 	width: 100%;
 	padding-left: 25%;
@@ -235,20 +286,39 @@ input[type=submit]:hover {
 	float: left;
 	border: 0.01em solid #724029;
 	border-radius: 0.25em;
-	margin: 3em 1em 2em 3em;
+	margin: 1em 1em 2em 3em;
 	padding: 2em;
 	width: 35%;
 	background-color: #FFF9F6;
+	position: relative;
 }
 
 .right {
 	float: right;
 	border: 0.01em solid #724029;
 	border-radius: 0.25em;
-	margin: 3em 3em 2em 1em;
+	margin: 1em 3em 2em 1em;
 	padding: 2em;
 	width: 35%;
 	background-color: #FFF9F6;
 	text-align: left;
+	position: relative;
 }
 
+.center {
+	float: center;
+	border-radius: 0.25em;
+	margin: 0em 10% 2em 5%;
+	padding: 2em;
+	width: 80%;
+	text-align: center;
+}
+
+.register {
+	padding-left: 5em;
+	padding-right: 5em;
+}
+
+.inline {
+	display: inline;
+}
