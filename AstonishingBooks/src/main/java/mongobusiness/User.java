@@ -17,6 +17,8 @@ public class User {
 	private String username;
 	@Field
 	private String email;
+	@Field 
+	private String password;
 	@Field
 	private boolean isAdmin;
 	@DBRef
@@ -26,7 +28,7 @@ public class User {
 	
 	public User() {}
 	
-	public User(String firstname, String lastname, String username, String email, boolean isAdmin, Payment payment,
+	public User(String firstname, String lastname, String username, String email, boolean isAdmin, String password, Payment payment,
 			Cart cart) {
 		super();
 		this.firstname = firstname;
@@ -34,6 +36,7 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.isAdmin = isAdmin;
+		this.password = password;
 		this.payment = payment;
 		this.cart = cart;
 	}
@@ -78,5 +81,11 @@ public class User {
 	}
 	public void setCart(Cart cart) {
 		this.cart = cart;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
