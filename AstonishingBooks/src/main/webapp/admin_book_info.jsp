@@ -1,7 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="./header.jsp" />
-<c:import url="../menu.jsp" />
+<c:import url="./menu.jsp" />
 
 <section>
 	<h1>Edit Book Information</h1>
@@ -11,7 +11,7 @@
 		<table class="book-info-table">
 			<tr>
 				<td class="align-top">
-					<img src="../images/test-book-cover.jpg" class="book-info-img"><br><br>
+					<img src="./images/test-book-cover.jpg" class="book-info-img"><br><br>
 				</td>
 				<td class="book-info">
 					<table>
