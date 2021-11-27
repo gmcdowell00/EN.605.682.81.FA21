@@ -18,12 +18,14 @@ import java.util.Date;
 
 //import javax.mail.MessagingException;   // need to add mail jar
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import mongobusiness.Book;
+import mongobusiness.Cart;
 import mongobusiness.User;
 import utils.Constants;
 import utils.MongoDbUtil;
@@ -56,24 +58,39 @@ public class AstonishingServlet extends HttpServlet {
 
 		// get the session object
 		HttpSession session = request.getSession();
+		
+		// get the context object
+		ServletContext context = getServletContext();
 
 		// pull books from the database and redirect to the landing page
-		if (action.equals("home") || action.equals("goToHome")) {
+		if (action.equals("home") || action.equals("goToHome")) {		
 			
-			// Get the initial list of books to display on the index page
-			// BookDBWorker BookIO = new BookDBWorker(); // need a DB worker object of some
-			// kind?
-			// ArrayList<Book> initialBooks = BookIO.getInitialBooks(); // get an ArrayList
-			// of book objects
-
-			// add the initialBooks object to the session object
-			// session.setAttribute("initialBooks", initialBooks);
-			
-			// set the url for the home page
+			List<Book> books = (List<Book>) context.getAttribute(Constants.BOOKS);
+			System.out.println("books from home redirect:");
+			for (int counter = 0; counter < books.size(); counter++) {
+				System.out.println(counter + "\t" + books.get(counter).getPublishedDate() + "\t" + books.get(counter).getName());
+			}
 
 			url = "/home.jsp";		
 
+		} else if (action.equals("goToFiction")) {
+			// pull 12 fiction books - using search function?
+			// change to fiction page
+			url = "/home.jsp";
+		} else if (action.equals("goToNonFiction")) {
+			// pull 12 non-fiction books - using search function?
+			// change to non-fiction page
+			url = "/home.jsp";
+		} else if (action.equals("goToMagazine")) {
+			// pull 12 magazines - using search function?
+			// change to magazine page
+			url = "/home.jsp";
+		} else if (action.equals("goToReference")) {
+			// pull 12 reference books - using search function?
+			// change to reference page
+			url = "/home.jsp";
 		}
+
 
 		else if (action.equals("showBookInfo")) {
 			// get the ID of the book to display
@@ -103,34 +120,64 @@ public class AstonishingServlet extends HttpServlet {
 
 			// set the url for the search results page
 			url = "/search.jsp";
-		} else if (action.equals("signIn")) {
-			// set the url for the sign-in page
-			url = "/signIn.jsp";
-		} else if (action.equals("createAccount")) {
-			// set the url for the account creation page
-			url = "/createAccount.jsp";
-		} else if (action.equals("newAccount")) {
+		} else if (action.equals("viewProfile")) {		
+			if (session.getAttribute("loggedIn") != null) {
+				if ((boolean) session.getAttribute("loggedIn")) {
+					url = "/profile.jsp";
+				} else {
+					url = "/login.jsp";
+				}
+			} else {
+				url = "/login.jsp";
+			}
+		} 
+//		else if (action.equals("loginAccount")) {
+//			// check the username and password
+//			
+//			// if they match
+//			session.setAttribute("loggedIn", true);
+//			url ="/home.jsp";
+//		} else if (action.equals("createAccount")) {
+//			// set the url for the account creation page
+//			url = "/createAccount.jsp";
+//		} 
+		else if (action.equals("newAccount")) {
 			// get the account parameters entered by the user
  
-			
+			String firstname = request.getParameter("firstname");
+			String lastname = request.getParameter("lastname");
+			String email = request.getParameter("email");
+			String password = request.getParameter("password");
+			String address = request.getParameter("address");
+			String city = request.getParameter("city");
+			String state = request.getParameter("state");
+			String country = request.getParameter("country");
+			String zip = request.getParameter("zip");
 
 			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
 			MongoDbUtil mongoUtil = new MongoDbUtil();
 
-//			if (mongoUtil.GetUserByEmail(email,ops).equals(null)){
+			if (mongoUtil.GetUserByEmail(email,ops).equals(null)){
 //				// user does not exist => create the user
 //				
-//				// User user = new User(firstName, lastName, ) 
+//				boolean isAdmin = false;
+//				User user = new User(firstname, lastname, email, password, address, city, state, country, zip, isAdmin); 
 //				
-//				
-//			}
+//				// add the user to the database
+//				User newUser = SaveOrUpdateUser(User;)
+//
+//				// redirect to the new account confirmation page
+//				url = "/newAccountConfirmation.jsp";
+				url = "/home.jsp";
+			} else {
+				String message = "A user with that email already exists.  Please try again.";
+				System.out.println(message);
+				url = "/register";
+			}
 
-			// add the user to the database
 
-			// redirect to the new account confirmation page
-			url = "/newAccountConfirmation.jsp";
 		} else if (action.equals("saveList")) {
-			String userID = request.getParameter("userID");
+			// String userID = request.getParameter("userID");
 
 			// get the user's wish list from the database
 
@@ -139,19 +186,21 @@ public class AstonishingServlet extends HttpServlet {
 			// add the userProfile object to the session
 
 			// redirect to show profile page
-			url = "/showProfile.jsp";
-		} else if (action.equals("viewProfile")) {
-			// String userID = request.getParameter("userID");
-
-			// get the user's profile data from the database
-
-			// create a userProfile object and fill with pulled data
-
-			// add the userProfile object to the session
-
-			// redirect to show profile page
-			url = "/showProfile.jsp";
-		} else if (action.equals("editProfile")) {
+			url = "/profile.jsp";
+		} 
+//		else if (action.equals("viewProfile")) {
+//			// String userID = request.getParameter("userID");
+//
+//			// get the user's profile data from the database
+//
+//			// create a userProfile object and fill with pulled data
+//
+//			// add the userProfile object to the session
+//
+//			// redirect to show profile page
+//			url = "/showProfile.jsp";
+//		} 
+		else if (action.equals("editProfile")) {
 			String userID = request.getParameter("userID");
 
 			// get the user's profile data from the database
@@ -163,12 +212,25 @@ public class AstonishingServlet extends HttpServlet {
 			// redirect to edit profile page
 			url = "/editProfile.jsp";
 		} else if (action.equals("addCart")) {
-			// get cart contents from session object? or from database?
 
-			// add the selected book to the cart
+			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
+			MongoDbUtil mongoUtil = new MongoDbUtil();
+			
+			User user = mongoUtil.GetUserByEmail(request.getParameter("email"), ops);
+			Cart cart = user.getCart();
+			
+			List<Book> books = cart.getBooks();
 
-			// save the cart contents in an object and save to the session
+			//=================================
+			// check the list of books to see if the new book is on the list
+			// if so, no change necessary
+			// if not, add the book to the list, save to the cart
+			//=================================
 
+			cart.setBooks(books); 
+			
+			Cart updatedCart = mongoUtil.SaveOrUpdateCart(cart, request.getParameter("email"), ops);
+			
 			// redirect to cart page
 			url = "/cart.jsp";
 		} else if (action.equals("cart")) {
