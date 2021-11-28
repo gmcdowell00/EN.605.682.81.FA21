@@ -26,6 +26,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import mongobusiness.Book;
 import mongobusiness.Cart;
+import mongobusiness.Payment;
 import mongobusiness.User;
 import utils.Constants;
 import utils.MongoDbUtil;
@@ -137,10 +138,11 @@ public class AstonishingServlet extends HttpServlet {
 //			// if they match
 //			session.setAttribute("loggedIn", true);
 //			url ="/home.jsp";
-//		} else if (action.equals("createAccount")) {
-//			// set the url for the account creation page
-//			url = "/createAccount.jsp";
 //		} 
+		else if (action.equals("createAccount")) {
+			// set the url for the account creation page
+			url = "/register.jsp";
+		} 
 		else if (action.equals("newAccount")) {
 			// get the account parameters entered by the user
  
@@ -157,22 +159,45 @@ public class AstonishingServlet extends HttpServlet {
 			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
 			MongoDbUtil mongoUtil = new MongoDbUtil();
 
-			if (mongoUtil.GetUserByEmail(email,ops).equals(null)){
-//				// user does not exist => create the user
-//				
-//				boolean isAdmin = false;
-//				User user = new User(firstname, lastname, email, password, address, city, state, country, zip, isAdmin); 
-//				
-//				// add the user to the database
-//				User newUser = SaveOrUpdateUser(User;)
-//
-//				// redirect to the new account confirmation page
-//				url = "/newAccountConfirmation.jsp";
+			if (mongoUtil.GetUserByEmail(email,ops) == null){
+				// user does not exist => create the user
+				
+				// create empty payment object, save it to the DB
+				Payment payment = new Payment();			
+				payment.setEmail(email);
+				mongoUtil.SaveOrUpdatePayment(payment, email, ops);
+				
+				// create empty cart object, save it to the DB
+				Cart cart = new Cart();
+				cart.setEmail(email);			
+				mongoUtil.SaveOrUpdateCart(cart, email, ops);
+
+				// create empty list of books
+				List<String> books = new ArrayList<String>();
+				
+				// create user object from the above info
+				boolean isAdmin = false;
+				User user = new User(firstname, lastname, firstname, email, isAdmin, password, 
+						address, city, state, country, zip, payment, cart); 
+				
+				// check that IDs are generated
+				System.out.println("pymt ID: " + payment.getId());
+				System.out.println("cart ID: " + cart.getId());
+				System.out.println("user ID: " + user.getId());
+				
+				// add the user to the database
+				User newUser = mongoUtil.SaveOrUpdateUser(user, books, ops);
+				
+				// the user ID comes back after the user is saved to the DB
+				System.out.println("user ID: " + user.getId());
+
+				// redirect to the new account confirmation page
+				// url = "/newAccountConfirmation.jsp";
 				url = "/home.jsp";
 			} else {
 				String message = "A user with that email already exists.  Please try again.";
 				System.out.println(message);
-				url = "/register";
+				url = "/register.jsp";
 			}
 
 

@@ -14,11 +14,21 @@ public class User {
 	@Field
 	private String lastname;
 	@Field
-	private String username;
+	private String username;     // are we using username anywhere else?
 	@Field
 	private String email;
 	@Field 
 	private String password;
+	@Field
+	private String address;
+	@Field
+	private String city;
+	@Field
+	private String state;
+	@Field
+	private String country;
+	@Field
+	private String zip;
 	@Field
 	private boolean isAdmin;
 	@DBRef
@@ -28,8 +38,8 @@ public class User {
 	
 	public User() {}
 	
-	public User(String firstname, String lastname, String username, String email, boolean isAdmin, String password, Payment payment,
-			Cart cart) {
+	public User(String firstname, String lastname, String username, String email, boolean isAdmin, String password, 
+			String address, String city, String state, String country, String zip, Payment payment, Cart cart) {
 		super();
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -37,6 +47,11 @@ public class User {
 		this.email = email;
 		this.isAdmin = isAdmin;
 		this.password = password;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.zip = zip;		
 		this.payment = payment;
 		this.cart = cart;
 	}
@@ -88,4 +103,53 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getZip() {
+		return zip;
+	}
+
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
+	
 }
