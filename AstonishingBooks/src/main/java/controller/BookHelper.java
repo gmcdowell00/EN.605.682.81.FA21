@@ -61,7 +61,7 @@ public class BookHelper {
 		for (int counter = 0; counter < totalBookCount; counter++) {
 			if (books.get(counter).getName().toLowerCase().contains(searchTerm) 
 					|| books.get(counter).getAuthor().toLowerCase().contains(searchTerm) 
-					|| books.get(counter).getGenre().toLowerCase().contains(searchTerm)) {
+					|| books.get(counter).getGenre().toLowerCase().equals(searchTerm)) {
 				results.add(books.get(counter));
 			}
 		}
