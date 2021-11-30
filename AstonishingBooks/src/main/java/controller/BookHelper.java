@@ -46,28 +46,28 @@ public class BookHelper {
 		return sortedBooks;		
 	}
 	
-	public List<Book> genreBooks(List<Book> books, String genre){
+	public List<Book> searchBooks(List<Book> books, String searchQuery){
+		
+		// set the search term to lower case so the search will ignore case
+		String searchTerm = searchQuery.toLowerCase();
 		
 		// number of books passed in
 		int totalBookCount = books.size();
 		
-		// create a list to return the sorted books
-		List<Book> sortedBooks = new ArrayList<>();
+		// create a list to return the results
+		List<Book> results = new ArrayList<>();
 		
-		// initialize the index for the sortedBook list
-		int index = 0;
-		
-		// add the books to the list if the genre matches
+		// add the book to the list if the searchTerm is contained in a field
 		for (int counter = 0; counter < totalBookCount; counter++) {
-			if (books.get(counter).getGenre().equals(genre)) {
-				sortedBooks.add(index, books.get(counter));
+			if (books.get(counter).getName().toLowerCase().contains(searchTerm) 
+					|| books.get(counter).getAuthor().toLowerCase().contains(searchTerm) 
+					|| books.get(counter).getGenre().toLowerCase().contains(searchTerm)) {
+				results.add(books.get(counter));
 			}
 		}
 		
 		// return the book sorted by genre
-		return sortedBooks;
+		return results;
 		
 	}
-	
-	
 }

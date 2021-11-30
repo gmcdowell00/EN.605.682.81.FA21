@@ -143,15 +143,12 @@ public class AstonishingServlet extends HttpServlet {
 				url = "/reference_page.jsp";
 			}
 			
-			// sort the books by date, return the 12 newest that are not magazines
-			List<Book> sortedBooks = bookHelper.genreBooks(books, genreString);
+			// sort the books by genre
+			List<Book> sortedBooks = bookHelper.searchBooks(books, genreString);
 
 			// make the sorted books available for display
 			context.setAttribute(Constants.BOOKS, sortedBooks);  			
-		}
-		
-		
-		else if (action.equals("showBookInfo")) {
+		} else if (action.equals("showBookInfo")) {
 			// get the ID of the book to display
 			//  String bookID = request.getParameter("bookId");
 
@@ -166,20 +163,32 @@ public class AstonishingServlet extends HttpServlet {
 			// set the url for the book info page
 			url = "/book_info.jsp";
 		} else if (action.equals("search")) {
+						
+			// create a new query 
+			Query query = new Query();
+
+			// return all of the books
+			List<Book> books = ops.find(query, Book.class);
+			
+			// create a BookHelper object
+			BookHelper bookHelper = new BookHelper();
+			
 			// get the search term
 			String searchTerm = request.getParameter("searchQuery");
+			
+			System.out.println("search term: " + searchTerm);
 
-			// search the database using the searchTerm
-
-			// count the number of results returned (e.g., results.length())
-
-			// create a searchResult object
-
-			// add the results and results count to the searchResult object
-
-			// add the searchResult object to the session object
-
-			// set the url for the search results page
+			// sort the books by searchTerm
+			List<Book> sortedBooks = bookHelper.searchBooks(books, searchTerm);
+			
+			// make the sorted books available for display
+			context.setAttribute(Constants.BOOKS, sortedBooks);  	
+			
+			// see what gets found
+			for (int counter = 0; counter < sortedBooks.size(); counter++) {
+				System.out.println(sortedBooks.get(counter).getName());
+			}
+			
 			url = "/search.jsp";
 		} else if (action.equals("viewProfile")) {		
 			if (session.getAttribute("loggedIn") != null) {
