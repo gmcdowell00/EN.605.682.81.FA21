@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+
 import mongobusiness.Book;
+import utils.Constants;
 
 public class BookHelper {
 	
@@ -38,6 +44,29 @@ public class BookHelper {
 
 		// return the list of the 12 newest non-magazine results
 		return sortedBooks;		
+	}
+	
+	public List<Book> genreBooks(List<Book> books, String genre){
+		
+		// number of books passed in
+		int totalBookCount = books.size();
+		
+		// create a list to return the sorted books
+		List<Book> sortedBooks = new ArrayList<>();
+		
+		// initialize the index for the sortedBook list
+		int index = 0;
+		
+		// add the books to the list if the genre matches
+		for (int counter = 0; counter < totalBookCount; counter++) {
+			if (books.get(counter).getGenre().equals(genre)) {
+				sortedBooks.add(index, books.get(counter));
+			}
+		}
+		
+		// return the book sorted by genre
+		return sortedBooks;
+		
 	}
 	
 	

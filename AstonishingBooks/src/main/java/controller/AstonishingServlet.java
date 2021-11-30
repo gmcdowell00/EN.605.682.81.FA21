@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.query.Query;
 
 import mongobusiness.Book;
 import mongobusiness.Cart;
@@ -62,40 +63,97 @@ public class AstonishingServlet extends HttpServlet {
 		
 		// get the context object
 		ServletContext context = getServletContext();
+		
+		// create a mongo template
+		MongoTemplate ops = (MongoTemplate) context.getAttribute(Constants.DATABASE);
+		
+		// create a mongo utility object
+		MongoDbUtil mongoUtil = new MongoDbUtil();
 
 		// pull books from the database and redirect to the landing page
-		if (action.equals("home") || action.equals("goToHome")) {		
+		if (action.equals("goToHome")) {		
 			
-			List<Book> books = (List<Book>) context.getAttribute(Constants.BOOKS);
-			System.out.println("books from home redirect:");
-			for (int counter = 0; counter < books.size(); counter++) {
-				System.out.println(counter + "\t" + books.get(counter).getPublishedDate() + "\t" + books.get(counter).getName());
+			// create a new query 
+			Query query = new Query();
+
+			// return all of the books
+			List<Book> books = ops.find(query, Book.class);
+			
+			// create a BookHelper object
+			BookHelper bookHelper = new BookHelper();
+			
+			// sort the books by date, return the 12 newest that are not magazines
+			List<Book> sortedBooks = bookHelper.newestBooks(books);
+
+			// make the sorted books available for display
+			context.setAttribute(Constants.BOOKS, sortedBooks);  
+
+			// redirect to the landing page
+			url = "/index.jsp";		
+
+		} 
+		
+//		else if (action.equals("goToFiction")) {
+//			// pull 12 fiction books - using search function?
+//			System.out.println("Going to fiction");
+//			// change to fiction page
+//			url = "/fiction_page.jsp";
+//		} else if (action.equals("goToNonFiction")) {
+//			// pull 12 non-fiction books - using search function?
+//			System.out.println("Going to non-fiction");
+//			// change to non-fiction page
+//			url = "/nonfiction_page.jsp";
+//		} else if (action.equals("goToMagazine")) {
+//			// pull 12 magazines - using search function?
+//			System.out.println("Going to magazine");
+//			// change to magazine page
+//			url = "/magazine_page.jsp";
+//		} else if (action.equals("goToReference")) {
+//			// pull 12 reference books - using search function?
+//			System.out.println("Going to reference");
+//			// change to reference page
+//			url = "/reference_page.jsp";
+//		} 
+		
+		else if (action.equals("goToFiction") || action.equals("goToNonFiction") || 
+				action.equals("goToMagazine") || action.equals("goToReference")) {
+			
+			// create a new query 
+			Query query = new Query();
+
+			// return all of the books
+			List<Book> books = ops.find(query, Book.class);
+			
+			// create a BookHelper object
+			BookHelper bookHelper = new BookHelper();
+			
+			// set the genre string and url
+			String genreString = "";
+			if (action.equals("goToFiction")) {
+				genreString = "Fiction";
+				url = "/fiction_page.jsp";
+			} else if (action.equals("goToNonFiction")) {
+				genreString = "Non-Fiction";
+				url = "/nonfiction_page.jsp";
+			} else if (action.equals("goToMagazine")) {
+				genreString = "Magazine";
+				url = "/magazine_page.jsp";
+			} else if (action.equals("goToReference")) {
+				genreString = "Reference";
+				url = "/reference_page.jsp";
 			}
+			
+			// sort the books by date, return the 12 newest that are not magazines
+			List<Book> sortedBooks = bookHelper.genreBooks(books, genreString);
 
-			url = "/home.jsp";		
-
-		} else if (action.equals("goToFiction")) {
-			// pull 12 fiction books - using search function?
-			// change to fiction page
-			url = "/home.jsp";
-		} else if (action.equals("goToNonFiction")) {
-			// pull 12 non-fiction books - using search function?
-			// change to non-fiction page
-			url = "/home.jsp";
-		} else if (action.equals("goToMagazine")) {
-			// pull 12 magazines - using search function?
-			// change to magazine page
-			url = "/home.jsp";
-		} else if (action.equals("goToReference")) {
-			// pull 12 reference books - using search function?
-			// change to reference page
-			url = "/home.jsp";
+			// make the sorted books available for display
+			context.setAttribute(Constants.BOOKS, sortedBooks);  			
 		}
-
-
+		
+		
 		else if (action.equals("showBookInfo")) {
 			// get the ID of the book to display
-			// String bookID = request.getParameter("bookID");
+			//  String bookID = request.getParameter("bookId");
 
 			// pull the book info from the database
 
@@ -103,6 +161,8 @@ public class AstonishingServlet extends HttpServlet {
 
 			// add the bookInfo object to the session object
 
+			System.out.println("book info");
+			
 			// set the url for the book info page
 			url = "/book_info.jsp";
 		} else if (action.equals("search")) {
@@ -132,13 +192,36 @@ public class AstonishingServlet extends HttpServlet {
 				url = "/login.jsp";
 			}
 		} 
-//		else if (action.equals("loginAccount")) {
-//			// check the username and password
-//			
-//			// if they match
-//			session.setAttribute("loggedIn", true);
-//			url ="/home.jsp";
-//		} 
+		else if (action.equals("loginAccount")) {
+			// check the username and password
+			User currentUser = mongoUtil.GetUserByEmail(request.getParameter("email"), ops);
+			
+			if (currentUser.equals(null)) {
+				// if the user is not found, set the message and return 
+				String message = "Incorrect email and password combination"; 
+				session.setAttribute("message", message);
+				url = "/login.jsp";
+			} else {
+				// if the user is found, check the password
+				currentUser.getPassword();
+				if (request.getParameter("password").equals(currentUser.getPassword())){
+					// if they match, set loggedIn to true
+					session.setAttribute("loggedIn", true);
+					
+					// clear the message (previously set if a login failed)
+					String message = "";
+					session.setAttribute("message", message);
+					
+					// redirect to the landing page
+					url ="/index.jsp";
+				} else {
+					// if the password does not match, set the message and return
+					String message = "Incorrect email and password combination"; 
+					session.setAttribute("message", message);
+					url = "/login.jsp";
+				}
+			}
+		} 
 		else if (action.equals("createAccount")) {
 			// set the url for the account creation page
 			url = "/register.jsp";
@@ -156,8 +239,8 @@ public class AstonishingServlet extends HttpServlet {
 			String country = request.getParameter("country");
 			String zip = request.getParameter("zip");
 
-			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
-			MongoDbUtil mongoUtil = new MongoDbUtil();
+//			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
+//			MongoDbUtil mongoUtil = new MongoDbUtil();
 
 			if (mongoUtil.GetUserByEmail(email,ops) == null){
 				// user does not exist => create the user
@@ -180,23 +263,21 @@ public class AstonishingServlet extends HttpServlet {
 				User user = new User(firstname, lastname, firstname, email, isAdmin, password, 
 						address, city, state, country, zip, payment, cart); 
 				
-				// check that IDs are generated
-				System.out.println("pymt ID: " + payment.getId());
-				System.out.println("cart ID: " + cart.getId());
-				System.out.println("user ID: " + user.getId());
-				
 				// add the user to the database
 				User newUser = mongoUtil.SaveOrUpdateUser(user, books, ops);
-				
-				// the user ID comes back after the user is saved to the DB
-				System.out.println("user ID: " + user.getId());
 
-				// redirect to the new account confirmation page
-				// url = "/newAccountConfirmation.jsp";
-				url = "/home.jsp";
+				// set the loggedIn status to true
+				session.setAttribute("loggedIn", true);
+				
+				// clear the message (set if a user uses an existing email)
+				String message = "";
+				session.setAttribute("message", message);
+				
+				// redirect to the landing page
+				url = "/index.jsp";
 			} else {
 				String message = "A user with that email already exists.  Please try again.";
-				System.out.println(message);
+				session.setAttribute("message", message);
 				url = "/register.jsp";
 			}
 
@@ -238,8 +319,8 @@ public class AstonishingServlet extends HttpServlet {
 			url = "/editProfile.jsp";
 		} else if (action.equals("addCart")) {
 
-			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
-			MongoDbUtil mongoUtil = new MongoDbUtil();
+//			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
+//			MongoDbUtil mongoUtil = new MongoDbUtil();
 			
 			User user = mongoUtil.GetUserByEmail(request.getParameter("email"), ops);
 			Cart cart = user.getCart();
