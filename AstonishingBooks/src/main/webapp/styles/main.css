@@ -117,7 +117,7 @@ td.menu-2 {
   	font-style: italic;
 }
 
-.delete-pic {
+.edit-pic, .delete-pic {
 	width: 2em;
 	height: 2em;
 }
@@ -198,6 +198,7 @@ input[type=submit]:hover {
 	text-align: center;
 	border-bottom: 0.01em solid #724029;
 	border-top: 0.01em solid #724029;
+	padding: 0em 1em 0em 1em;
 }
 
 
@@ -265,6 +266,11 @@ input[type=submit]:hover {
 	vertical-align: top;
 }
 
+.add-book {
+	text-align: right;
+	padding-bottom: 1em;
+}
+
 .login {
 	width: 100%;
 	padding-left: 25%;
@@ -310,6 +316,14 @@ input[type=submit]:hover {
 	border-radius: 0.25em;
 	margin: 0em 10% 2em 5%;
 	padding: 2em;
+	width: 80%;
+	text-align: center;
+}
+
+.center-no-padding {
+	float: center;
+	border-radius: 0.25em;
+	margin: 0em 10% 0em 5%;
 	width: 80%;
 	text-align: center;
 }
