@@ -41,25 +41,25 @@
 				</form>
 			</td>
 			<td class="menu-2 menu-font">
-				<form action="" method="post">
+				<form action="AstonishingServlet" method="post">
 					<input type="hidden" name="action" value="goToFiction">
 					<input type="submit" value="Fiction" class="menu-button menu-font">
 				</form>
 			</td>
 			<td class="menu-2 menu-font">
-				<form action="" method="post">
+				<form action="AstonishingServlet" method="post">
 					<input type="hidden" name="action" value="goToNonFiction">
 					<input type="submit" value="Non-Fiction" class="menu-button menu-font">
 				</form>
 			</td>
 			<td class="menu-2 menu-font">
-				<form action="" method="post">
+				<form action="AstonishingServlet" method="post">
 					<input type="hidden" name="action" value="goToMagazine">
 					<input type="submit" value="Magazine" class="menu-button menu-font">
 				</form>
 			</td>
 			<td class="menu-2 menu-font">
-				<form action="" method="post">
+				<form action="AstonishingServlet" method="post">
 					<input type="hidden" name="action" value="goToReference">
 					<input type="submit" value="Reference" class="menu-button menu-font">
 				</form>
