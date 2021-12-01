@@ -343,6 +343,6 @@ input[type=submit]:hover {
 	font-weight: bold;
 	padding: 1em;
 	border-radius: 0.25em;
-	border: 0.01em solid #DFE0DF;
-	background-color:#DFE0DF;
+	border: 0.01em solid #DE7340;
+	background-color:#F9E6DD;
 }

@@ -23,6 +23,9 @@
 		<input type="submit" value="Login" class="orange-button submit-button">
 	</form>
 	<br>
+	<c:if test="${not empty message}">
+		<div class="error-text">Error: ${message}</div>	
+	</c:if>
 	<hr>
 	<br>
 	<form action="AstonishingServlet" method="post">
