@@ -5,7 +5,6 @@
 
 <section>
 	<h1>New Books</h1>
-	
 	<table class="book-grid-table">
 		<!--  loop over books here -->
 		<tr>

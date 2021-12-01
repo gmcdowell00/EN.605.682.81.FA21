@@ -143,8 +143,10 @@ td.menu-2 {
 	border-radius: 0.25em;
 	color:#724029;
 	font-family: Helvetica, sans-serif;
-	height: 5em;
+	height: 2em;
 	transition-duration: 0.4s;
+	width: 100%;
+	margin: 0.3em;
 }
 
 .menu-button {

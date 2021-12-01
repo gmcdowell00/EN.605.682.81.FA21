@@ -14,6 +14,12 @@
 					<input type="hidden" name="action" value="viewProfile">
 					<input type="submit" value="${loggedIn ? 'Profile' : 'Login' }" class="login-menu menu-font">
 				</form>
+				<c:if test="${loggedIn}">
+					<form action="AstonishingServlet" method="post">
+						<input type="hidden" name="action" value="logout">
+						<input type="submit" value="Logout" class="login-menu menu-font">
+					</form>
+				</c:if>
 			</td>
 			<td class="cart">
 				<c:if test="${!user.isAdmin}">
