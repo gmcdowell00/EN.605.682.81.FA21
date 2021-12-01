@@ -77,6 +77,9 @@
 		<br>
 		<hr>
 		<br>
+		<c:if test="${not empty message}">
+			<div class="error-text">Error: ${message}</div>
+		</c:if>
 		<section class="center"><input type="submit" value="Review Information" class="orange-button submit-button"></section>
 		<input type="hidden" name="action" value="reviewInfo">
 	</form>

@@ -49,6 +49,9 @@
 		<br>
 		<hr>
 		<br>
+		<c:if test="${not empty message}">
+			<div class="error-text">Error: ${message}</div>
+		</c:if>
 		<section class="center"><input type="submit" value="Create Account" class="orange-button submit-button"></section>
 		<input type="hidden" name="action" value="newAccount">
 	</form>

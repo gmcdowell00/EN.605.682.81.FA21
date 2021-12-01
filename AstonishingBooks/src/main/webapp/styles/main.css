@@ -338,3 +338,11 @@ input[type=submit]:hover {
 .inline {
 	display: inline;
 }
+
+.error-text {
+	font-weight: bold;
+	padding: 1em;
+	border-radius: 0.25em;
+	border: 0.01em solid #DFE0DF;
+	background-color:#DFE0DF;
+}
