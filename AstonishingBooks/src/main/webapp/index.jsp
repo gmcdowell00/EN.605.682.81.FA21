@@ -12,13 +12,11 @@
 				<td>
 					<div class="book-grid">
 						<form action="AstonishingServlet" method="POST" class="book-grid-item" id="${book.id}"> 
-							<a href="javascript:$('${book.id}').submit();" class="book-grid-item">
-								<input type="hidden" name="action" value="showBookInfo">
-								<input type="hidden" name="bookId" value="${book.id}">
-								<img class="book-img-grid" alt="${book.name} cover" src=".${book.coverImageLink}.jpg"><br>
-								${book.name}<br>
-								${book.author}<br>
-							</a>
+							<input type="hidden" name="action" value="showBookInfo">
+							<input type="hidden" name="bookId" value="${book.id}">
+							<input type="image" class="book-img-grid" alt="${book.name} cover" src=".${book.coverImageLink}.jpg"><br>
+							${book.name}<br>
+							${book.author}<br>
 						</form>
 					</div>
 				</td>
@@ -29,13 +27,11 @@
 				<td>
 					<div class="book-grid">
 						<form action="AstonishingServlet" method="post" class="book-grid-item" id="${book}"> 
-							<a href="#" onclick="alert('hello')" class="book-grid-item"> <!-- document.getElementbyId('${book}').submit() -->
-								<input type="hidden" name="action" value="showBookInfo">
-								<input type="hidden" name="bookId" value="${book.id}">
-								<img class="book-img-grid" alt="" src=".${book.coverImageLink}.jpg"><br>
-								${book.name}<br>
-								${book.author}<br>
-							</a>
+							<input type="hidden" name="action" value="showBookInfo">
+							<input type="hidden" name="bookId" value="${book.id}">
+							<input type="image" class="book-img-grid" alt="" src=".${book.coverImageLink}.jpg"><br>
+							${book.name}<br>
+							${book.author}<br>
 						</form>
 					</div>
 				</td>
@@ -46,13 +42,11 @@
 				<td>
 					<div class="book-grid">
 						<form action="AstonishingServlet" method="post" class="book-grid-item" id="${book}"> 
-							<a href="#" onclick="alert('hello')" class="book-grid-item"> <!-- document.getElementbyId('${book}').submit() -->
-								<input type="hidden" name="action" value="showBookInfo">
-								<input type="hidden" name="bookId" value="${book.id}">
-								<img class="book-img-grid" alt="" src=".${book.coverImageLink}.jpg"><br>
-								${book.name}<br>
-								${book.author}<br>
-							</a>
+							<input type="hidden" name="action" value="showBookInfo">
+							<input type="hidden" name="bookId" value="${book.id}">
+							<input type="image" class="book-img-grid" alt="" src=".${book.coverImageLink}.jpg"><br>
+							${book.name}<br>
+							${book.author}<br>
 						</form>
 					</div>
 				</td>
