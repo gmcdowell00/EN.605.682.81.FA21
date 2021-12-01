@@ -7,7 +7,8 @@
 	<table class="book-info-table">
 		<tr>
 			<td>
-				<img src="images/test-book-cover.jpg" class="book-info-img"><br><br>
+			<!--    <img src="images/test-book-cover.jpg" class="book-info-img"><br><br>   -->
+				<img src=".${book.coverImageLink}.jpg" class="book-info-img"><br><br>
 				<form action="AstonishingServlet" method="post">
 					<input type="hidden" name="action" value="addCart">
 					<input type="submit" class="book-info-button orange-button" value="Add to Cart"><br><br>
@@ -18,7 +19,7 @@
 				</form>
 			</td>
 			<td class="book-info">
-				<h1>${book.title}Title here</h1>
+				<h1>${book.name}Title here</h1>
 				<i>By: ${book.author}Author here</i>
 				<hr>
 				<br>
@@ -27,7 +28,7 @@
 				<br>
 				Summary: 
 				<br>
-				${book.summary}	fjdkslfdalk		
+				${book.description}		
 			</td>
 		</tr>
 	</table>

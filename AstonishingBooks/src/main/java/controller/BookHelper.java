@@ -46,19 +46,17 @@ public class BookHelper {
 		return sortedBooks;		
 	}
 	
+	
 	public List<Book> searchBooks(List<Book> books, String searchQuery){
 		
 		// set the search term to lower case so the search will ignore case
 		String searchTerm = searchQuery.toLowerCase();
 		
-		// number of books passed in
-		int totalBookCount = books.size();
-		
 		// create a list to return the results
 		List<Book> results = new ArrayList<>();
 		
 		// add the book to the list if the searchTerm is contained in a field
-		for (int counter = 0; counter < totalBookCount; counter++) {
+		for (int counter = 0; counter < books.size(); counter++) {
 			if (books.get(counter).getName().toLowerCase().contains(searchTerm) 
 					|| books.get(counter).getAuthor().toLowerCase().contains(searchTerm) 
 					|| books.get(counter).getGenre().toLowerCase().equals(searchTerm)) {
@@ -67,7 +65,25 @@ public class BookHelper {
 		}
 		
 		// return the book sorted by genre
-		return results;
-		
+		return results;		
 	}
+	
+	
+	public Book bookById(List<Book> books, String bookId){
+				
+		// create a list to return the results
+		Book result = new Book();
+		
+		// add the book to the list if the searchTerm is contained in a field
+		for (int counter = 0; counter < books.size(); counter++) {
+			if (books.get(counter).getId().equals(bookId)) {
+				result = books.get(counter);
+			}
+
+		}
+		
+		// return the book sorted by genre
+		return result;		
+	}
+	
 }

@@ -93,28 +93,7 @@ public class AstonishingServlet extends HttpServlet {
 
 		} 
 		
-//		else if (action.equals("goToFiction")) {
-//			// pull 12 fiction books - using search function?
-//			System.out.println("Going to fiction");
-//			// change to fiction page
-//			url = "/fiction_page.jsp";
-//		} else if (action.equals("goToNonFiction")) {
-//			// pull 12 non-fiction books - using search function?
-//			System.out.println("Going to non-fiction");
-//			// change to non-fiction page
-//			url = "/nonfiction_page.jsp";
-//		} else if (action.equals("goToMagazine")) {
-//			// pull 12 magazines - using search function?
-//			System.out.println("Going to magazine");
-//			// change to magazine page
-//			url = "/magazine_page.jsp";
-//		} else if (action.equals("goToReference")) {
-//			// pull 12 reference books - using search function?
-//			System.out.println("Going to reference");
-//			// change to reference page
-//			url = "/reference_page.jsp";
-//		} 
-		
+
 		else if (action.equals("goToFiction") || action.equals("goToNonFiction") || 
 				action.equals("goToMagazine") || action.equals("goToReference")) {
 			
@@ -150,15 +129,24 @@ public class AstonishingServlet extends HttpServlet {
 			context.setAttribute(Constants.BOOKS, sortedBooks);  			
 		} else if (action.equals("showBookInfo")) {
 			// get the ID of the book to display
-			//  String bookID = request.getParameter("bookId");
+			String bookID = request.getParameter("bookId");
+			
+			// create a new query 
+			Query query = new Query();
 
-			// pull the book info from the database
+			// return all of the books
+			List<Book> books = ops.find(query, Book.class);
+			
+			// create a BookHelper object
+			BookHelper bookHelper = new BookHelper();
+			
+			// sort the books by date, return the 12 newest that are not magazines
+			Book foundBook = bookHelper.bookById(books, bookID);
 
-			// create a bookInfo object and add the pulled info
-
-			// add the bookInfo object to the session object
-
-			System.out.println("book info");
+			// make the sorted books available for display
+			context.setAttribute(Constants.BOOK, foundBook);  
+			
+			System.out.println("book by ID found: " + foundBook.getName());
 			
 			// set the url for the book info page
 			url = "/book_info.jsp";
@@ -177,14 +165,20 @@ public class AstonishingServlet extends HttpServlet {
 			String searchTerm = request.getParameter("searchQuery");
 			
 			System.out.println("search term: " + searchTerm);
-
+			
 			// sort the books by searchTerm
 			List<Book> sortedBooks = bookHelper.searchBooks(books, searchTerm);
+			
+			// if the results are null, instantiate an empty list
+			if (sortedBooks == null) {
+				sortedBooks = new ArrayList<>();
+			}
 			
 			// make the sorted books available for display
 			context.setAttribute(Constants.BOOKS, sortedBooks);  	
 			
 			// see what gets found
+			System.out.println("Number of results: " + sortedBooks.size());
 			for (int counter = 0; counter < sortedBooks.size(); counter++) {
 				System.out.println(sortedBooks.get(counter).getName());
 			}
