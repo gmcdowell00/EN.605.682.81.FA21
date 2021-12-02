@@ -1,5 +1,7 @@
 package mongobusiness;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +58,7 @@ public class Cart {
 		
 		return books == null || books.size() == 0
 				? 0.00
-				: books.stream().mapToDouble(book -> book.getPrice()).sum();
+				: new BigDecimal(books.stream().mapToDouble(book -> book.getPrice()).sum()).setScale(2, RoundingMode.HALF_UP).doubleValue(); 
+//				(books.stream().mapToDouble(book -> book.getPrice()).sum());
 	}
 }

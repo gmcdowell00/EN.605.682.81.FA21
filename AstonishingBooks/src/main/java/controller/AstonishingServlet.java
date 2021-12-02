@@ -73,30 +73,9 @@ public class AstonishingServlet extends HttpServlet {
 		// pull books from the database and redirect to the landing page
 		if (action.equals("goToHome")) {		
 			
-//			// create a new query 
-//			Query query = new Query();
-//
-//			// return all of the books
-//			List<Book> books = ops.find(query, Book.class);
-//			
-//			// create a BookHelper object
-//			BookHelper bookHelper = new BookHelper();
-//			
-//			// sort the books by date, return the 12 newest that are not magazines
-//			List<Book> sortedBooks = bookHelper.newestBooks(books);
-//
-//			// make the sorted books available for display
-//			context.setAttribute(Constants.BOOKS, sortedBooks);  
-//
-//			// redirect to the landing page
-//			url = "/index.jsp";		
-			
+			// pull the new books and redirect to the index page
 			url = newBooksIndex(ops, context);
-
-		} 
-		
-
-		else if (action.equals("goToFiction") || action.equals("goToNonFiction") || 
+		} else if (action.equals("goToFiction") || action.equals("goToNonFiction") || 
 				action.equals("goToMagazine") || action.equals("goToReference")) {
 			
 			// create a new query 
@@ -142,13 +121,11 @@ public class AstonishingServlet extends HttpServlet {
 			// create a BookHelper object
 			BookHelper bookHelper = new BookHelper();
 			
-			// sort the books by date, return the 12 newest that are not magazines
+			// get the selected book
 			Book foundBook = bookHelper.bookById(books, bookID);
 
-			// make the sorted books available for display
+			// make the selected book available for display
 			context.setAttribute(Constants.BOOK, foundBook);  
-			
-			System.out.println("book by ID found: " + foundBook.getName());
 			
 			// set the url for the book info page
 			url = "/book_info.jsp";
@@ -166,8 +143,6 @@ public class AstonishingServlet extends HttpServlet {
 			// get the search term
 			String searchTerm = request.getParameter("searchQuery");
 			
-			System.out.println("search term: " + searchTerm);
-			
 			// sort the books by searchTerm
 			List<Book> sortedBooks = bookHelper.searchBooks(books, searchTerm);
 			
@@ -179,13 +154,8 @@ public class AstonishingServlet extends HttpServlet {
 			// make the sorted books available for display
 			context.setAttribute(Constants.BOOKS, sortedBooks);
 			context.setAttribute("searchQuery", searchTerm);
-			
-			// see what gets found
-			System.out.println("Number of results: " + sortedBooks.size());
-			for (int counter = 0; counter < sortedBooks.size(); counter++) {
-				System.out.println(sortedBooks.get(counter).getName());
-			}
-			
+
+			// set the url for the search results page
 			url = "/search.jsp";
 		} else if (action.equals("viewProfile")) {		
 			if (session.getAttribute("loggedIn") != null) {
@@ -222,26 +192,13 @@ public class AstonishingServlet extends HttpServlet {
 					session.setAttribute("loggedIn", true);
 					
 					// set the current user as a session attribute
-					context.setAttribute(Constants.USER, currentUser);
-					
-					System.out.println("firstname: " + currentUser.getFirstname());
-					System.out.println("lastname: " + currentUser.getLastname());
-					System.out.println("email: " + currentUser.getEmail());
-					System.out.println("isAdmin: " + currentUser.isAdmin());
-					System.out.println("password: " + currentUser.getPassword());
-					System.out.println("address: " + currentUser.getAddress());
-					System.out.println("city: " + currentUser.getCity());
-					System.out.println("state: " + currentUser.getState());
-					System.out.println("country: " + currentUser.getCountry());
-					System.out.println("zip: " + currentUser.getZip());
-					
+					context.setAttribute(Constants.USER, currentUser);				
 					
 					// clear the message (previously set if a login failed)
 					String message = "";
 					session.setAttribute("message", message);
 					
-					// redirect to the landing page
-//					url ="/index.jsp";
+					// get the new books and redirect to the index page
 					url = newBooksIndex(ops, context);
 				} else {
 					// if the password does not match, set the message and return
@@ -252,7 +209,7 @@ public class AstonishingServlet extends HttpServlet {
 			}
 		} 
 		else if (action.equals("createAccount")) {
-			// clear any messages before going to registration page
+			// clear any messages before going to the registration page
 			String message = ""; 
 			session.setAttribute("message", message);
 			
@@ -361,7 +318,7 @@ public class AstonishingServlet extends HttpServlet {
 			url = "/editProfile.jsp";
 		} else if (action.equals("addCart")) {
 
-			// get the current user from the session 
+			// get the current user from the context 
 			User sessionUser = (User) context.getAttribute(Constants.USER);
 			
 			// get the user, the user's cart, and the list of book objects from the cart
@@ -407,12 +364,47 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// redirect to cart page
 			url = "/cart.jsp";
+		} else if (action.equals("removeFromList")){
+			// get the ID of the book to be removed
+			String bookID = request.getParameter("removeBookFromList");
+			
+			// get the current user from the session 
+			User sessionUser = (User) context.getAttribute(Constants.USER);
+			
+			// get the user, the user's cart, and the list of book objects from the cart
+			User user = mongoUtil.GetUserByEmail(sessionUser.getEmail(), ops);
+			Cart cart = user.getCart();			
+			List<Book> books = cart.getBooks();
+			
+			// find the book in the list and remove it
+			int booksSize = books.size();
+			if (books != null) {
+				for (int counter = 0; counter < booksSize; counter++)
+				{
+					if (books.get(counter).getId().equals(bookID)) {
+						books.remove(counter);
+						counter = booksSize;
+					}
+				}
+			}
+			
+			// set the updated book list in the cart
+			cart.setBooks(books);
+			
+			// set the updated cart in the user
+			user.setCart(cart);
+			
+			// save the updated user into the DB
+			User updatedUser = mongoUtil.SaveOrUpdateUser(user, ops);
+			
+			// make the updated user available throughout the session
+			context.setAttribute(Constants.USER, updatedUser);
+			
+			// redirect back to the cart
+			url = "/cart.jsp";
 		} else if (action.equals("cart")) {
-			// get cart contents from session object? or from database?
 
-			// save the cart contents in an object and save to the session
-
-			// redirect to cart page
+			// redirect to the cart page
 			url = "/cart.jsp";
 		} else if (action.equals("checkout")) {
 			// activate SSL connection

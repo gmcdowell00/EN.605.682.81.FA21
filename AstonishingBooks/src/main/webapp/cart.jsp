@@ -16,7 +16,8 @@
 				<td class="book-list-info">
 					<form action="" method="post">
 						<input type="hidden" name="action" value="removeFromList">
-						<input type="hidden" name="removeBookFromList" value="bookid">
+				<!-- 		<input type="hidden" name="removeBookFromList" value="bookid">  -->
+						<input type="hidden" name="removeBookFromList" value="${book.id}">
 						<input type="image" class="delete-pic" src="images/delete.png" alt="Delete">
 					</form>
 				</td>
