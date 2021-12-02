@@ -73,23 +73,25 @@ public class AstonishingServlet extends HttpServlet {
 		// pull books from the database and redirect to the landing page
 		if (action.equals("goToHome")) {		
 			
-			// create a new query 
-			Query query = new Query();
-
-			// return all of the books
-			List<Book> books = ops.find(query, Book.class);
+//			// create a new query 
+//			Query query = new Query();
+//
+//			// return all of the books
+//			List<Book> books = ops.find(query, Book.class);
+//			
+//			// create a BookHelper object
+//			BookHelper bookHelper = new BookHelper();
+//			
+//			// sort the books by date, return the 12 newest that are not magazines
+//			List<Book> sortedBooks = bookHelper.newestBooks(books);
+//
+//			// make the sorted books available for display
+//			context.setAttribute(Constants.BOOKS, sortedBooks);  
+//
+//			// redirect to the landing page
+//			url = "/index.jsp";		
 			
-			// create a BookHelper object
-			BookHelper bookHelper = new BookHelper();
-			
-			// sort the books by date, return the 12 newest that are not magazines
-			List<Book> sortedBooks = bookHelper.newestBooks(books);
-
-			// make the sorted books available for display
-			context.setAttribute(Constants.BOOKS, sortedBooks);  
-
-			// redirect to the landing page
-			url = "/index.jsp";		
+			url = newBooksIndex(ops, context);
 
 		} 
 		
@@ -209,15 +211,33 @@ public class AstonishingServlet extends HttpServlet {
 				// if the user is found, check the password
 				currentUser.getPassword();
 				if (request.getParameter("password").equals(currentUser.getPassword())){
+					
 					// if they match, set loggedIn to true
 					session.setAttribute("loggedIn", true);
+					
+					// set the current user as a session attribute
+					context.setAttribute(Constants.USER, currentUser);
+					
+					System.out.println("firstname: " + currentUser.getFirstname());
+					System.out.println("lastname: " + currentUser.getLastname());
+					System.out.println("username: " + currentUser.getUsername());
+					System.out.println("email: " + currentUser.getEmail());
+					System.out.println("isAdmin: " + currentUser.isAdmin());
+					System.out.println("password: " + currentUser.getPassword());
+					System.out.println("address: " + currentUser.getAddress());
+					System.out.println("city: " + currentUser.getCity());
+					System.out.println("state: " + currentUser.getState());
+					System.out.println("country: " + currentUser.getCountry());
+					System.out.println("zip: " + currentUser.getZip());
+					
 					
 					// clear the message (previously set if a login failed)
 					String message = "";
 					session.setAttribute("message", message);
 					
 					// redirect to the landing page
-					url ="/index.jsp";
+//					url ="/index.jsp";
+					url = newBooksIndex(ops, context);
 				} else {
 					// if the password does not match, set the message and return
 					String message = "Incorrect email and password combination"; 
@@ -231,8 +251,8 @@ public class AstonishingServlet extends HttpServlet {
 			url = "/register.jsp";
 		} 
 		else if (action.equals("newAccount")) {
+			
 			// get the account parameters entered by the user
- 
 			String firstname = request.getParameter("firstname");
 			String lastname = request.getParameter("lastname");
 			String email = request.getParameter("email");
@@ -243,23 +263,21 @@ public class AstonishingServlet extends HttpServlet {
 			String country = request.getParameter("country");
 			String zip = request.getParameter("zip");
 
-//			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
-//			MongoDbUtil mongoUtil = new MongoDbUtil();
-
+			// check whether the email has already been registered
 			if (mongoUtil.GetUserByEmail(email,ops) == null){
 				// user does not exist => create the user
 				
-				// create empty payment object, save it to the DB
+				// create an empty payment object, save it to the DB
 				Payment payment = new Payment();			
 				payment.setEmail(email);
 				mongoUtil.SaveOrUpdatePayment(payment, email, ops);
 				
-				// create empty cart object, save it to the DB
+				// create an empty cart object, save it to the DB
 				Cart cart = new Cart();
 				cart.setEmail(email);			
 				mongoUtil.SaveOrUpdateCart(cart, email, ops);
 
-				// create empty list of books
+				// create an empty list of books
 				List<String> books = new ArrayList<String>();
 				
 				// create user object from the above info
@@ -278,8 +296,10 @@ public class AstonishingServlet extends HttpServlet {
 				session.setAttribute("message", message);
 				
 				// redirect to the landing page
-				url = "/index.jsp";
+//				url = "/index.jsp";
+				url = newBooksIndex(ops, context);
 			} else {
+				// user already exists - set message 
 				String message = "A user with that email already exists.  Please try again.";
 				session.setAttribute("message", message);
 				url = "/register.jsp";
@@ -379,6 +399,31 @@ public class AstonishingServlet extends HttpServlet {
 
 			// redirect to confirmation page
 			url = "/orderConfirmation.jsp";
+		} else if (action.equals("logout")) {
+			
+			// set the loggedIn attribute to false
+			session.setAttribute("loggedIn", false);
+			context.setAttribute(Constants.USER, null);
+			
+//			// create a new query 
+//			Query query = new Query();
+//
+//			// return all of the books
+//			List<Book> books = ops.find(query, Book.class);
+//			
+//			// create a BookHelper object
+//			BookHelper bookHelper = new BookHelper();
+//			
+//			// sort the books by date, return the 12 newest that are not magazines
+//			List<Book> sortedBooks = bookHelper.newestBooks(books);
+//
+//			// make the sorted books available for display
+//			context.setAttribute(Constants.BOOKS, sortedBooks);  
+//
+//			// redirect to the landing page
+//			url = "/index.jsp";	
+			url = newBooksIndex(ops, context);
+			
 		} else if (action.equals("adminBookInfo")) {
 			// confirm admin user
 
@@ -485,4 +530,27 @@ public class AstonishingServlet extends HttpServlet {
 		 */
 	}
 
+	
+	private String newBooksIndex(MongoTemplate ops, ServletContext context) {
+		// create a new query 
+		Query query = new Query();
+
+		// return all of the books
+		List<Book> books = ops.find(query, Book.class);
+		
+		// create a BookHelper object
+		BookHelper bookHelper = new BookHelper();
+		
+		// sort the books by date, return the 12 newest that are not magazines
+		List<Book> sortedBooks = bookHelper.newestBooks(books);
+
+		// make the sorted books available for display
+		context.setAttribute(Constants.BOOKS, sortedBooks);  
+
+		// redirect to the landing page
+		String url = "/index.jsp";	
+		
+		// return the url string
+		return url;
+	}
 }

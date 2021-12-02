@@ -42,7 +42,6 @@ public class DbContextListener implements ServletContextListener {
 			
 			System.out.println("Querying books");
 			Query query = new Query();
-//			query.limit(12);                // return all of the books so they can be sorted by date
 			
 			List<Book> books = ops.find(query, Book.class);
 			System.out.println("Queried " + books.size() + " books" );
@@ -53,7 +52,7 @@ public class DbContextListener implements ServletContextListener {
 			// sort the books by date, return the 12 newest that are not magazines
 			List<Book> sortedBooks = bookHelper.newestBooks(books);
 
-//			context.setAttribute(Constants.BOOKS, books);
+			// set the sorted list of books as a context attribute
 			context.setAttribute(Constants.BOOKS, sortedBooks);  // make the sorted books available for display
 			context.setAttribute(Constants.DATABASE, ops);
 		} catch (Exception e) {
