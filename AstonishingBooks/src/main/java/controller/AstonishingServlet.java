@@ -192,14 +192,20 @@ public class AstonishingServlet extends HttpServlet {
 				if ((boolean) session.getAttribute("loggedIn")) {
 					url = "/profile.jsp";
 				} else {
+					// clear any messages before going to login page
+					String message = ""; 
+					session.setAttribute("message", message);
 					url = "/login.jsp";
 				}
 			} else {
+				// clear any messages before going to login page
+				String message = ""; 
+				session.setAttribute("message", message);
 				url = "/login.jsp";
 			}
 		} 
 		else if (action.equals("loginAccount")) {
-			// check the username and password
+			// check whether an account already exists for the submitted email
 			User currentUser = mongoUtil.GetUserByEmail(request.getParameter("email"), ops);
 			
 			if (currentUser.equals(null)) {
@@ -247,6 +253,10 @@ public class AstonishingServlet extends HttpServlet {
 			}
 		} 
 		else if (action.equals("createAccount")) {
+			// clear any messages before going to registration page
+			String message = ""; 
+			session.setAttribute("message", message);
+			
 			// set the url for the account creation page
 			url = "/register.jsp";
 		} 
@@ -277,13 +287,16 @@ public class AstonishingServlet extends HttpServlet {
 				cart.setEmail(email);			
 				mongoUtil.SaveOrUpdateCart(cart, email, ops);
 
-				// create an empty list of books
-				List<String> books = new ArrayList<String>();
+				// create an empty list of book objects
+				List<Book> wishlist = new ArrayList<Book>();
 				
 				// create user object from the above info
 				boolean isAdmin = false;
 				User user = new User(firstname, lastname, firstname, email, isAdmin, password, 
-						address, city, state, country, zip, payment, cart); 
+						address, city, state, country, zip, payment, cart, wishlist); 
+				
+				// create an empty list of book name strings
+				List<String> books = new ArrayList<String>();
 				
 				// add the user to the database
 				User newUser = mongoUtil.SaveOrUpdateUser(user, books, ops);
@@ -291,12 +304,14 @@ public class AstonishingServlet extends HttpServlet {
 				// set the loggedIn status to true
 				session.setAttribute("loggedIn", true);
 				
+				// set the current user as a session attribute
+				context.setAttribute(Constants.USER, newUser);
+					
 				// clear the message (set if a user uses an existing email)
 				String message = "";
 				session.setAttribute("message", message);
 				
 				// redirect to the landing page
-//				url = "/index.jsp";
 				url = newBooksIndex(ops, context);
 			} else {
 				// user already exists - set message 

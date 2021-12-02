@@ -1,5 +1,7 @@
 package mongobusiness;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -35,11 +37,14 @@ public class User {
 	private Payment payment;
 	@DBRef
 	private  Cart cart;
+	@DBRef
+    private List<Book> wishlist;
 	
 	public User() {}
 	
 	public User(String firstname, String lastname, String username, String email, boolean isAdmin, String password, 
-			String address, String city, String state, String country, String zip, Payment payment, Cart cart) {
+			String address, String city, String state, String country, String zip, Payment payment, Cart cart, 
+			List<Book> wishlist) {
 		super();
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -54,6 +59,7 @@ public class User {
 		this.zip = zip;		
 		this.payment = payment;
 		this.cart = cart;
+		this.wishlist = wishlist;
 	}
 	public String getFirstname() {
 		return firstname;
@@ -153,6 +159,14 @@ public class User {
 
 	public void setZip(String zip) {
 		this.zip = zip;
+	}
+
+	public List<Book> getWishlist() {
+		return wishlist;
+	}
+
+	public void setWishlist(List<Book> wishlist) {
+		this.wishlist = wishlist;
 	}
 	
 }
