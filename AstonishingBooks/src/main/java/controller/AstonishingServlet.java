@@ -157,9 +157,27 @@ public class AstonishingServlet extends HttpServlet {
 
 			// set the url for the search results page
 			url = "/search.jsp";
-		} else if (action.equals("viewProfile")) {		
+		} else if (action.equals("viewProfile")) {	
+
+			// determine whether the user is logged in, take actions accordingly
 			if (session.getAttribute("loggedIn") != null) {
 				if ((boolean) session.getAttribute("loggedIn")) {
+					
+					// set the current user as a session attribute
+					User tempUser = (User) context.getAttribute(Constants.USER);
+					
+					
+					// print out the wishlist for testing purposes
+					if (tempUser.getWishlist() != null && tempUser.getWishlist().size() > 0) {
+						System.out.println("wishlist: ");
+						for (int counter = 0; counter < tempUser.getWishlist().size(); counter++) {
+							System.out.println(tempUser.getWishlist().get(counter).getName());
+						}
+					} else {
+						System.out.println("wishlist is null or empty");
+					}
+
+					
 					url = "/profile.jsp";
 				} else {
 					// clear any messages before going to login page
@@ -281,31 +299,7 @@ public class AstonishingServlet extends HttpServlet {
 			}
 
 
-		} else if (action.equals("saveList")) {
-			// String userID = request.getParameter("userID");
-
-			// get the user's wish list from the database
-
-			// add the selected book to the wish list
-
-			// add the userProfile object to the session
-
-			// redirect to show profile page
-			url = "/profile.jsp";
-		} 
-//		else if (action.equals("viewProfile")) {
-//			// String userID = request.getParameter("userID");
-//
-//			// get the user's profile data from the database
-//
-//			// create a userProfile object and fill with pulled data
-//
-//			// add the userProfile object to the session
-//
-//			// redirect to show profile page
-//			url = "/showProfile.jsp";
-//		} 
-		else if (action.equals("editProfile")) {
+		} else if (action.equals("editProfile")) {
 			String userID = request.getParameter("userID");
 
 			// get the user's profile data from the database
@@ -364,9 +358,9 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// redirect to cart page
 			url = "/cart.jsp";
-		} else if (action.equals("removeFromList")){
+		} else if (action.equals("removeFromCart")){
 			// get the ID of the book to be removed
-			String bookID = request.getParameter("removeBookFromList");
+			String bookID = request.getParameter("removeBookFromCart");
 			
 			// get the current user from the session 
 			User sessionUser = (User) context.getAttribute(Constants.USER);
@@ -407,21 +401,110 @@ public class AstonishingServlet extends HttpServlet {
 			// redirect to the cart page
 			url = "/cart.jsp";
 		} else if (action.equals("checkout")) {
+			
 			// activate SSL connection
 
-			boolean userIsLoggedIn = false;
-
 			// check whether the user is logged in
+		
+			if (session.getAttribute("loggedIn") != null) {
+				if ((boolean) session.getAttribute("loggedIn")) {
 
-			if (userIsLoggedIn) {
-				// get stored user info from database
+					// user is logged in - get data from user object 
+					// save payment information?
+					
+				} else {
+					
+					// user is not logged in - checkout as guest
 
-				// put pulled info into object and save to the session
+				}
+			} else {
+				
+				// logged in status unknown
+
 			}
 
 			// redirect to the checkout page
 			url = "/checkout.jsp";
-		} else if (action.equals("reviewInfo")) {
+		} else if (action.equals("saveList")) {
+
+			// get the current user from the context 
+			User sessionUser = (User) context.getAttribute(Constants.USER);
+			
+			// get the user, the user's wishlist
+			User user = mongoUtil.GetUserByEmail(sessionUser.getEmail(), ops);	
+			List<Book> wishlist = user.getWishlist();
+			
+			// get the selected book from the context
+			Book addBook = (Book) context.getAttribute(Constants.BOOK);
+
+			// check whether the book is already in the list
+			boolean found = false;
+			
+			if (wishlist != null) {
+				for (int counter = 0; counter < wishlist.size(); counter++) {
+					if (wishlist.get(counter).getName().equals(addBook.getName())) {
+						found = true;
+					}
+				}
+			} else {
+				wishlist = new ArrayList<>();
+			}
+			
+			// if the selected book is not in the list, add it
+			if (!found) {
+				wishlist.add(addBook);
+			}
+			
+			// set the updated wishlist in the user
+			user.setWishlist(wishlist);
+			
+			// save the updated user into the DB
+			User updatedUser = mongoUtil.SaveOrUpdateUser(user, ops);
+			
+			// make the updated user available throughout the session
+			context.setAttribute(Constants.USER, updatedUser);
+			
+			// redirect to profile page
+			url = "/profile.jsp";
+		}
+		else if (action.equals("removeFromList")){
+			// get the ID of the book to be removed
+			String bookID = request.getParameter("removeBookFromList");
+			
+			// get the current user from the session 
+			User sessionUser = (User) context.getAttribute(Constants.USER);
+			
+			// get the user and the wishlist of book objects 
+			User user = mongoUtil.GetUserByEmail(sessionUser.getEmail(), ops);			
+			List<Book> books = user.getWishlist();
+			
+			// find the book in the list and remove it
+			int booksSize = books.size();
+			if (books != null) {
+				for (int counter = 0; counter < booksSize; counter++)
+				{
+					if (books.get(counter).getId().equals(bookID)) {
+						books.remove(counter);
+						counter = booksSize;
+					}
+				}
+			}
+			
+			// set the updated wishlist in the user
+			user.setWishlist(books);
+			
+			// save the updated user into the DB
+			User updatedUser = mongoUtil.SaveOrUpdateUser(user, ops);
+			
+			// make the updated user available throughout the session
+			context.setAttribute(Constants.USER, updatedUser);
+			
+			// redirect back to the profile
+			url = "/profile.jsp";
+		}
+		
+		
+		else if (action.equals("reviewInfo")) {
 			// get user and cart info from session object?
 
 			// make sure the info is saved in session object
@@ -441,23 +524,7 @@ public class AstonishingServlet extends HttpServlet {
 			session.setAttribute("loggedIn", false);
 			context.setAttribute(Constants.USER, null);
 			
-//			// create a new query 
-//			Query query = new Query();
-//
-//			// return all of the books
-//			List<Book> books = ops.find(query, Book.class);
-//			
-//			// create a BookHelper object
-//			BookHelper bookHelper = new BookHelper();
-//			
-//			// sort the books by date, return the 12 newest that are not magazines
-//			List<Book> sortedBooks = bookHelper.newestBooks(books);
-//
-//			// make the sorted books available for display
-//			context.setAttribute(Constants.BOOKS, sortedBooks);  
-//
-//			// redirect to the landing page
-//			url = "/index.jsp";	
+			// get the new books, go to index page
 			url = newBooksIndex(ops, context);
 			
 		} else if (action.equals("adminBookInfo")) {
