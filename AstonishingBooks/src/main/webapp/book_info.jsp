@@ -19,14 +19,15 @@
 				</form>
 			</td>
 			<td class="book-info">
-				<h1>${book.name}Title here</h1>
-				<i>By: ${book.author}Author here</i>
+				<h1>${book.name}</h1>
+				<i>By: ${book.author}</i>
 				<hr>
 				<br>
 				<b>Price: $${book.price}</b>	
 				<br>
 				<br>
 				Summary: 
+				<br>
 				<br>
 				${book.description}		
 			</td>
