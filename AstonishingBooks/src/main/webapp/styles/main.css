@@ -346,3 +346,43 @@ input[type=submit]:hover {
 	border: 0.01em solid #DE7340;
 	background-color:#F9E6DD;
 }
+
+#coverFile::file-selector-button {
+	height: 3em;
+	width: 10em;
+	text-align: center;
+	font-variant: small-caps;
+	font-family: Helvetica, sans-serif;
+	transition-duration: 0.4s;
+	font-weight:bold;
+	border: 0.01em solid #FFF6EE;
+	border-radius: 0.25em;
+	background-color:#DFE0DF;
+	color:#724029;
+}
+
+#coverFile::file-selector-button:hover {
+	background-color: #724029;
+  	color: #FFF6EE;
+  	cursor: pointer;
+}
+
+#coverFile::-webkit-file-upload-button {
+	height: 3em;
+	width: 10em;
+	text-align: center;
+	font-variant: small-caps;
+	font-family: Helvetica, sans-serif;
+	transition-duration: 0.4s;
+	font-weight:bold;
+	border: 0.01em solid #FFF6EE;
+	border-radius: 0.25em;
+	background-color:#DFE0DF;
+	color:#724029;
+}
+
+#coverFile::-webkit-file-upload-button:hover {
+	background-color: #724029;
+  	color: #FFF6EE;
+  	cursor: pointer;
+}

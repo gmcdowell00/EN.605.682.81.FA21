@@ -11,7 +11,13 @@
 		<table class="book-info-table">
 			<tr>
 				<td class="align-top">
-					<img src="./images/test-book-cover.jpg" class="book-info-img"><br><br>
+					<c:if test="${not empty book.coverImageLink}"> 
+						<img src=".${book.coverImageLink}.jpg" class="book-info-img"><br><br>
+					</c:if>
+					<c:if test="${empty book.coverImageLink}"> 
+						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
+					</c:if>
+					<input type="file" name="coverImage" value="${book.coverImageLink}" id="coverFile">
 				</td>
 				<td class="book-info">
 					<table>
