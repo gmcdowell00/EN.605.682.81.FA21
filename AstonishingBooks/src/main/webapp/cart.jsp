@@ -8,11 +8,11 @@
 	<br>
 	<br>
 	<table class="book-grid-table center">
-		<c:forEach items="1,2,3,4,5" var="book">
+		<c:forEach items="${user.cart.books}" var="book">
 			<tr>
-				<td class="book-list-img"><img class="book-img-list" alt="" src="images/test-book-cover.jpg"></td>
-				<td class="book-list-info">book title by book author</td>
-				<td class="book-list-info">price</td>
+				<td class="book-list-img"><img class="book-img-list" alt="" src=".${book.coverImageLink}.jpg"></td>
+				<td class="book-list-info">${book.name} by ${book.author}</td>
+				<td class="book-list-info">$${book.price}</td>
 				<td class="book-list-info">
 					<form action="" method="post">
 						<input type="hidden" name="action" value="removeFromList">
@@ -25,7 +25,7 @@
 		<tr>
 			<td></td>
 			<td></td>
-			<td><br><br><b>Total: $</b></td>
+			<td><br><br><b>Total: $${totalCost}</b></td>
 			<td></td>
 		</tr>
 	</table>
