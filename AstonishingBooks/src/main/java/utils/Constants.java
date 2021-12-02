@@ -6,4 +6,5 @@ public final class Constants {
 	public static final String BOOK = "book";
 	public static final String ADD = "add";
 	public static final String DELETE = "delete";
+	public static final String USER = "user";
 }
