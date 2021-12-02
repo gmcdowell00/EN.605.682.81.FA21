@@ -175,7 +175,8 @@ public class AstonishingServlet extends HttpServlet {
 			}
 			
 			// make the sorted books available for display
-			context.setAttribute(Constants.BOOKS, sortedBooks);  	
+			context.setAttribute(Constants.BOOKS, sortedBooks);
+			context.setAttribute("searchQuery", searchTerm);
 			
 			// see what gets found
 			System.out.println("Number of results: " + sortedBooks.size());
