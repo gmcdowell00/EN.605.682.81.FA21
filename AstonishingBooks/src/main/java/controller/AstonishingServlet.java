@@ -226,7 +226,6 @@ public class AstonishingServlet extends HttpServlet {
 					
 					System.out.println("firstname: " + currentUser.getFirstname());
 					System.out.println("lastname: " + currentUser.getLastname());
-					System.out.println("username: " + currentUser.getUsername());
 					System.out.println("email: " + currentUser.getEmail());
 					System.out.println("isAdmin: " + currentUser.isAdmin());
 					System.out.println("password: " + currentUser.getPassword());
@@ -292,7 +291,7 @@ public class AstonishingServlet extends HttpServlet {
 				
 				// create user object from the above info
 				boolean isAdmin = false;
-				User user = new User(firstname, lastname, firstname, email, isAdmin, password, 
+				User user = new User(firstname, lastname, email, isAdmin, password, 
 						address, city, state, country, zip, payment, cart, wishlist); 
 				
 				// create an empty list of book name strings
@@ -531,13 +530,13 @@ public class AstonishingServlet extends HttpServlet {
 		 * payment.setEmail("bwayne@jla.com");
 		 * 
 		 * // User User user = new User(); us\er.setFirstname("Barry");
-		 * user.setLastname("Allen"); user.setUsername("ScarlettSpeedster007");
+		 * user.setLastname("Allen");
 		 * user.setEmail("ballen@jla.com"); user.setAdmin(false);
 		 * user.setPayment(payment); //mongoUtil.SaveOrUpdateUser(user, books, ops);
 		 * 
 		 * 
 		 * // User User user2 = new User(); user2.setFirstname("Bruce");
-		 * user2.setLastname("Wayne"); user2.setUsername("DarkKnight");
+		 * user2.setLastname("Wayne"); 
 		 * user2.setEmail("bwayne@jla.com"); user2.setAdmin(false);
 		 * //mongoUtil.SaveOrUpdateUser(user2, books, ops);
 		 * 

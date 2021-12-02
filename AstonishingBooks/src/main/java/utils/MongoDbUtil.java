@@ -36,7 +36,7 @@ public class MongoDbUtil {
 
 		// Create query
 		Query query = new Query();
-		query.addCriteria(Criteria.where("username").is(user.getFirstname()));
+		query.addCriteria(Criteria.where("email").is(user.getEmail()));
 		User dbUser = this.GetUserByEmail(user.getEmail(), mongoOperation);
 
 		if (dbUser != null) {
@@ -61,7 +61,6 @@ public class MongoDbUtil {
 			Cart cart = new Cart();
 
 			// Set user name, book list, and order date
-			cart.setUsername(user.getUsername());
 			cart.setEmail(user.getEmail());
 			cart.setBooks(books);
 			cart.setOrderdate(new DateUtil().GetDateTimeNow());
@@ -87,7 +86,7 @@ public class MongoDbUtil {
 	 * Save or update cart information
 	 * 
 	 * @param cart
-	 * @param username
+	 * @param email
 	 * @param mongoOperation
 	 * @return
 	 */
@@ -131,7 +130,7 @@ public class MongoDbUtil {
 	 * Save or update payment information
 	 * 
 	 * @param payment
-	 * @param username
+	 * @param email
 	 * @param mongoOperation
 	 * @return
 	 */

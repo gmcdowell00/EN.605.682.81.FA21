@@ -16,8 +16,6 @@ public class User {
 	@Field
 	private String lastname;
 	@Field
-	private String username;     // are we using username anywhere else?
-	@Field
 	private String email;
 	@Field 
 	private String password;
@@ -42,13 +40,12 @@ public class User {
 	
 	public User() {}
 	
-	public User(String firstname, String lastname, String username, String email, boolean isAdmin, String password, 
-			String address, String city, String state, String country, String zip, Payment payment, Cart cart, 
-			List<Book> wishlist) {
+	public User(String firstname, String lastname, String email, boolean isAdmin, String password, 
+			String address, String city, String state, String country, String zip, Payment payment, 
+			Cart cart, List<Book> wishlist) {
 		super();
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.username = username;
 		this.email = email;
 		this.isAdmin = isAdmin;
 		this.password = password;
@@ -72,12 +69,6 @@ public class User {
 	}
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
 	}
 	public String getEmail() {
 		return email;
