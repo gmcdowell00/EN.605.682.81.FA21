@@ -25,7 +25,7 @@
 		<tr>
 			<td></td>
 			<td></td>
-			<td><br><br><b>Total: $${totalCost}</b></td>
+			<td><br><br><b>Total: $${user.cart.getTotal()}</b></td>
 			<td></td>
 		</tr>
 	</table>

@@ -294,11 +294,15 @@ public class AstonishingServlet extends HttpServlet {
 				User user = new User(firstname, lastname, email, isAdmin, password, 
 						address, city, state, country, zip, payment, cart, wishlist); 
 				
-				// create an empty list of book name strings
-				List<String> books = new ArrayList<String>();
 				
 				// add the user to the database
-				User newUser = mongoUtil.SaveOrUpdateUser(user, books, ops);
+				User newUser = mongoUtil.SaveOrUpdateUser(user, ops);
+				
+//				// create an empty list of book name strings
+//				List<String> books = new ArrayList<String>();
+//				
+//				// add the user to the database
+//				User newUser = mongoUtil.SaveOrUpdateUser(user, books, ops);
 
 				// set the loggedIn status to true
 				session.setAttribute("loggedIn", true);
@@ -357,23 +361,49 @@ public class AstonishingServlet extends HttpServlet {
 			url = "/editProfile.jsp";
 		} else if (action.equals("addCart")) {
 
-//			MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
-//			MongoDbUtil mongoUtil = new MongoDbUtil();
+			// get the current user from the session 
+			User sessionUser = (User) context.getAttribute(Constants.USER);
 			
-			User user = mongoUtil.GetUserByEmail(request.getParameter("email"), ops);
-			Cart cart = user.getCart();
-			
+			// get the user, the user's cart, and the list of book objects from the cart
+			User user = mongoUtil.GetUserByEmail(sessionUser.getEmail(), ops);
+			Cart cart = user.getCart();			
 			List<Book> books = cart.getBooks();
+			
+			// get the selected book from the context
+			Book addBook = (Book) context.getAttribute(Constants.BOOK);
 
-			//=================================
-			// check the list of books to see if the new book is on the list
-			// if so, no change necessary
-			// if not, add the book to the list, save to the cart
-			//=================================
-
+			// check whether the book is already in the list
+			boolean found = false;
+			
+			if (books != null) {
+				for (int counter = 0; counter < books.size(); counter++) {
+					if (books.get(counter).getName().equals(addBook.getName())) {
+						found = true;
+					}
+				}
+			} else {
+				books = new ArrayList<>();
+			}
+			
+			// if the selected book is not in the list, add it
+			if (!found) {
+				books.add(addBook);
+			}
+			
+			// set the updated list of books in the cart
 			cart.setBooks(books); 
 			
-			Cart updatedCart = mongoUtil.SaveOrUpdateCart(cart, request.getParameter("email"), ops);
+//			// save the updated cart into the DB - this is done in SaveOrUpdateUser
+//			Cart updatedCart = mongoUtil.SaveOrUpdateCart(cart, request.getParameter("email"), ops);
+			
+			// set the updated cart in the user
+			user.setCart(cart);
+			
+			// save the updated user into the DB
+			User updatedUser = mongoUtil.SaveOrUpdateUser(user, ops);
+			
+			// make the updated user available throughout the session
+			context.setAttribute(Constants.USER, updatedUser);
 			
 			// redirect to cart page
 			url = "/cart.jsp";

@@ -32,42 +32,78 @@ public class MongoDbUtil {
 	 * @param entity
 	 * @param mongoOperations
 	 */
-	public User SaveOrUpdateUser(User user, List<String> bookNames, MongoTemplate mongoOperation) {
+//	public User SaveOrUpdateUser(User user, List<String> bookNames, MongoTemplate mongoOperation) {
+//
+//		// Create query
+//		Query query = new Query();
+//		query.addCriteria(Criteria.where("email").is(user.getEmail()));
+//		User dbUser = this.GetUserByEmail(user.getEmail(), mongoOperation);
+//
+//		if (dbUser != null) {
+//			user = dbUser;
+//		}
+//
+//		// If user has selected books
+//		if (bookNames != null && bookNames.size() != 0) {
+//
+//			// Get list of books
+//			allBooks = this.findAllBooks(mongoOperation);
+//
+//			// Add selected book names to book list
+//			List<Book> books = new ArrayList<Book>();
+//			for (Book book : allBooks) {
+//				if (bookNames.contains(book.getName())) {
+//					books.add(book);
+//				}
+//			}
+//
+//			// Create cart
+//			Cart cart = new Cart();
+//
+//			// Set user name, book list, and order date
+//			cart.setEmail(user.getEmail());
+//			cart.setBooks(books);
+//			cart.setOrderdate(new DateUtil().GetDateTimeNow());
+//
+//			// Save cart and add to user
+//			user.setCart(this.SaveOrUpdateCart(cart, user.getEmail(), mongoOperation));
+//		}
+//
+//		// If payment info is present
+//		if (user.getPayment() != null) {
+//
+//			user.setPayment(this.SaveOrUpdatePayment(user.getPayment(), user.getEmail(), mongoOperation));
+//		}
+//
+//		// Save user to DB
+//		mongoOperation.save(user);
+//
+//		// get the updated object again
+//		return mongoOperation.findOne(query, User.class);
+//	}
+	
+	
+	public User SaveOrUpdateUser(User user, MongoTemplate mongoOperation) {
 
 		// Create query
 		Query query = new Query();
 		query.addCriteria(Criteria.where("email").is(user.getEmail()));
-		User dbUser = this.GetUserByEmail(user.getEmail(), mongoOperation);
 
-		if (dbUser != null) {
-			user = dbUser;
-		}
+		// get the list of book objects from the user's cart
+		Cart userCart = user.getCart();
+		List<Book> books = userCart.getBooks();
+		
+		// Create cart
+		Cart cart = new Cart();
 
-		// If user has selected books
-		if (bookNames != null && bookNames.size() != 0) {
+		// Set user name, book list, and order date
+		cart.setEmail(user.getEmail());
+		cart.setBooks(books);
+		cart.setOrderdate(new DateUtil().GetDateTimeNow());
 
-			// Get list of books
-			allBooks = this.findAllBooks(mongoOperation);
-
-			// Add selected book names to book list
-			List<Book> books = new ArrayList<Book>();
-			for (Book book : allBooks) {
-				if (bookNames.contains(book.getName())) {
-					books.add(book);
-				}
-			}
-
-			// Create cart
-			Cart cart = new Cart();
-
-			// Set user name, book list, and order date
-			cart.setEmail(user.getEmail());
-			cart.setBooks(books);
-			cart.setOrderdate(new DateUtil().GetDateTimeNow());
-
-			// Save cart and add to user
-			user.setCart(this.SaveOrUpdateCart(cart, user.getEmail(), mongoOperation));
-		}
+		// Save cart and add to user
+		user.setCart(this.SaveOrUpdateCart(cart, user.getEmail(), mongoOperation));
+		
 
 		// If payment info is present
 		if (user.getPayment() != null) {
@@ -81,6 +117,9 @@ public class MongoDbUtil {
 		// get the updated object again
 		return mongoOperation.findOne(query, User.class);
 	}
+	
+	
+	
 
 	/**
 	 * Save or update cart information
