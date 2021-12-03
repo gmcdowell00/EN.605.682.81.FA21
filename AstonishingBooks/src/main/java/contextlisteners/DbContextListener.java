@@ -2,6 +2,7 @@ package contextlisteners;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -19,7 +20,11 @@ import controller.BookHelper;
 
 import com.mongodb.client.MongoClient;
 import mongobusiness.Book;
+import mongobusiness.Cart;
+import mongobusiness.Payment;
+import mongobusiness.User;
 import utils.Constants;
+import utils.MongoDbUtil;
 
 
 public class DbContextListener implements ServletContextListener {
@@ -53,8 +58,56 @@ public class DbContextListener implements ServletContextListener {
 			List<Book> sortedBooks = bookHelper.newestBooks(books);
 
 			// set the sorted list of books as a context attribute
-			context.setAttribute(Constants.BOOKS, sortedBooks);  // make the sorted books available for display
+			context.setAttribute(Constants.BOOKS, sortedBooks);  
+			
+			// make the database available to the whole app
 			context.setAttribute(Constants.DATABASE, ops);
+			
+			// create a mongo utility object
+			MongoDbUtil mongoUtil = new MongoDbUtil();
+			
+			// get the guest user
+			User guestUser = mongoUtil.GetUserByEmail("guest@guest.com", ops);
+			
+			// set all guest user fields to empty
+			guestUser.setFirstname("");
+			guestUser.setLastname("");
+			guestUser.setAddress("");
+			guestUser.setCity("");
+			guestUser.setState("");
+			guestUser.setZip("");
+			
+			// set the guest payment fields to empty
+			Payment guestPayment = guestUser.getPayment();		
+			guestPayment.setCardname("");
+			guestPayment.setCardNumber("");
+			guestPayment.setExperiationMonth(0);
+			guestPayment.setExperiationYear(0);
+			guestPayment.setCardType(null);
+			
+			// set the empty payment object in the guest user
+			guestUser.setPayment(guestPayment);
+			
+			// create an empty list of book objects
+			List<Book> emptyList = new ArrayList<>();
+			
+			// set the guest cart fields to empty
+			Cart guestCart = guestUser.getCart();
+			guestCart.setOrderdate(null);
+			guestCart.setBooks(emptyList);
+			
+			// set the empty cart object in the guest user
+			guestUser.setCart(guestCart);
+			
+			// set the wishlist to an empty list
+			guestUser.setWishlist(emptyList);
+			
+			// save the empty guest user to the database
+			User updatedGuestUser = mongoUtil.SaveOrUpdateUser(guestUser, ops);
+
+			// make the empty guest user available to the app
+			context.setAttribute(Constants.USER, updatedGuestUser);
+					
 		} catch (Exception e) {
 			System.out.println("An error has occured");
 			System.out.println("Error: " + e.getMessage());

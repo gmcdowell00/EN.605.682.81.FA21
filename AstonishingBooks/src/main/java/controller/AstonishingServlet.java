@@ -179,6 +179,12 @@ public class AstonishingServlet extends HttpServlet {
 				// login status is null, go to login page
 				url = "/login.jsp";
 			}
+			
+			//=================================================================== check, then delete ======
+			User tempUser = (User) context.getAttribute(Constants.USER);
+			System.out.println("guest ID: " + tempUser.getId());
+			//=============================================================================================
+			
 		} 
 		else if (action.equals("loginAccount")) {
 			// check whether an account already exists for the submitted email
@@ -197,8 +203,58 @@ public class AstonishingServlet extends HttpServlet {
 					// if they match, set loggedIn to true
 					session.setAttribute("loggedIn", true);
 					
+					// transfer books from the guest cart to the user's cart
+					// get the guest user
+					User guestUser = (User) context.getAttribute(Constants.USER);
+					
+					// get the guest user's cart
+					Cart guestCart = guestUser.getCart();
+					
+					// get the list of books from the cart
+					List<Book> guestBooks = guestCart.getBooks();
+					
+					// get the current user's cart
+					Cart currentCart = currentUser.getCart();
+					
+					// get the current user's book list
+					List<Book> currentBooks = currentCart.getBooks();
+					
+					// if any books are in the guest user's cart, transfer them to the current user's cart
+					if (guestBooks != null && guestBooks.size() > 0) {
+
+						// loop through all of the books in the guest's cart
+						for (int guestCounter = 0; guestCounter < guestBooks.size(); guestCounter++) {
+							boolean isFound = false;  // boolean used when checking for duplicates
+							
+							if (currentBooks != null) {
+								// loop through the books in the current user's cart
+								for (int currentCounter = 0; currentCounter < 0; currentCounter++) {
+									if (guestBooks.get(guestCounter).getId().equals(currentBooks.get(currentCounter).getId())){
+										isFound = true;   // the book is already in user's cart
+									}
+								}
+							}
+							// if the book is not found in the user's cart, transfer it over
+							if (!isFound) {
+								currentBooks.add(guestBooks.get(guestCounter));
+							}
+						}	
+					}
+					
+					// set the updated list of books in the current user's cart
+					currentCart.setBooks(currentBooks);
+					
+					// update the cart in the DB					
+					Cart updatedCart = mongoUtil.SaveOrUpdateCart(currentCart, currentUser.getEmail(), ops);
+					
+					// set the updated cart in the current user
+					currentUser.setCart(updatedCart);
+					
+					// update the current user in the DB
+					User updatedUser = mongoUtil.SaveOrUpdateUser(currentUser, ops);					
+					
 					// set the current user as a session attribute
-					context.setAttribute(Constants.USER, currentUser);	
+					context.setAttribute(Constants.USER, updatedUser);	
 					
 					// clear the message (previously set if a login failed)
 					String message = "";
@@ -491,6 +547,48 @@ public class AstonishingServlet extends HttpServlet {
 			// set the loggedIn attribute to false
 			session.setAttribute("loggedIn", false);
 			context.setAttribute(Constants.USER, null);
+			
+			// get the guest user
+			User guestUser = mongoUtil.GetUserByEmail("guest@guest.com", ops);
+			
+			// set all guest user fields to empty
+			guestUser.setFirstname("");
+			guestUser.setLastname("");
+			guestUser.setAddress("");
+			guestUser.setCity("");
+			guestUser.setState("");
+			guestUser.setZip("");
+			
+			// set the guest payment fields to empty
+			Payment guestPayment = guestUser.getPayment();		
+			guestPayment.setCardname("");
+			guestPayment.setCardNumber("");
+			guestPayment.setExperiationMonth(0);
+			guestPayment.setExperiationYear(0);
+			guestPayment.setCardType(null);
+			
+			// set the empty payment object in the guest user
+			guestUser.setPayment(guestPayment);
+			
+			// create an empty list of book objects
+			List<Book> emptyList = new ArrayList<>();
+			
+			// set the guest cart fields to empty
+			Cart guestCart = guestUser.getCart();
+			guestCart.setOrderdate(null);
+			guestCart.setBooks(emptyList);
+			
+			// set the empty cart object in the guest user
+			guestUser.setCart(guestCart);
+			
+			// set the wishlist to an empty list
+			guestUser.setWishlist(emptyList);
+			
+			// save the empty guest user to the database
+			User updatedGuestUser = mongoUtil.SaveOrUpdateUser(guestUser, ops);
+
+			// make the empty guest user available to the app
+			context.setAttribute(Constants.USER, updatedGuestUser);
 			
 			// get the new books, go to index page
 			url = newBooksIndex(ops, context);
