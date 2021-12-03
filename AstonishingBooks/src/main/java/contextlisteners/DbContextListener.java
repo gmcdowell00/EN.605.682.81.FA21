@@ -67,7 +67,7 @@ public class DbContextListener implements ServletContextListener {
 			MongoDbUtil mongoUtil = new MongoDbUtil();
 			
 			// get the guest user
-			User guestUser = mongoUtil.GetUserByEmail("guest@guest.com", ops);
+			User guestUser = mongoUtil.GetUserByID("61aa68b78a5d542ac9f844b9", ops);
 			
 			// set all guest user fields to empty
 			guestUser.setFirstname("");
@@ -75,12 +75,13 @@ public class DbContextListener implements ServletContextListener {
 			guestUser.setAddress("");
 			guestUser.setCity("");
 			guestUser.setState("");
+			guestUser.setCountry("");
 			guestUser.setZip("");
 			
 			// set the guest payment fields to empty
 			Payment guestPayment = guestUser.getPayment();		
-			guestPayment.setCardname("");
-			guestPayment.setCardNumber("");
+			guestPayment.setCardname(" ");
+			guestPayment.setCardNumber(" ");
 			guestPayment.setExperiationMonth(0);
 			guestPayment.setExperiationYear(0);
 			guestPayment.setCardType(null);

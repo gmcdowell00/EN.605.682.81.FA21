@@ -269,6 +269,23 @@ public class MongoDbUtil {
 		// Find existing User
 		return mongoOperation.findOne(query, User.class);
 	}
+	
+	/**
+	 * Find User in DB by ID
+	 * 
+	 * @param user
+	 * @param mongoOperation
+	 * @return
+	 */
+	public User GetUserByID(String ID, MongoTemplate mongoOperation) {
+
+		// Query
+		Query query = new Query();
+		query.addCriteria(Criteria.where("id").is(ID));
+
+		// Find existing User
+		return mongoOperation.findOne(query, User.class);
+	}
 
 	/**
 	 * Remove book from bookstore. Only for Admins
