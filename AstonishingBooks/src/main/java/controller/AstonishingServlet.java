@@ -16,7 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-//import javax.mail.MessagingException;   // need to add mail jar
+import javax.mail.MessagingException;   
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -38,7 +38,7 @@ import utils.MongoDbUtil;
 @WebServlet("/AstonishingServlet")
 public class AstonishingServlet extends HttpServlet {
 
-	// anyone know what this line does?
+	// set the serialVersionUID
 	private static final long serialVersionUID = 1L;
 
 	// all that doGet does is call doPost
@@ -55,7 +55,7 @@ public class AstonishingServlet extends HttpServlet {
 		// declare a variable to hold the forwarding url
 		String url = "/index.jsp";
 
-		// extract values from the request object
+		// extract the action to perform from the request object
 		String action = request.getParameter("action");
 
 		// get the session object
@@ -70,7 +70,7 @@ public class AstonishingServlet extends HttpServlet {
 		// create a mongo utility object
 		MongoDbUtil mongoUtil = new MongoDbUtil();
 
-		// pull books from the database and redirect to the landing page
+
 		if (action.equals("goToHome")) {		
 			
 			// pull the new books and redirect to the index page
@@ -129,6 +129,7 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// set the url for the book info page
 			url = "/book_info.jsp";
+			
 		} else if (action.equals("search")) {
 						
 			// create a new query 
@@ -162,33 +163,20 @@ public class AstonishingServlet extends HttpServlet {
 			// determine whether the user is logged in, take actions accordingly
 			if (session.getAttribute("loggedIn") != null) {
 				if ((boolean) session.getAttribute("loggedIn")) {
-					
-					// set the current user as a session attribute
-					User tempUser = (User) context.getAttribute(Constants.USER);
-					
-					
-					// print out the wishlist for testing purposes
-					if (tempUser.getWishlist() != null && tempUser.getWishlist().size() > 0) {
-						System.out.println("wishlist: ");
-						for (int counter = 0; counter < tempUser.getWishlist().size(); counter++) {
-							System.out.println(tempUser.getWishlist().get(counter).getName());
-						}
-					} else {
-						System.out.println("wishlist is null or empty");
-					}
-
-					
+					// user is logged in, go to their profile
 					url = "/profile.jsp";
 				} else {
 					// clear any messages before going to login page
 					String message = ""; 
 					session.setAttribute("message", message);
+					// user is not logged in, go to login page
 					url = "/login.jsp";
 				}
 			} else {
 				// clear any messages before going to login page
 				String message = ""; 
 				session.setAttribute("message", message);
+				// login status is null, go to login page
 				url = "/login.jsp";
 			}
 		} 
@@ -210,7 +198,7 @@ public class AstonishingServlet extends HttpServlet {
 					session.setAttribute("loggedIn", true);
 					
 					// set the current user as a session attribute
-					context.setAttribute(Constants.USER, currentUser);				
+					context.setAttribute(Constants.USER, currentUser);	
 					
 					// clear the message (previously set if a login failed)
 					String message = "";
@@ -249,6 +237,7 @@ public class AstonishingServlet extends HttpServlet {
 
 			// check whether the email has already been registered
 			if (mongoUtil.GetUserByEmail(email,ops) == null){
+				
 				// user does not exist => create the user
 				
 				// create an empty payment object, save it to the DB
@@ -268,16 +257,9 @@ public class AstonishingServlet extends HttpServlet {
 				boolean isAdmin = false;
 				User user = new User(firstname, lastname, email, isAdmin, password, 
 						address, city, state, country, zip, payment, cart, wishlist); 
-				
-				
+								
 				// add the user to the database
 				User newUser = mongoUtil.SaveOrUpdateUser(user, ops);
-				
-//				// create an empty list of book name strings
-//				List<String> books = new ArrayList<String>();
-//				
-//				// add the user to the database
-//				User newUser = mongoUtil.SaveOrUpdateUser(user, books, ops);
 
 				// set the loggedIn status to true
 				session.setAttribute("loggedIn", true);
@@ -297,21 +279,10 @@ public class AstonishingServlet extends HttpServlet {
 				session.setAttribute("message", message);
 				url = "/register.jsp";
 			}
-
-
-		} else if (action.equals("editProfile")) {
-			String userID = request.getParameter("userID");
-
-			// get the user's profile data from the database
-
-			// create a userProfile object and fill with pulled data
-
-			// add the userProfile object to the session
-
-			// redirect to edit profile page
-			url = "/editProfile.jsp";
-		} else if (action.equals("addCart")) {
-
+		} 
+		else if (action.equals("addCart")) {
+			// add the selected book to the user's cart
+			
 			// get the current user from the context 
 			User sessionUser = (User) context.getAttribute(Constants.USER);
 			
@@ -321,14 +292,14 @@ public class AstonishingServlet extends HttpServlet {
 			List<Book> books = cart.getBooks();
 			
 			// get the selected book from the context
-			Book addBook = (Book) context.getAttribute(Constants.BOOK);
+			Book addBookToCart = (Book) context.getAttribute(Constants.BOOK);
 
 			// check whether the book is already in the list
 			boolean found = false;
 			
 			if (books != null) {
 				for (int counter = 0; counter < books.size(); counter++) {
-					if (books.get(counter).getName().equals(addBook.getName())) {
+					if (books.get(counter).getName().equals(addBookToCart.getName())) {
 						found = true;
 					}
 				}
@@ -338,14 +309,11 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// if the selected book is not in the list, add it
 			if (!found) {
-				books.add(addBook);
+				books.add(addBookToCart);
 			}
 			
 			// set the updated list of books in the cart
 			cart.setBooks(books); 
-			
-//			// save the updated cart into the DB - this is done in SaveOrUpdateUser
-//			Cart updatedCart = mongoUtil.SaveOrUpdateCart(cart, request.getParameter("email"), ops);
 			
 			// set the updated cart in the user
 			user.setCart(cart);
@@ -435,14 +403,14 @@ public class AstonishingServlet extends HttpServlet {
 			List<Book> wishlist = user.getWishlist();
 			
 			// get the selected book from the context
-			Book addBook = (Book) context.getAttribute(Constants.BOOK);
+			Book addBookToWishlist = (Book) context.getAttribute(Constants.BOOK);
 
 			// check whether the book is already in the list
 			boolean found = false;
 			
 			if (wishlist != null) {
 				for (int counter = 0; counter < wishlist.size(); counter++) {
-					if (wishlist.get(counter).getName().equals(addBook.getName())) {
+					if (wishlist.get(counter).getName().equals(addBookToWishlist.getName())) {
 						found = true;
 					}
 				}
@@ -452,7 +420,7 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// if the selected book is not in the list, add it
 			if (!found) {
-				wishlist.add(addBook);
+				wishlist.add(addBookToWishlist);
 			}
 			
 			// set the updated wishlist in the user
@@ -503,7 +471,7 @@ public class AstonishingServlet extends HttpServlet {
 			url = "/profile.jsp";
 		}
 		
-		
+		//  review order
 		else if (action.equals("reviewInfo")) {
 			// get user and cart info from session object?
 
@@ -511,7 +479,7 @@ public class AstonishingServlet extends HttpServlet {
 
 			// redirect to review information page
 			url = "/reviewInfo.jsp";
-		} else if (action.equals("orderConfirmation")) {
+		} else if (action.equals("orderConfirmation")) {   
 			// pull user info from session object or database?
 
 			// send the user a confirmation e-mail
@@ -527,53 +495,136 @@ public class AstonishingServlet extends HttpServlet {
 			// get the new books, go to index page
 			url = newBooksIndex(ops, context);
 			
-		} else if (action.equals("adminBookInfo")) {
-			// confirm admin user
+		} 
+		
+		// ======================================================================================================================
+		// admin actions below
+		// ======================================================================================================================
+		
+		// this takes the admin user to the manage inventory page
+		else if (action.equals("inventory")) {   
+			// create a new query 
+			Query query = new Query();
 
-			// get book ID
-			String bookID = request.getParameter("bookID");
+			// return all of the books
+			List<Book> books = ops.find(query, Book.class);
 
-			// pull book info from database
+			// make the books available for display
+			context.setAttribute(Constants.BOOKS, books);  
+			
+			// set the url
+			url = "/admin_manage_inventory.jsp";
+		}
+		
+		
+		// this takes the admin user to the admin book info page to edit a selected book
+		else if (action.equals("editBook")) {  
+			// get the ID of the book to display
+			String bookID = request.getParameter("bookId");
+			
+			// create a new query 
+			Query query = new Query();
 
-			// save book info in object and store in session
+			// return all of the books
+			List<Book> books = ops.find(query, Book.class);
+			
+			// create a BookHelper object
+			BookHelper bookHelper = new BookHelper();
+			
+			// get the selected book
+			Book foundBook = bookHelper.bookById(books, bookID);
+
+			// make the selected book available for display
+			context.setAttribute(Constants.BOOK, foundBook);  
 
 			// redirect to adminBookInfo
-			url = "/adminBookInfo.jsp";
-		} else if (action.equals("adminBookDelete")) {
-			// get book ID
+			url = "/admin_book_info.jsp";
+		} 
+		
+		// this deletes a selected book from the DB
+		else if (action.equals("deleteBook")) {  				
+			// get the ID of the book to be removed
 			String bookID = request.getParameter("bookID");
+			
+			// create a new query 
+			Query query = new Query();
 
-			// delete the book from the database
-
-			// confirm deletion (db returns 0?)
-
-			// redirect to adminBookDeleteConfirmation page
-			url = "/adminBookDeleteConfirmation.jsp";
-		} else if (action.equals("adminSaveBookChanges")) {
+			// return all of the books
+			List<Book> books = ops.find(query, Book.class);
+			
+			// create a BookHelper object
+			BookHelper bookHelper = new BookHelper();
+			
+			// get the selected book
+			Book foundBook = bookHelper.bookById(books, bookID);
+			
+			// if the book is found in the DB, delete it
+			if (foundBook != null) {
+				mongoUtil.AddOrDeleteBook(Constants.DELETE, foundBook, ops);
+			}
+			
+			// return to admin manage inventory page
+			url = "/admin_manage_inventory.jsp";
+		} 
+		
+		
+		// this adds a new book to the DB
+		else if (action.equals("addBook")) {  				
+			// create an empty book object
+			Book newBook = new Book();
+			
+			// add the book to the DB so it will get an ID
+			mongoUtil.AddOrDeleteBook(Constants.ADD, newBook, ops);
+			
+			// make the book available to the edit page 
+			context.setAttribute(Constants.BOOK, newBook);  
+		
+			// go to the admin book info page to fill in the fields
+			url = "/admin_book_info.jsp";
+		} 
+		
+		// this part needs to save info from the admin_book_info page into the DB and return to the inventory page ==============
+		else if (action.equals("??? get action from admin_book_info page once it's updated")) {  
 			// get updated book info from request object
 			String bookID = request.getParameter("bookID");
-			String title = request.getParameter("title");
+			String name = request.getParameter("name");
 			String author = request.getParameter("author");
 			String genre = request.getParameter("genre");
 			String price = request.getParameter("price");
 			String description = request.getParameter("description");
+			String coverImageLink = request.getParameter("coverImageLink");
 
-			// store the updated data in a book object?
-
+			// get the current book object
+			Book currentBook = (Book) context.getAttribute(Constants.BOOK);
+			
+			// store the updated data in the book object
+			currentBook.setName(name);
+			currentBook.setAuthor(author);
+			currentBook.setGenre(genre);
+			currentBook.setPrice(Double.parseDouble(price));
+			currentBook.setDescription(description);
+			currentBook.setCoverImageLink(coverImageLink);
+			
 			// send update to the database
+			// need a method to save an updated book to the DB ==================================================================
 
-			// redirect to update confirmation page
-			url = "/adminBookUpdateConfirmation.jsp";
-		} else if (action.equals("adminSettings")) {
-			// redirect to admin settings page
-			url = "/adminSettings.jsp";
-		} else if (action.equals("adminManageInventory")) {
-			// redirect to admin manage inventory page
-			url = "/adminManageInventory.jsp";
-		} else if (action.equals("adminAddAdministrator")) {
-			// redirect to admin add administrator page
-			url = "/adminAddAdministrator.jsp";
-		}
+			// redirect to the manage inventory page
+			url = "/admin_manage_inventory.jsp";      
+		} 
+		
+		// need a way to navigate to the manage users page =====================================================================
+		// this needs to be updated to save a change in a user's privileges (isAmin updated to true or false) ==================
+		else if (action.equals("giveAdminPrivileges")) {
+			// get the updated user
+			
+			// set the isAmin value to true or false
+			
+			// save the updated user in the DB
+			
+			// return to admin manage users page
+			url = "/admin_manage_users.jsp";
+		} 
+		
 
 		// forward to the view specified in the url
 		RequestDispatcher dispatcher = getServletConfig().getServletContext().getRequestDispatcher(url);
@@ -581,6 +632,7 @@ public class AstonishingServlet extends HttpServlet {
 
 	}
 
+	// are we still using this test method, or can we remove it? =============================================================
 	public void test() {
 		// TODO Auto-generated method stub
 		MongoTemplate ops = (MongoTemplate) getServletContext().getAttribute(Constants.DATABASE);
@@ -649,9 +701,9 @@ public class AstonishingServlet extends HttpServlet {
 
 		// make the sorted books available for display
 		context.setAttribute(Constants.BOOKS, sortedBooks);  
-
-		// redirect to the landing page
-		String url = "/index.jsp";	
+		
+		// set the url
+		String url = "/index.jsp";
 		
 		// return the url string
 		return url;
