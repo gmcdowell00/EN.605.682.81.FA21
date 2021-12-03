@@ -12,7 +12,7 @@
 	<table>
 		<tr>
 			<td><br>Name:</td>
-			<td><br>${user.firstname} ${user.lastname }</td> 
+			<td><br>${user.firstname} ${user.lastname}</td> 
 		</tr>
 		<tr>
 			<td><br>Email:</td>
@@ -20,7 +20,10 @@
 		</tr>
 		<tr>
 			<td><br>Address:</td>
-			<td><br>${user.address}</td> 
+			<td>
+				<br>${user.address}
+				<br>${user.city}, ${user.state} ${user.country} ${user.zip}
+			</td> 
 		</tr>
 	</table>
 </section>
@@ -29,21 +32,26 @@
 	<h3>My List</h3>
 	<br>
 	<br>
-	<table class="book-grid-table">
-		<c:forEach items="1,2,3,4,5" var="book">
-			<tr>
-				<td class="book-list-img"><img class="book-img-list" alt="" src="images/test-book-cover.jpg"></td>
-				<td class="book-list-info">book title by book author</td>
-				<td class="book-list-info">
-					<form action="" method="post">
-						<input type="hidden" name="action" value="removeFromList">
-						<input type="hidden" name="removeBookFromList" value="bookid">
-						<input type="image" class="delete-pic" src="images/delete.png" alt="Delete">
-					</form>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>	
+	<c:if test="${empty user.wishlist}">
+		<i>No items saved to list.</i>
+	</c:if>
+	<c:if test="${not empty user.wishlist}">
+		<table class="book-grid-table">
+			<c:forEach items="${user.wishlist}" var="book">
+				<tr>
+					<td class="book-list-img"><img class="book-img-list" alt="" src=".${book.coverImageLink}.jpg"></td>
+					<td class="book-list-info">${book.name} by ${book.author}</td>
+					<td class="book-list-info">
+						<form action="" method="post">
+							<input type="hidden" name="action" value="removeFromList">
+							<input type="hidden" name="removeBookFromList" value="${book.id}">
+							<input type="image" class="delete-pic" src="images/delete.png" alt="Delete">
+						</form>
+					</td>
+				</tr>
+			</c:forEach>
+		</table>	
+	</c:if>
 </section>
 
 
