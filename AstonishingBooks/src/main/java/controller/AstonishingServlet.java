@@ -26,6 +26,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.query.Query;
 
 import mongobusiness.Book;
+import mongobusiness.CardType;
 import mongobusiness.Cart;
 import mongobusiness.Payment;
 import mongobusiness.User;
@@ -178,13 +179,7 @@ public class AstonishingServlet extends HttpServlet {
 				session.setAttribute("message", message);
 				// login status is null, go to login page
 				url = "/login.jsp";
-			}
-			
-			//=================================================================== check, then delete ======
-			User tempUser = (User) context.getAttribute(Constants.USER);
-			System.out.println("guest ID: " + tempUser.getId());
-			//=============================================================================================
-			
+			}			
 		} 
 		else if (action.equals("loginAccount")) {
 			// check whether an account already exists for the submitted email
@@ -425,30 +420,9 @@ public class AstonishingServlet extends HttpServlet {
 			// redirect to the cart page
 			url = "/cart.jsp";
 		} else if (action.equals("checkout")) {
-			
-			// activate SSL connection
-
-			// check whether the user is logged in
-		
-			if (session.getAttribute("loggedIn") != null) {
-				if ((boolean) session.getAttribute("loggedIn")) {
-
-					// user is logged in - get data from user object 
-					// save payment information?
-					
-				} else {
-					
-					// user is not logged in - checkout as guest
-
-				}
-			} else {
-				
-				// logged in status unknown
-
-			}
 
 			// redirect to the checkout page
-			url = "/checkout.jsp";
+			url = "/goSSLtoCheckout.jsp";
 		} else if (action.equals("saveList")) {
 
 			// get the current user from the context 
@@ -529,19 +503,71 @@ public class AstonishingServlet extends HttpServlet {
 		
 		//  review order
 		else if (action.equals("reviewInfo")) {
-			// get user and cart info from session object?
-
-			// make sure the info is saved in session object
+			// get the user's credit card info
+			String userCardTypeString = request.getParameter("creditCardType");
+			String userCardName = (String) request.getParameter("cardName");
+			String userCardNumber = (String) request.getParameter("cardNumber");
+			String userExperiationmonthString = request.getParameter("expireMonth");
+			String userExperiationyearString = request.getParameter("expireYear");
+			
+			// convert strings to appropriate values
+			int userExperiationmonth = Integer.parseInt(userExperiationmonthString);
+			int userExperiationyear = Integer.parseInt(userExperiationyearString);
+			CardType userCardType = CardType.valueOf(userCardTypeString);
+			
+			// get the user from context
+			User checkoutUser = (User) context.getAttribute(Constants.USER);
+			
+			// get the user's payment
+			Payment userPayment = checkoutUser.getPayment();
+			
+			// set the values
+			userPayment.setCardType(userCardType);
+			userPayment.setCardname(userCardName);
+			userPayment.setCardNumber(userCardNumber);
+			userPayment.setExperiationMonth(userExperiationmonth);
+			userPayment.setExperiationYear(userExperiationyear);
+			
+			System.out.println("CC Type: " + userPayment.getCardType());
+			
+			// save the updated payment info into the user
+			checkoutUser.setPayment(userPayment);
+			
+			// save the updates to the db
+			User updatedUser = mongoUtil.SaveOrUpdateUser(checkoutUser, ops);
+			
+			// save the updated user to the context object
+			context.setAttribute(Constants.USER, updatedUser);
 
 			// redirect to review information page
-			url = "/reviewInfo.jsp";
+			url = "/review_checkout.jsp";
 		} else if (action.equals("orderConfirmation")) {   
-			// pull user info from session object or database?
 
-			// send the user a confirmation e-mail
-
+			// send the user a confirmation e-mail   =================================================================
+			
+			// get the current user
+			User currentUser = (User) context.getAttribute(Constants.USER);
+			
+			// create an empty list of books
+			List<Book> emptyList = new ArrayList<>();
+			
+			// get the user's cart
+			Cart currentCart = currentUser.getCart();
+			
+			// now that the order was placed, replace the cart list with an empty list
+			currentCart.setBooks(emptyList);
+			
+			// update the cart in the user
+			currentUser.setCart(currentCart);
+			
+			// save the updates in the DB
+			User updatedUser = mongoUtil.SaveOrUpdateUser(currentUser, ops);
+			
+			// make the updated user available
+			context.setAttribute(Constants.USER, updatedUser);
+			
 			// redirect to confirmation page
-			url = "/orderConfirmation.jsp";
+			url = "/order_confirmation.jsp";
 		} else if (action.equals("logout")) {
 			
 			// set the loggedIn attribute to false
@@ -557,12 +583,13 @@ public class AstonishingServlet extends HttpServlet {
 			guestUser.setAddress("");
 			guestUser.setCity("");
 			guestUser.setState("");
+			guestUser.setCountry("");
 			guestUser.setZip("");
 			
 			// set the guest payment fields to empty
 			Payment guestPayment = guestUser.getPayment();		
-			guestPayment.setCardname("");
-			guestPayment.setCardNumber("");
+			guestPayment.setCardname(" ");
+			guestPayment.setCardNumber(" ");
 			guestPayment.setExperiationMonth(0);
 			guestPayment.setExperiationYear(0);
 			guestPayment.setCardType(null);

@@ -23,19 +23,19 @@
 		</tr>
 		<tr>
 			<td><br>Credit Card Type:</td>
-			<td><br>${user.payment.cardtype}</td> 
+			<td><br>${user.payment.cardType}</td> 
 		</tr>
 		<tr>
 			<td><br>Name on Card:</td>
-			<td><br>${user.payment.cardName}</td> 
+			<td><br>${user.payment.cardname}</td> 
 		</tr>
 		<tr>
 			<td><br>Card Number:</td>
-			<td><br>${user.payment.cardnumber}</td> 
+			<td><br>${user.payment.cardNumber}</td> 
 		</tr>
 		<tr>
 			<td><br>Expiration Date:</td>
-			<td><br>${user.payment.expirationMonth} / ${user.payment.expirationYear}</td> 
+			<td><br>${user.payment.experiationMonth} / ${user.payment.experiationYear}</td> 
 		</tr>
 	</table>	
 </section>

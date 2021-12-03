@@ -59,18 +59,18 @@
 			</tr>
 			<tr>
 				<td class="label"><label>Name on Card:</label></td>
-				<td class="input"><input type="text" name="cardName" value="${user.payment.cardName}" class="user-input" required></td> 
+				<td class="input"><input type="text" name="cardName" value="${user.payment.cardname}" class="user-input" required></td> 
 			</tr>
 			<tr>
 				<td class="label"><label>Card Number:</label></td>
-				<td class="input"><input type="number" name="cardNumber" value="${user.payment.cardnumber}" class="user-input" required></td> 
+				<td class="input"><input type="text" name="cardNumber" value="${user.payment.cardNumber}" class="user-input" required></td> 
 			</tr>
 			<tr>
 				<td class="label"><label>Expiration Date:</label></td>
 				<td class="input">
-					<input type="number" name="expireMonth" value="${user.payment.expirationMonth}" class="user-input-short" required>
+					<input type="number" name="expireMonth" value="${user.payment.experiationMonth}" class="user-input-short" required>
 					/
-					<input type="number" name="expireYear" value="${user.payment.expirationYear}" class="user-input-short" required>
+					<input type="number" name="expireYear" value="${user.payment.experiationYear}" class="user-input-short" required>
 				</td> 
 			</tr>
 		</table>
