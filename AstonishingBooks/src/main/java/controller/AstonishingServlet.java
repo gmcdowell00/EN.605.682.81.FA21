@@ -185,7 +185,7 @@ public class AstonishingServlet extends HttpServlet {
 			// check whether an account already exists for the submitted email
 			User currentUser = mongoUtil.GetUserByEmail(request.getParameter("email"), ops);
 			
-			if (currentUser.equals(null)) {
+			if (currentUser == null) {
 				// if the user is not found, set the message and return 
 				String message = "Incorrect email and password combination"; 
 				session.setAttribute("message", message);

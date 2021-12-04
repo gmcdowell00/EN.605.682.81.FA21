@@ -54,12 +54,9 @@
 	<section class="center">
 		<input type="hidden" name="bookId" value="${book.id}">
 		<input type="hidden" name="prefix" value="admin">
-		<input type="submit" class="grey-button submit-button inline" name="action" value="Delete Book">
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="submit" class="orange-button submit-button inline" name="action" value="Save Changes">
+		<input type="hidden" name="action" value="saveBook">
+		<input type="submit" class="orange-button submit-button inline" value="Save Changes">
 	</section>
-	
-</form>
-
+	</form>
 
 <c:import url="/footer.jsp" />
