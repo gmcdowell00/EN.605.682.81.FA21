@@ -5,16 +5,28 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import mongobusiness.Book;
+import mongobusiness.CardType;
+import mongobusiness.Cart;
+import mongobusiness.Payment;
+import mongobusiness.User;
 import utils.Constants;
+import utils.DateUtil;
+import utils.MongoDbUtil;
 
 public class BookHelper {
 	
-	public List<Book> newestBooks(List<Book> books){
+	public List<Book> newestBooks(List<Book> inputBooks, MongoTemplate ops){
+		
+		// remove nulls from the DB before sorting
+		List<Book> books = removeNulls(inputBooks, ops);
 		
 		// number of books passed in
 		int totalBookCount = books.size();
@@ -48,7 +60,10 @@ public class BookHelper {
 	}
 	
 	
-	public List<Book> searchBooks(List<Book> books, String searchQuery){
+	public List<Book> searchBooks(List<Book> inputBooks, String searchQuery, MongoTemplate ops){
+		
+		// remove nulls from the DB before search
+		List<Book> books = removeNulls(inputBooks, ops);
 		
 		// set the search term to lower case so the search will ignore case
 		String searchTerm = searchQuery.toLowerCase();
@@ -65,13 +80,16 @@ public class BookHelper {
 			}
 		}
 		
-		// return the book sorted by genre
+		// return the search results
 		return results;		
 	}
 	
 	
-	public Book bookById(List<Book> books, String bookId){
+	public Book bookById(List<Book> inputBooks, String bookId, MongoTemplate ops){
 				
+		// remove nulls from the DB before search
+		List<Book> books = removeNulls(inputBooks, ops);
+		
 		// create a list to return the results
 		Book result = new Book();
 		
@@ -83,8 +101,32 @@ public class BookHelper {
 
 		}
 		
-		// return the book sorted by genre
+		// return the book with the submitted ID
 		return result;		
+	}
+	
+	public List<Book> removeNulls(List<Book> inputBooks, MongoTemplate ops){
+
+		// create a mongo utility object
+		MongoDbUtil mongoUtil = new MongoDbUtil();
+		
+		// if a book's title is null or an empty string, delete it from the DB
+		if (inputBooks != null) {			
+			for (Book book: inputBooks) {
+				if (book.getName() == null) {
+					mongoUtil.AddOrDeleteBook("delete", book, ops);
+				} else if (book.getName().equals("")) {
+					mongoUtil.AddOrDeleteBook("delete", book, ops);
+				}
+			}
+		}
+		
+		// get all of the remaining books from the DB
+		Query query = new Query();
+		List<Book> updatedBooks = ops.find(query, Book.class);
+
+		// return all of the remaining books from the DB
+		return updatedBooks;
 	}
 	
 }

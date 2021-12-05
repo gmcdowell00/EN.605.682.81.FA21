@@ -106,7 +106,7 @@ public class AstonishingServlet extends HttpServlet {
 			}
 
 			// sort the books by genre
-			List<Book> sortedBooks = bookHelper.searchBooks(books, genreString);
+			List<Book> sortedBooks = bookHelper.searchBooks(books, genreString, ops);
 
 			// make the sorted books available for display
 			context.setAttribute(Constants.BOOKS, sortedBooks);
@@ -124,7 +124,7 @@ public class AstonishingServlet extends HttpServlet {
 			BookHelper bookHelper = new BookHelper();
 
 			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID);
+			Book foundBook = bookHelper.bookById(books, bookID, ops);
 
 			// make the selected book available for display
 			context.setAttribute(Constants.BOOK, foundBook);
@@ -147,7 +147,7 @@ public class AstonishingServlet extends HttpServlet {
 			String searchTerm = request.getParameter("searchQuery");
 
 			// sort the books by searchTerm
-			List<Book> sortedBooks = bookHelper.searchBooks(books, searchTerm);
+			List<Book> sortedBooks = bookHelper.searchBooks(books, searchTerm, ops);
 
 			// if the results are null, instantiate an empty list
 			if (sortedBooks == null) {
@@ -740,7 +740,7 @@ public class AstonishingServlet extends HttpServlet {
 			BookHelper bookHelper = new BookHelper();
 
 			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID);
+			Book foundBook = bookHelper.bookById(books, bookID, ops);
 
 			// make the selected book available for display
 			session.setAttribute(Constants.BOOK, foundBook);
@@ -765,12 +765,18 @@ public class AstonishingServlet extends HttpServlet {
 			BookHelper bookHelper = new BookHelper();
 
 			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID);
+			Book foundBook = bookHelper.bookById(books, bookID, ops);
 
 			// if the book is found in the DB, delete it
 			if (foundBook != null) {
 				mongoUtil.AddOrDeleteBook(Constants.DELETE, foundBook, ops);
 			}
+			
+			// return all of the books after the delete
+			books = ops.find(query, Book.class);
+			
+			// set the books for display
+			context.setAttribute(Constants.BOOKS, books);  
 
 			// return to admin manage inventory page
 			url = "/admin_manage_inventory.jsp";
@@ -797,8 +803,12 @@ public class AstonishingServlet extends HttpServlet {
 			// Retrieve book from session
 			Book currentBook = (Book) session.getAttribute(Constants.BOOK);
 
-			// return all of the books
-			List<Book> books = (ArrayList<Book>) context.getAttribute(Constants.BOOKS);
+			// get all of the books from the DB
+			Query query = new Query();
+			List<Book> books = ops.find(query, Book.class);
+			
+			// return all of the books - Contants.BOOKS may not hold all of the books
+//			List<Book> books = (ArrayList<Book>) context.getAttribute(Constants.BOOKS);
 
 			Book bookInContext = books.stream().filter(b -> currentBook.getId().equals(b.getId())).findFirst()
 					.orElse(null);
@@ -828,6 +838,12 @@ public class AstonishingServlet extends HttpServlet {
 
 			// Update book in database
 			mongoUtil.UpdateBook(currentBook, ops);
+			
+			// return all of the books after the update
+			books = ops.find(query, Book.class);
+			
+			// set the books for display
+			context.setAttribute(Constants.BOOKS, books);  
 
 			// redirect to the manage inventory page
 			url = "/admin_manage_inventory.jsp";
@@ -881,7 +897,7 @@ public class AstonishingServlet extends HttpServlet {
 		BookHelper bookHelper = new BookHelper();
 
 		// sort the books by date, return the 12 newest that are not magazines
-		List<Book> sortedBooks = bookHelper.newestBooks(books);
+		List<Book> sortedBooks = bookHelper.newestBooks(books, ops);
 
 		// make the sorted books available for display
 		context.setAttribute(Constants.BOOKS, sortedBooks);
