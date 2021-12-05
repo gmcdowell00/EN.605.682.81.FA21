@@ -20,7 +20,8 @@ public class BookHelper {
 		int totalBookCount = books.size();
 		
 		// sort the books on date - results in oldest to newest list
-		books.sort(Comparator.comparing(bookObject -> bookObject.getPublishedDate())); 
+		// Added by Glen - If  publish date is last put at end
+		books.sort(Comparator.nullsLast(Comparator.comparing(bookObject -> bookObject.getPublishedDate()))); 
 		
 		// create lists for reversing the order and for excluding magazines
 		List<Book> tempBooks = new ArrayList<>();

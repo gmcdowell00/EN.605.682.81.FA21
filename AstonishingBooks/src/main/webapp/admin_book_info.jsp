@@ -35,7 +35,7 @@
 						</tr>
 						<tr>
 							<td class="label"><label>Genre: </label></td>
-							<td class="input"><input type="text" name="title" value="${book.genre}" class="user-input" required></td> 
+							<td class="input"><input type="text" name="genre" value="${book.genre}" class="user-input" required></td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Price: </label></td>
@@ -43,7 +43,7 @@
 						</tr>
 						<tr>
 							<td class="label"><label>Description: </label></td>
-							<td class="input"><textarea id="description" name="description" placeholder="${book.description}" class="user-input user-input-big" required></textarea></td> 
+							<td class="input"><textarea id="description" name="description"  class="user-input user-input-big" required>"${book.description}"</textarea></td> 
 						</tr>
 					</table>
 				</td>
@@ -53,6 +53,7 @@
 	<hr>
 	<section class="center">
 		<input type="hidden" name="bookId" value="${book.id}">
+		<input type="hidden" name="book" value="${book}">
 		<input type="hidden" name="prefix" value="admin">
 		<input type="hidden" name="action" value="saveBook">
 		<input type="submit" class="orange-button submit-button inline" value="Save Changes">

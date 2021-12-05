@@ -2,23 +2,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/header.jsp" />
 <c:import url="/menu.jsp" />
-
 <section>
 	<h1>Manage Users</h1>
-	<form action="AstonishingServlet" method="post">
-		<table class="book-grid-table center">
+	<table class="book-grid-table center">
 			<tr>
 				<th>Name</th>
 				<th>Email</th>
 				<th>Admin Privileges</th>
 			</tr>
-			<c:forEach items="1,2,3,4,5" var="user">
+			<c:forEach items="${users}" var="user">
 				<tr>
-					<td class="book-list-info">{user.firstname} {user.lastname}</td>
-					<td class="book-list-info">{user.email}</td>
+					<td class="book-list-info">${user.firstname} ${user.lastname}</td>
+					<td class="book-list-info">${user.email}</td>
 					<td class="book-list-info">
-						<input type="hidden" name="action" value="giveAdminPrivileges">
-						<input type="checkbox" name="userEmails" value="{user.email}" ${true ? 'checked' : ''}>
+						<form action="AstonishingServlet" method="post">
+							<input type="hidden" name="action" value="giveAdminPrivileges" >
+							<input type="hidden" name ="email" value="${user.email}" >
+							<input type="hidden" name ="isAdmin" value ="${user.isAdmin}">
+							<input type="checkbox" value="{user.isAdmin}" ${user.isAdmin ? 'checked' : ''} onchange="submit()">
+						</form>						
 					</td>
 				</tr>
 			</c:forEach>
@@ -28,7 +30,7 @@
 				<td></td>
 			</tr>
 		</table>
-	</form>
+	
 	<hr>
 </section>
 

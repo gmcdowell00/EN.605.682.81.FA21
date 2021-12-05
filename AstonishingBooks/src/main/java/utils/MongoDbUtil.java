@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.BulkOperations.BulkMode;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -253,6 +254,12 @@ public class MongoDbUtil {
 		return mongoOperation.findOne(query, Test.class);
 	}
 
+	public void UpdateAdminPermission(String email, boolean isAdmin, MongoTemplate mongoOperation) {
+		// Using updateFirst or updateMulti to update documents returned by a query
+		Query query = Query.query(Criteria.where("email").is(email));
+		mongoOperation.updateFirst(query, Update.update("isAdmin", isAdmin), User.class);
+	}
+	
 	/**
 	 * Find User in DB by email
 	 * 
@@ -295,7 +302,7 @@ public class MongoDbUtil {
 	 */
 	public void AddOrDeleteBook(String action, Book book, MongoTemplate mongoOperation) {
 
-		Query query = new Query(Criteria.where("name").is(book.getName()));
+		Query query = new Query(Criteria.where("_id").is(book.getId()));
 		switch (action) {
 		case Constants.ADD:
 			mongoOperation.save(book);
@@ -310,10 +317,21 @@ public class MongoDbUtil {
 
 		}
 	}
-
+	
+	public void UpdateBook(Book book, MongoTemplate mongoOperation) {
+		Query query = new Query(Criteria.where("_id").is(book.getId()));
+		
+		mongoOperation.save(book);
+	}
+	
 	public int BulkInsertBook(List<Book> books, MongoTemplate mongoOperation) {
 		return mongoOperation.bulkOps(BulkMode.UNORDERED, Book.class).insert(books).execute().getInsertedCount();
 	}
+	
+	public List<User> findAllUsers(MongoTemplate mongoOperation) {
+		return mongoOperation.findAll(User.class);
+	}
+	
 
 	/**
 	 * Returns a list of all books.

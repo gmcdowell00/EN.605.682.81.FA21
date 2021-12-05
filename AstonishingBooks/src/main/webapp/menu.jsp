@@ -34,7 +34,6 @@
 						<input type="image" class="cart-pic" src="images/inventory-icon.png" alt="Inventory">
 					</form>
 				 </c:if>
-				 
 			</td>
 		</tr>
 	</table>
@@ -68,6 +67,12 @@
 				<form action="AstonishingServlet" method="post">
 					<input type="hidden" name="action" value="goToReference">
 					<input type="submit" value="Reference" class="menu-button menu-font">
+				</form>
+			</td>
+			<td class="menu-2 menu-font">
+				<form action="AstonishingServlet" method="post">
+					<input type="hidden" name="action" value="manageUsers">
+					<input type="submit" value="test" class="menu-button menu-font">
 				</form>
 			</td>
 		</tr>

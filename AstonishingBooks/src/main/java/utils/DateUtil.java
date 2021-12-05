@@ -15,7 +15,13 @@ public class DateUtil {
 	public Date ConvertStringToDate(String dateString) {
 		
 		try {
+			if (dateString.contains("-")) {
+				String [] date = dateString.split("-");
+				dateString = date[1] + "/" + date[2] + "/" + date[0];
+			} 
+			
 			return new SimpleDateFormat("MM/dd/yyyy").parse(dateString);
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
