@@ -105,7 +105,7 @@ public class AstonishingServlet extends HttpServlet {
 				url = "/reference_page.jsp";
 			}
 
-			// sort the books by genre
+			// sort the books by genre string
 			List<Book> sortedBooks = bookHelper.searchBooks(books, genreString, ops);
 
 			// make the sorted books available for display

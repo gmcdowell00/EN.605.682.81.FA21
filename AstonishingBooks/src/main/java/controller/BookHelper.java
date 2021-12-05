@@ -107,6 +107,8 @@ public class BookHelper {
 	
 	public List<Book> removeNulls(List<Book> inputBooks, MongoTemplate ops){
 
+		// this method deletes books that have a null or emtpy string as a title
+		
 		// create a mongo utility object
 		MongoDbUtil mongoUtil = new MongoDbUtil();
 		
