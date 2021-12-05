@@ -537,19 +537,97 @@ public class AstonishingServlet extends HttpServlet {
 
 			// redirect to review information page
 			url = "/review_checkout.jsp";
+
 		} else if (action.equals("orderConfirmation")) {
 
 			// send the user a confirmation e-mail
 			// =================================================================
 
+
+		} else if (action.equals("orderConfirmation")) {   
+		
+
 			// get the current user
 			User currentUser = (User) context.getAttribute(Constants.USER);
+
+			
+			// get the current user's cart
+			Cart currentCart = currentUser.getCart();
+			
+			// get the current user's payment
+			Payment currentPayment = currentUser.getPayment();
+			
+			// send the user a confirmation e-mail   =================================================================
+			
+			// send email to user
+			String to = currentUser.getEmail();
+			String from = "HopkinsStudent1234@gmail.com";
+			String subject = "Order Confirmation from Astonishing Books";
+			
+			String bodyStyle = "<body style='background-color:#FFF6EE; font-family: Helvetica, sans-serif; color: #724029;"
+					+ "padding: 50px;'>";
+		      
+			String greeting = "";
+			greeting = "<h2>Your order has been confirmed!</h2></br></br>" 
+					+ "<h3>Your " + currentPayment.getCardType() + " has been charged $" + currentCart.getTotal() 
+					+ "</h3></br></br><h3>Your order will be sent to:</h3></br>"
+					+ "<h3>" + currentUser.getFirstname() + " " + currentUser.getLastname() + "</h3>"
+					+ "<h3>" + currentUser.getAddress() + "<h3>"
+					+ "<h3>" + currentUser.getCity() + ", " + currentUser.getState() + " " + currentUser.getZip() + "</h3></br></br>";
+
+			String tableHeader = "<table style='border: 1px solid #724029' >"
+					+ "<tr>"
+					+ "<th style='border: 1px solid #724029; padding 5px;' >Title</th>"
+					+ "<th style='border: 1px solid #724029; padding 5px;' >Price</th>";
+			
+			String tableBooks = "";
+			for (Book book: currentCart.getBooks()) {
+				tableBooks += "<tr>"
+						+"<td style='border: 1px solid #724029; padding: 5px;' >" + book.getName() + "</td>"
+						+"<td style='text-align: center; border: 1px solid #724029; padding: 5px;' >$" + book.getPrice() + "</td>";
+			}
+			
+			String closeTags = "</table></body>";
+			
+
+			
+			String body = bodyStyle + greeting + tableHeader + tableBooks + closeTags;
+			
+		    boolean isBodyHTML = true;
+		      
+			try {
+			    MailUtilGmail.sendMail(to, from, subject, body, isBodyHTML);
+			} catch (MessagingException e) {
+			  String errorMessage
+			            = "ERROR: Unable to send email. "
+			        + "Check Tomcat logs for details.<br>"
+			        + "NOTE: You may need to configure your system "
+			        + "as described in chapter 14.<br>"
+			        + "ERROR MESSAGE: " + e.getMessage();
+			  request.setAttribute("errorMessage", errorMessage);
+			  this.log(
+			        "Unable to send email. \n"
+			        + "Here is the email you tried to send: \n"
+			        + "=====================================\n"
+			        + "TO: " + currentUser.getEmail() + "\n"
+			        + "FROM: " + from + "\n"
+			        + "SUBJECT: " + subject + "\n"
+			        + "\n"
+			        + body + "\n\n");
+			
+			}
+			
 
 			// create an empty list of books
 			List<Book> emptyList = new ArrayList<>();
 
 			// get the user's cart
-			Cart currentCart = currentUser.getCart();
+
+			//Cart currentCart = currentUser.getCart();
+
+
+//			Cart currentCart = currentUser.getCart();
+			
 
 			// now that the order was placed, replace the cart list with an empty list
 			currentCart.setBooks(emptyList);
