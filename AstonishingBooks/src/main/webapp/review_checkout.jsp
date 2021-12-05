@@ -11,7 +11,7 @@
 	<table>
 		<tr>
 			<td><br>Name:</td>
-			<td><br>${user.firstname} ${user.lastname }</td> 
+			<td><br>${user.firstname} ${user.lastname}</td> 
 		</tr>
 		<tr>
 			<td><br>Email:</td>
@@ -45,13 +45,13 @@
 	<br>
 	<br>
 	<table class="book-grid-table">
-		<c:forEach items="1,2,3,4,5" var="book">
+		<c:forEach items="${user.cart.books}" var="book">
 			<tr>
-				<td class="book-list-img"><img class="book-img-list" alt="" src="images/test-book-cover.jpg"></td>
-				<td class="book-list-info">book title by book author</td>
-				<td class="book-list-info">price</td>
+				<td class="book-list-img"><img class="book-img-list" alt="" src=".${book.coverImageLink}.jpg"></td>
+				<td class="book-list-info">${book.name} by ${book.author}</td>
+				<td class="book-list-info">$${book.price}</td>
 				<td class="book-list-info">
-					<form action="" method="post">
+					<form action="AstonishingServlet" method="post">
 						<input type="hidden" name="action" value="removeFromCart">
 						<input type="hidden" name="removeBookFromCart" value="bookid">
 						<input type="image" class="delete-pic" src="images/delete.png" alt="Delete">
@@ -61,9 +61,8 @@
 		</c:forEach>
 		<tr>
 			<td></td>
-			<td></td>
-			<td><br><br><b>Total: $</b></td>
-			<td></td>
+			<td><br><br><b>Total:</b></td>
+			<td><br><br><b>$${user.cart.getTotal()}</b></td>
 		</tr>
 	</table>	
 </section>
