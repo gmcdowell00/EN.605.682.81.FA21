@@ -26,7 +26,13 @@
 			</c:forEach>
 			<tr>
 				<td></td>
-				<td><br><br><br><input type="submit" value="Save Changes" class="orange-button submit-button"></td>
+				<td>
+					<br><br><br>
+					<form action="AstonishingServlet" method="post">
+						<input type="hidden" name="action" value="adminPage">
+						<input type="submit" value="Back to Admin Page" class="orange-button submit-button">
+					</form>
+				</td>
 				<td></td>
 			</tr>
 		</table>
