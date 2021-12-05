@@ -10,6 +10,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.mongodb.ConnectionString;
@@ -46,7 +47,13 @@ public class DbContextListener implements ServletContextListener {
 			System.out.println("Databse initalized");
 			
 			System.out.println("Querying books");
-			Query query = new Query();
+			Criteria criteria = new Criteria();
+			criteria.andOperator(
+		            Criteria.where("name").ne(null),
+		            Criteria.where("publishedDate").ne(null),
+		            Criteria.where("description").ne(null));
+			
+			Query query = new Query(criteria);
 			
 			List<Book> books = ops.find(query, Book.class);
 			System.out.println("Queried " + books.size() + " books" );
