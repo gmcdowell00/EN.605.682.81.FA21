@@ -19,11 +19,11 @@
 			</tr>
 			<tr>
 				<td class="label"><label>Email:</label></td>
-				<td class="input"><input type="email" name="email" value="${user.email}" class="user-input" required></td> 
+				<td class="input"><input type="email" name="email" value="${user.id != '61aa68b78a5d542ac9f844b9' ? user.email : ''}" class="user-input" required></td> 
 			</tr>
 			<tr>
 				<td class="label"><label>Password:</label></td>
-				<td class="input"><input type="password" name="password" value="${user.password}" class="user-input" required></td> 
+				<td class="input"><input type="password" name="password" class="user-input" required></td> 
 			</tr>
 			<tr>
 				<td class="label"><label>Address:</label></td>

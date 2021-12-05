@@ -7,29 +7,7 @@
 	<h1>Admin Page</h1>
 </section>
 
-<section class="left">
-	<h3>My Information</h3>
-	<table>
-		<tr>
-			<td><br>Name:</td>
-			<td><br>${user.firstname} ${user.lastname}</td> 
-		</tr>
-		<tr>
-			<td><br>Email:</td>
-			<td><br>${user.email}</td> 
-		</tr>
-		<tr>
-			<td><br>Address:</td>
-			<td>
-				<br>${user.address}
-				<br>${user.city}, ${user.state} ${user.country} ${user.zip}
-			</td> 
-		</tr>
-	</table>
-</section>
-
-<section class="right">
-	<h3>Actions</h3>
+<section class="center">
 	<br>
 	<br>
 	<table class="book-grid-table">
@@ -40,11 +18,9 @@
 					<input type="submit" class="orange-button submit-button" value="Manage Inventory">
 				</form>
 			</td>
-		</tr>
-		<tr>
 			<td>
 				<form action="AstonishingServlet" method="post">
-					<input type="hidden" name="action" value="manageAdmin">
+					<input type="hidden" name="action" value="manageUsers">
 					<input type="submit" class="orange-button submit-button" value="Manage Administrators">
 				</form>
 			</td>

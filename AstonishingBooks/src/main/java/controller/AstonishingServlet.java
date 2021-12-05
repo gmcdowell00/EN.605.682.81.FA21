@@ -700,7 +700,10 @@ public class AstonishingServlet extends HttpServlet {
 		// ======================================================================================================================
 		// admin actions below
 		// ======================================================================================================================
-
+		// goes to admin main page
+		else if (action.equals("adminPage")) {
+			url = "/admin_view.jsp";
+		}
 		// this takes the admin user to the manage inventory page
 		else if (action.equals("inventory")) {
 			// create a new query
