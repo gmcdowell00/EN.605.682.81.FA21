@@ -62,8 +62,11 @@ public class DbContextListener implements ServletContextListener {
 			// create a BookHelper object
 			BookHelper bookHelper = new BookHelper();
 			
+			// remove any book from DB that has null or empty string for a title
+			List<Book> remainingBooks = bookHelper.removeNulls(books, ops);
+			
 			// sort the books by date, return the 12 newest that are not magazines
-			List<Book> sortedBooks = bookHelper.newestBooks(books, ops);
+			List<Book> sortedBooks = bookHelper.newestBooks(remainingBooks);
 
 			// set the sorted list of books as a context attribute
 			context.setAttribute(Constants.BOOKS, sortedBooks);  

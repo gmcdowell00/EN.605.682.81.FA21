@@ -106,7 +106,7 @@ public class AstonishingServlet extends HttpServlet {
 			}
 
 			// sort the books by genre string
-			List<Book> sortedBooks = bookHelper.searchBooks(books, genreString, ops);
+			List<Book> sortedBooks = bookHelper.searchBooks(books, genreString);
 
 			// make the sorted books available for display
 			context.setAttribute(Constants.BOOKS, sortedBooks);
@@ -124,7 +124,7 @@ public class AstonishingServlet extends HttpServlet {
 			BookHelper bookHelper = new BookHelper();
 
 			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID, ops);
+			Book foundBook = bookHelper.bookById(books, bookID);
 
 			// make the selected book available for display
 			context.setAttribute(Constants.BOOK, foundBook);
@@ -147,7 +147,7 @@ public class AstonishingServlet extends HttpServlet {
 			String searchTerm = request.getParameter("searchQuery");
 
 			// sort the books by searchTerm
-			List<Book> sortedBooks = bookHelper.searchBooks(books, searchTerm, ops);
+			List<Book> sortedBooks = bookHelper.searchBooks(books, searchTerm);
 
 			// if the results are null, instantiate an empty list
 			if (sortedBooks == null) {
@@ -756,7 +756,7 @@ public class AstonishingServlet extends HttpServlet {
 			BookHelper bookHelper = new BookHelper();
 
 			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID, ops);
+			Book foundBook = bookHelper.bookById(books, bookID);
 
 			// make the selected book available for display
 			session.setAttribute(Constants.BOOK, foundBook);
@@ -781,7 +781,7 @@ public class AstonishingServlet extends HttpServlet {
 			BookHelper bookHelper = new BookHelper();
 
 			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID, ops);
+			Book foundBook = bookHelper.bookById(books, bookID);
 
 			// if the book is found in the DB, delete it
 			if (foundBook != null) {
@@ -913,7 +913,7 @@ public class AstonishingServlet extends HttpServlet {
 		BookHelper bookHelper = new BookHelper();
 
 		// sort the books by date, return the 12 newest that are not magazines
-		List<Book> sortedBooks = bookHelper.newestBooks(books, ops);
+		List<Book> sortedBooks = bookHelper.newestBooks(books);
 
 		// make the sorted books available for display
 		context.setAttribute(Constants.BOOKS, sortedBooks);

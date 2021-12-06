@@ -23,10 +23,7 @@ import utils.MongoDbUtil;
 
 public class BookHelper {
 	
-	public List<Book> newestBooks(List<Book> inputBooks, MongoTemplate ops){
-		
-		// remove nulls from the DB before sorting
-		List<Book> books = removeNulls(inputBooks, ops);
+	public List<Book> newestBooks(List<Book> books){
 		
 		// number of books passed in
 		int totalBookCount = books.size();
@@ -60,11 +57,8 @@ public class BookHelper {
 	}
 	
 	
-	public List<Book> searchBooks(List<Book> inputBooks, String searchQuery, MongoTemplate ops){
-		
-		// remove nulls from the DB before search
-		List<Book> books = removeNulls(inputBooks, ops);
-		
+	public List<Book> searchBooks(List<Book> books, String searchQuery){
+
 		// set the search term to lower case so the search will ignore case
 		String searchTerm = searchQuery.toLowerCase();
 		
@@ -85,11 +79,8 @@ public class BookHelper {
 	}
 	
 	
-	public Book bookById(List<Book> inputBooks, String bookId, MongoTemplate ops){
-				
-		// remove nulls from the DB before search
-		List<Book> books = removeNulls(inputBooks, ops);
-		
+	public Book bookById(List<Book> books, String bookId){
+
 		// create a list to return the results
 		Book result = new Book();
 		
