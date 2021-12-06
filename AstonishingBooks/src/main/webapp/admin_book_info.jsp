@@ -17,13 +17,13 @@
 					<c:if test="${empty book.coverImageLink}"> 
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
 					</c:if>
-					<input type="file" name="coverImage" value="${book.coverImageLink}" id="coverFile">
+					<input type="file" name="coverImageLink" value="${book.coverImageLink}" id="coverFile">
 				</td>
 				<td class="book-info">
 					<table>
 						<tr>
 							<td class="label"><label>Title: </label></td>
-							<td class="input"><input type="text" name="title" value="${book.name}" class="user-input" required></td> 
+							<td class="input"><input type="text" name="name" value="${book.name}" class="user-input" required></td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Author: </label></td>
@@ -39,7 +39,7 @@
 						</tr>
 						<tr>
 							<td class="label"><label>Price: </label></td>
-							<td class="input"><input type="number" step="0.01" name="price" value="${book.price}" class="user-input" required></td> 
+							<td class="input"><input type="text" step="0.01" name="price" value="${book.price}" class="user-input" required></td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Description: </label></td>

@@ -297,9 +297,25 @@ public class AstonishingServlet extends HttpServlet {
 				mongoUtil.SaveOrUpdatePayment(payment, email, ops);
 
 				// create an empty cart object, save it to the DB
-				Cart cart = new Cart();
-				cart.setEmail(email);
-				mongoUtil.SaveOrUpdateCart(cart, email, ops);
+				Cart newCart = new Cart();
+				newCart.setEmail(email);
+				mongoUtil.SaveOrUpdateCart(newCart, email, ops);
+				
+				// transfer books from the guest cart to the new user's cart
+				// get the guest user
+				User guestUser = (User) context.getAttribute(Constants.USER);
+
+				// get the guest user's cart
+				Cart guestCart = guestUser.getCart();
+
+				// get the list of books from the cart
+				List<Book> guestBooks = guestCart.getBooks();
+
+				// set the new user's cart to hold books from guest
+				newCart.setBooks(guestBooks);
+
+				// update the cart in the DB
+				Cart cart = mongoUtil.SaveOrUpdateCart(newCart, email, ops);	
 
 				// create an empty list of book objects
 				List<Book> wishlist = new ArrayList<Book>();
@@ -818,19 +834,21 @@ public class AstonishingServlet extends HttpServlet {
 		else if (action.equals("saveBook")) {
 			// Retrieve book from session
 			Book currentBook = (Book) session.getAttribute(Constants.BOOK);
-
-			// get all of the books from the DB
-			Query query = new Query();
-			List<Book> books = ops.find(query, Book.class);
 			
-			// return all of the books - Contants.BOOKS may not hold all of the books
-//			List<Book> books = (ArrayList<Book>) context.getAttribute(Constants.BOOKS);
+			System.out.println("book to save: " + currentBook.getName());
+			
+			// return all of the books 
+			List<Book> books = (ArrayList<Book>) context.getAttribute(Constants.BOOKS);
 
+			System.out.println("books.size(): " + books.size());
+			
 			Book bookInContext = books.stream().filter(b -> currentBook.getId().equals(b.getId())).findFirst()
 					.orElse(null);
-
+			
 			// Find index of book to be updated
 			int bookIndex = books.indexOf(bookInContext);
+			
+			System.out.println("index of book to save: " + bookIndex);
 
 			// get updated book info from request object
 			String name = request.getParameter("name");
@@ -838,7 +856,7 @@ public class AstonishingServlet extends HttpServlet {
 			String genre = request.getParameter("genre");
 			String price = request.getParameter("price");
 			String description = request.getParameter("description");
-			String coverImageLink = request.getParameter("coverImageLink");
+//			String coverImageLink = request.getParameter("coverImageLink");
 
 			// store the updated data in the book object
 			currentBook.setName(name);
@@ -846,17 +864,46 @@ public class AstonishingServlet extends HttpServlet {
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);
-			currentBook.setCoverImageLink(coverImageLink);
+//			currentBook.setCoverImageLink(coverImageLink);
 
 			// send update to the database
 			// Update book in context
 			books.set(bookIndex, currentBook);
 
+			System.out.println("Before DB update");
+			System.out.println("ID: " + currentBook.getId());
+			System.out.println("title: " + currentBook.getName());
+			System.out.println("author: " + currentBook.getAuthor());
+			System.out.println("genre: " + currentBook.getGenre());
+			System.out.println("price: " + currentBook.getPrice());
+			System.out.println("description: " + currentBook.getDescription());
+			System.out.println("coverImageLink: " + currentBook.getCoverImageLink());
+
 			// Update book in database
 			mongoUtil.UpdateBook(currentBook, ops);
 			
+			// get all of the books from the DB
+			Query query = new Query();
+			
 			// return all of the books after the update
 			books = ops.find(query, Book.class);
+			
+			System.out.println("books after update: " + books.size());
+			
+			// create a BookHelper object
+			BookHelper bookHelper = new BookHelper();
+			
+			Book afterDBUpdate = bookHelper.bookById(books, currentBook.getId());
+			
+			System.out.println("\nAfter DB update");
+			System.out.println("ID: " + afterDBUpdate.getId());
+			System.out.println("title: " + afterDBUpdate.getName());
+			System.out.println("author: " + afterDBUpdate.getAuthor());
+			System.out.println("genre: " + afterDBUpdate.getGenre());
+			System.out.println("price: " + afterDBUpdate.getPrice());
+			System.out.println("description: " + afterDBUpdate.getDescription());
+			System.out.println("coverImageLink: " + afterDBUpdate.getCoverImageLink());
+
 			
 			// set the books for display
 			context.setAttribute(Constants.BOOKS, books);  

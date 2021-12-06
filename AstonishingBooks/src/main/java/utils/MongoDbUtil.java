@@ -412,7 +412,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("The Picture of Dorian Gray", "Oscar Wilde", date, "Fiction", 10.00,
+				add(new Book("The Picture of Dorian Gray", "Oscar Wilde", date, "Fiction", 10.99,
 						"/coverImages/dorianGray",
 						"When handsome young Dorian Gray sees a painter’s stunning portrait of him, he is transfixed by its reflection "
 								+ "of his own beauty. He says that he would give his soul if only the painting would suffer the ravages of "
@@ -530,7 +530,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("A Journey to the Center of the Earth", "Jules Verne", date, "Fiction", 15.00,
+				add(new Book("A Journey to the Center of the Earth", "Jules Verne", date, "Fiction", 15.99,
 						"/coverImages/journeyCenterEarth",
 						"Accompanied by his nephew Harry and his guide Hans, Professor Von Hardwigg "
 								+ "follows directions in a coded message left by sixteenth-century alchemist Arne Saknussemm to the "
@@ -546,7 +546,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("The Lyrics: 1956 to the Present", "Paul McCartney", date, "Non-Fiction", 100.00,
+				add(new Book("The Lyrics: 1956 to the Present", "Paul McCartney", date, "Non-Fiction", 100.99,
 						"/coverImages/theLyrics",
 						"A landmark publishing event featuring two volumes of Paul McCartney's lyrics "
 								+ "from his time before The Beatles, with The Beatles, Wings and his solo career — 154 songs in "
@@ -661,7 +661,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("Humble Pi", "Matt Parker", date, "Non-Fiction", 17.00, "/coverImages/humblePi",
+				add(new Book("Humble Pi", "Matt Parker", date, "Non-Fiction", 17.99, "/coverImages/humblePi",
 						"Our whole world is built on math, from the code running a website to the equations enabling the "
 								+ "design of skyscrapers and bridges. Most of the time this math works quietly behind the scenes . . . "
 								+ "until it doesn’t. All sorts of seemingly innocuous mathematical mistakes can have significant "
@@ -761,7 +761,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("Reader’s Digest", "Reader’s Digest Association Inc", date, "Magazine", 1.50,
+				add(new Book("Reader’s Digest", "Reader’s Digest Association Inc", date, "Magazine", 1.59,
 						"/coverImages/readersDigest",
 						"Who can keep up with 8,500 magazines and newspapers, 2,300 TV channels, "
 								+ "plus more than 200 million websites? In an era of information overload, Readers Digest offers "
@@ -842,7 +842,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("HGTV Magazine", "Hearst", date, "Magazine", 2.00, "/coverImages/hgtv", "In every "
+				add(new Book("HGTV Magazine", "Hearst", date, "Magazine", 2.99, "/coverImages/hgtv", "In every "
 						+ "issue of HGTV Magazine, you'll learn insider secrets from your favorite HGTV stars. Plus, tour "
 						+ "the coolest designer homes from across the country, check out fun decorating tips, DIY "
 						+ "solutions, home makeovers, and more!"));
@@ -855,7 +855,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("Consumer Reports", "Consumer Reports", date, "Magazine", 2.00,
+				add(new Book("Consumer Reports", "Consumer Reports", date, "Magazine", 2.99,
 						"/coverImages/consumerReports",
 						"Ratings, recommendations, reliability reports, safety and price "
 								+ "comparisons from the world's largest consumer testing center. Helps consumers make "
@@ -871,7 +871,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("Vanity Fair", "Conde Nast", date, "Magazine", 2.50, "/coverImages/vanityFair",
+				add(new Book("Vanity Fair", "Conde Nast", date, "Magazine", 2.59, "/coverImages/vanityFair",
 						"From entertainment to world affairs, business to style, design to society, Vanity Fair is a "
 								+ "cultural catalyst, inspiring and driving the national conversation."));
 
@@ -899,7 +899,7 @@ public class MongoDbUtil {
 					System.out.println(e.getMessage());
 				}
 				add(new Book("Desk Reference to the Diagnostic Criteria From DSM-5", "American Psychiatric Association",
-						date, "Reference", 74.00, "/coverImages/diagnosticCriteria",
+						date, "Reference", 74.99, "/coverImages/diagnosticCriteria",
 						"The Desk Reference to "
 								+ "the Diagnostic Criteria From DSM-5 is a concise, affordable companion to the "
 								+ "ultimate psychiatric reference, DSM-5. It includes the fully revised diagnostic "
@@ -943,7 +943,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("The Product Manager's Desk Reference", "Steven Haines", date, "Reference", 75.00,
+				add(new Book("The Product Manager's Desk Reference", "Steven Haines", date, "Reference", 75.99,
 						"/coverImages/PMDeskRef",
 						"The digital age is here to stay. That means the pace of business change "
 								+ "will only increase and competitive forces will challenge you, and your role as a "
@@ -1029,7 +1029,7 @@ public class MongoDbUtil {
 					System.out.println(e.getMessage());
 				}
 				add(new Book("Oxford Desk Reference: Clinical Genetics and Genomics", "Helen V. Firth", date,
-						"Reference", 115.00, "/coverImages/genetics",
+						"Reference", 115.99, "/coverImages/genetics",
 						"The authors have used their experience to devise "
 								+ "a practical clinical approach to many common genetic referrals, both outpatient and "
 								+ "ward based. The most common Mendelian disorders, chromosomal disorders, congenital "
@@ -1063,7 +1063,7 @@ public class MongoDbUtil {
 					System.out.println("An error has occured");
 					System.out.println(e.getMessage());
 				}
-				add(new Book("The Musical Instrument Desk Reference", "Michael J. Pagliaro", date, "Reference", 89.00,
+				add(new Book("The Musical Instrument Desk Reference", "Michael J. Pagliaro", date, "Reference", 89.99,
 						"/coverImages/musicalInstrument",
 						"Descriptions and illustrations of "
 								+ "everything from the physics of sound to detailed discussions of each orchestra "

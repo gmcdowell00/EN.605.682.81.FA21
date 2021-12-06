@@ -59,6 +59,5 @@ public class Cart {
 		return books == null || books.size() == 0
 				? 0.00
 				: new BigDecimal(books.stream().mapToDouble(book -> book.getPrice()).sum()).setScale(2, RoundingMode.HALF_UP).doubleValue(); 
-//				(books.stream().mapToDouble(book -> book.getPrice()).sum());
 	}
 }
