@@ -11,31 +11,31 @@
 	<table>
 		<tr>
 			<td><br>Name:</td>
-			<td><br>${user.firstname} ${user.lastname}</td> 
+			<td><br>${checkoutUser.firstname} ${checkoutUser.lastname}</td> 
 		</tr>
 		<tr>
 			<td><br>Email:</td>
-			<td><br>${user.email}</td> 
+			<td><br>${checkoutUser.email}</td> 
 		</tr>
 		<tr>
 			<td><br>Address:</td>
-			<td><br>${user.address}</td> 
+			<td><br>${checkoutUser.address}</td> 
 		</tr>
 		<tr>
 			<td><br>Credit Card Type:</td>
-			<td><br>${user.payment.cardType}</td> 
+			<td><br>${checkoutUser.payment.cardType}</td> 
 		</tr>
 		<tr>
 			<td><br>Name on Card:</td>
-			<td><br>${user.payment.cardname}</td> 
+			<td><br>${checkoutUser.payment.cardname}</td> 
 		</tr>
 		<tr>
 			<td><br>Card Number:</td>
-			<td><br>${user.payment.cardNumber}</td> 
+			<td><br>${checkoutUser.payment.cardNumber}</td> 
 		</tr>
 		<tr>
 			<td><br>Expiration Date:</td>
-			<td><br>${user.payment.experiationMonth} / ${user.payment.experiationYear}</td> 
+			<td><br>${checkoutUser.payment.experiationMonth} / ${checkoutUser.payment.experiationYear}</td> 
 		</tr>
 	</table>	
 </section>
@@ -45,7 +45,7 @@
 	<br>
 	<br>
 	<table class="book-grid-table">
-		<c:forEach items="${user.cart.books}" var="book">
+		<c:forEach items="${checkoutUser.cart.books}" var="book">
 			<tr>
 				<td class="book-list-img"><img class="book-img-list" alt="" src=".${book.coverImageLink}.jpg"></td>
 				<td class="book-list-info">${book.name} by ${book.author}</td>
@@ -62,7 +62,7 @@
 		<tr>
 			<td></td>
 			<td><br><br><b>Total:</b></td>
-			<td><br><br><b>$${user.cart.getTotal()}</b></td>
+			<td><br><br><b>$${checkoutUser.cart.getTotal()}</b></td>
 		</tr>
 	</table>	
 </section>

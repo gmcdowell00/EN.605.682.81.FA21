@@ -7,11 +7,11 @@
 
 	<h1>Order Successful!</h1>
 	<br>
-	<br> Thank you <b>name${user.firstname} ${user.lastname}</b> for ordering at Astonishing Books!
-	<br> Your total was <b>$???</b>.
+	<br> Thank you <b>${checkoutUser.firstname} ${checkoutUser.lastname}</b> for ordering at Astonishing Books!
+	<br> Your total was <b>$${checkoutUser.cart.getTotal()}</b>.
 	<br>
 	<br>
-	<br> An email confirmation will be sent to <b>email${user.email}</b> shortly.
+	<br> An email confirmation has been sent to <b>${checkoutUser.email}</b>.
 	
 </section>
 

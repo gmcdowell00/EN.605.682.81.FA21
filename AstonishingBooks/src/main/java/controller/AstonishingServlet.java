@@ -499,68 +499,84 @@ public class AstonishingServlet extends HttpServlet {
 
 		// review order
 		else if (action.equals("reviewInfo")) {
+			
+			// get the user's profile info
+			String checkoutFirstname = request.getParameter("firstname");
+			String checkoutLastname = request.getParameter("lastname");
+			String checkoutEmail = request.getParameter("email");
+			String checkoutAddress = request.getParameter("address");
+			String checkoutCity = request.getParameter("city");
+			String checkoutState = request.getParameter("state");
+			String checkoutCountry = request.getParameter("country");
+			String checkoutZip = request.getParameter("zip");
+
 			// get the user's credit card info
-			String userCardTypeString = request.getParameter("creditCardType");
-			String userCardName = (String) request.getParameter("cardName");
-			String userCardNumber = (String) request.getParameter("cardNumber");
-			String userExperiationmonthString = request.getParameter("expireMonth");
-			String userExperiationyearString = request.getParameter("expireYear");
+			String checkoutCardTypeString = request.getParameter("creditCardType");
+			String checkoutCardName = (String) request.getParameter("cardName");
+			String checkoutCardNumber = (String) request.getParameter("cardNumber");
+			String checkoutExperiationmonthString = request.getParameter("expireMonth");
+			String checkoutExperiationyearString = request.getParameter("expireYear");
 
 			// convert strings to appropriate values
-			int userExperiationmonth = Integer.parseInt(userExperiationmonthString);
-			int userExperiationyear = Integer.parseInt(userExperiationyearString);
-			CardType userCardType = CardType.valueOf(userCardTypeString);
-
-			// get the user from context
-			User checkoutUser = (User) context.getAttribute(Constants.USER);
+			int checkoutExperiationmonth = Integer.parseInt(checkoutExperiationmonthString);
+			int checkoutExperiationyear = Integer.parseInt(checkoutExperiationyearString);
+			CardType checkoutCardType = CardType.valueOf(checkoutCardTypeString);
 
 			// get the user's payment
-			Payment userPayment = checkoutUser.getPayment();
+			Payment checkoutPayment = new Payment();
+			
+			// set the payment values
+			checkoutPayment.setCardType(checkoutCardType);
+			checkoutPayment.setCardname(checkoutCardName);
+			checkoutPayment.setCardNumber(checkoutCardNumber);
+			checkoutPayment.setExperiationMonth(checkoutExperiationmonth);
+			checkoutPayment.setExperiationYear(checkoutExperiationyear);
 
-			// set the values
-			userPayment.setCardType(userCardType);
-			userPayment.setCardname(userCardName);
-			userPayment.setCardNumber(userCardNumber);
-			userPayment.setExperiationMonth(userExperiationmonth);
-			userPayment.setExperiationYear(userExperiationyear);
+			// get the user from context
+			User currentUser = (User) context.getAttribute(Constants.USER);
 
-			System.out.println("CC Type: " + userPayment.getCardType());
+			// get the current user's cart
+			Cart tempCart = currentUser.getCart();
+			
+			// create a checkout cart
+			Cart checkoutCart = new Cart();
+			
+			// set the checkout cart email to the checkout email 
+			checkoutCart.setEmail(checkoutEmail);
+			
+			// set the checkout cart books to the tempUser cart books
+			checkoutCart.setBooks(tempCart.getBooks());
 
-			// save the updated payment info into the user
-			checkoutUser.setPayment(userPayment);
+			// create an empty wishlist
+			List<Book> checkoutWishlist = new ArrayList<>();
 
-			// save the updates to the db
-			User updatedUser = mongoUtil.SaveOrUpdateUser(checkoutUser, ops);
-
-			// save the updated user to the context object
-			context.setAttribute(Constants.USER, updatedUser);
+			// create a checkout user
+			User checkoutUser = new User(checkoutFirstname, checkoutLastname, checkoutEmail, 
+										false, "", checkoutAddress, checkoutCity, checkoutState, 
+										checkoutCountry, checkoutZip, checkoutPayment, checkoutCart, 
+										checkoutWishlist);
+			
+			// save the checkout user to the session object
+			session.setAttribute("checkoutUser", checkoutUser);
 
 			// redirect to review information page
 			url = "/review_checkout.jsp";
 
-		} else if (action.equals("orderConfirmation")) {
-
-			// send the user a confirmation e-mail
-			// =================================================================
-
-
-		} else if (action.equals("orderConfirmation")) {   
+		}  else if (action.equals("orderConfirmation")) {   
 		
-
-			// get the current user
-			User currentUser = (User) context.getAttribute(Constants.USER);
-
-			
+			// get the checkout user
+			User checkoutUser = (User) session.getAttribute("checkoutUser");
+		
 			// get the current user's cart
-			Cart currentCart = currentUser.getCart();
+			Cart checkoutCart = checkoutUser.getCart();
 			
 			// get the current user's payment
-			Payment currentPayment = currentUser.getPayment();
+			Payment checkoutPayment = checkoutUser.getPayment();
 			
 			// send the user a confirmation e-mail   =================================================================
 			
 			// send email to user
-			String to = currentUser.getEmail();
+			String to = checkoutUser.getEmail();
 			String from = "HopkinsStudent1234@gmail.com";
 			String subject = "Order Confirmation from Astonishing Books";
 			
@@ -569,11 +585,11 @@ public class AstonishingServlet extends HttpServlet {
 		      
 			String greeting = "";
 			greeting = "<h2>Your order has been confirmed!</h2></br></br>" 
-					+ "<h3>Your " + currentPayment.getCardType() + " has been charged $" + currentCart.getTotal() 
+					+ "<h3>Your " + checkoutPayment.getCardType() + " has been charged $" + checkoutCart.getTotal() 
 					+ "</h3></br></br><h3>Your order will be sent to:</h3></br>"
-					+ "<h3>" + currentUser.getFirstname() + " " + currentUser.getLastname() + "</h3>"
-					+ "<h3>" + currentUser.getAddress() + "<h3>"
-					+ "<h3>" + currentUser.getCity() + ", " + currentUser.getState() + " " + currentUser.getZip() + "</h3></br></br>";
+					+ "<h3>" + checkoutUser.getFirstname() + " " + checkoutUser.getLastname() + "</h3>"
+					+ "<h3>" + checkoutUser.getAddress() + "<h3>"
+					+ "<h3>" + checkoutUser.getCity() + ", " + checkoutUser.getState() + " " + checkoutUser.getZip() + "</h3></br></br>";
 
 			String tableHeader = "<table style='border: 1px solid #724029' >"
 					+ "<tr>"
@@ -581,7 +597,7 @@ public class AstonishingServlet extends HttpServlet {
 					+ "<th style='border: 1px solid #724029; padding 5px;' >Price</th>";
 			
 			String tableBooks = "";
-			for (Book book: currentCart.getBooks()) {
+			for (Book book: checkoutCart.getBooks()) {
 				tableBooks += "<tr>"
 						+"<td style='border: 1px solid #724029; padding: 5px;' >" + book.getName() + "</td>"
 						+"<td style='text-align: center; border: 1px solid #724029; padding: 5px;' >$" + book.getPrice() + "</td>";
@@ -609,7 +625,7 @@ public class AstonishingServlet extends HttpServlet {
 			        "Unable to send email. \n"
 			        + "Here is the email you tried to send: \n"
 			        + "=====================================\n"
-			        + "TO: " + currentUser.getEmail() + "\n"
+			        + "TO: " + checkoutUser.getEmail() + "\n"
 			        + "FROM: " + from + "\n"
 			        + "SUBJECT: " + subject + "\n"
 			        + "\n"
@@ -617,17 +633,14 @@ public class AstonishingServlet extends HttpServlet {
 			
 			}
 			
-
-			// create an empty list of books
-			List<Book> emptyList = new ArrayList<>();
-
-			// get the user's cart
-
-			//Cart currentCart = currentUser.getCart();
-
-
-//			Cart currentCart = currentUser.getCart();
+			// get the current user
+			User currentUser = (User) context.getAttribute(Constants.USER);
+		
+			// get the current user's cart
+			Cart currentCart = currentUser.getCart();
 			
+			// create an empty list of books
+			List<Book> emptyList = new ArrayList<>();		
 
 			// now that the order was placed, replace the cart list with an empty list
 			currentCart.setBooks(emptyList);
@@ -722,7 +735,7 @@ public class AstonishingServlet extends HttpServlet {
 
 			List<User> users = new MongoDbUtil().findAllUsers(ops);
 
-			// make the selected book available for display
+			// make the users available for display
 			session.setAttribute("users", users);
 
 			url = "/admin_manage_users.jsp";
