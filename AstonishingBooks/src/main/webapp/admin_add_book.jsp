@@ -40,7 +40,10 @@
 						</tr>
 						<tr>
 							<td class="label"><label>Published Date (mm/dd/yyyy): </label></td>
-							<td class="input"><input type="date" name="publishedDate" class="user-input" required></td> 
+					<!-- 		<td class="input"><input type="date" name="publishedDate" class="user-input" required></td>   -->
+							<td class="input">
+								<input type="text" pattern="\d{2}\/\d{2}\/\d{4}" class="user-input" name="publishedDate" title="Please enter the date as mm/dd/yyyy" required/>
+							</td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Genre: </label></td>

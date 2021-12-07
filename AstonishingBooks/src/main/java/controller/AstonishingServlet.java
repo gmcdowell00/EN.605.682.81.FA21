@@ -128,7 +128,7 @@ public class AstonishingServlet extends HttpServlet {
 			Book foundBook = bookHelper.bookById(books, bookID, ops);
 
 			// make the selected book available for display
-			context.setAttribute(Constants.BOOK, foundBook);
+			session.setAttribute(Constants.BOOK, foundBook);
 
 			// set the url for the book info page
 			url = "/book_info.jsp";
@@ -359,7 +359,7 @@ public class AstonishingServlet extends HttpServlet {
 			List<Book> books = cart.getBooks();
 
 			// get the selected book from the context
-			Book addBookToCart = (Book) context.getAttribute(Constants.BOOK);
+			Book addBookToCart = (Book) session.getAttribute(Constants.BOOK);
 
 			// check whether the book is already in the list
 			boolean found = false;
@@ -448,7 +448,7 @@ public class AstonishingServlet extends HttpServlet {
 			List<Book> wishlist = user.getWishlist();
 
 			// get the selected book from the context
-			Book addBookToWishlist = (Book) context.getAttribute(Constants.BOOK);
+			Book addBookToWishlist = (Book) session.getAttribute(Constants.BOOK);
 
 			// check whether the book is already in the list
 			boolean found = false;
@@ -880,7 +880,7 @@ public class AstonishingServlet extends HttpServlet {
 
 			
 			// save the book for display
-			context.setAttribute(Constants.BOOK, book);
+			session.setAttribute(Constants.BOOK, book);
 			
 			// redirect to the book info page
 			url = "/book_info.jsp";
@@ -915,14 +915,27 @@ public class AstonishingServlet extends HttpServlet {
 			// get updated book info from request object
 			String name = request.getParameter("name");
 			String author = request.getParameter("author");
+			String publishedDateString = request.getParameter("publishedDate");
 			String genre = request.getParameter("genre");
 			String price = request.getParameter("price");
 			String description = request.getParameter("description");
 //			String coverImageLink = request.getParameter("coverImageLink");
+			
+			// convert date string to date object
+			Date publishedDate = null;
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");		
+			
+			try {
+				publishedDate = formatter.parse(publishedDateString);
+			} catch (Exception e) {
+				System.out.println("An error has occured");
+				System.out.println(e.getMessage());
+			}
 
 			// store the updated data in the book object
 			currentBook.setName(name);
 			currentBook.setAuthor(author);
+			currentBook.setPublishedDate(publishedDate);
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);

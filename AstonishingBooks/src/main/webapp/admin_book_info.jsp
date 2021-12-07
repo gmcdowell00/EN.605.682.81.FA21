@@ -45,7 +45,10 @@
 						</tr>
 						<tr>
 							<td class="label"><label>Published Date: </label></td>
-							<td class="input"><input type="date" name="publishedDate" value="${book.getPublishedDateString()}" class="user-input" required></td> 
+							<td class="input">
+							<!-- 	<input type="date" name="publishedDate" value="${book.getPublishedDateString()}" class="user-input" required>  -->
+								<input type="text" pattern="\d{2}\/\d{2}\/\d{4}" class="user-input" value="${book.getPublishedDateString()}" name="publishedDate" title="Please enter the date as mm/dd/yyyy" required/>
+							</td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Genre: </label></td>

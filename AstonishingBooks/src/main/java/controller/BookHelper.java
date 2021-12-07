@@ -119,8 +119,6 @@ public class BookHelper {
 					mongoUtil.AddOrDeleteBook("delete", book, ops);
 				} else if (book.getName().equals("")) {
 					mongoUtil.AddOrDeleteBook("delete", book, ops);
-				} else if (book.getPublishedDate() == null) {
-					mongoUtil.AddOrDeleteBook("delete", book, ops);
 				}
 			}
 		}

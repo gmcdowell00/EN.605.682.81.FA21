@@ -92,7 +92,10 @@ public class Book {
 
 	public String getPublishedDateString() {
 		if (publishedDate != null) {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			
+			// match date input format
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 			return dateFormat.format(publishedDate);
 		} 
 		
