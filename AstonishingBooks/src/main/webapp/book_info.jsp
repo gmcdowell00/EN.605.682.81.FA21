@@ -19,7 +19,7 @@
 						<input type="submit" class="book-info-button orange-button" value="Edit Book Information">
 					</form>
 				</c:if>
-				<c:if test="${(empty user) || (user.id != '61aa68b78a5d542ac9f844b9') || (not user.isAdmin)}">
+				<c:if test="${(empty user) || ((not empty user) && (not user.isAdmin))}">
 					<form action="AstonishingServlet" method="post">
 						<input type="hidden" name="action" value="addCart">
 						<input type="submit" class="book-info-button orange-button" value="Add to Cart"><br><br>
