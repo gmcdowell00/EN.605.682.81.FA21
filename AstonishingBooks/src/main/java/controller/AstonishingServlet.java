@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 // default imports
 import java.io.IOException;
 import java.util.ArrayList;
@@ -820,10 +821,10 @@ public class AstonishingServlet extends HttpServlet {
 			Book newBook = new Book();
 
 			// add the book to the DB so it will get an ID
-			mongoUtil.AddOrDeleteBook(Constants.ADD, newBook, ops);
+			//mongoUtil.AddOrDeleteBook(Constants.ADD, newBook, ops);
 
 			// make the book available to the edit page
-			context.setAttribute(Constants.BOOK, newBook);
+			//context.setAttribute(Constants.BOOK, newBook);
 
 			// go to the admin book info page to fill in the fields
 			url = "/admin_book_info.jsp";
@@ -833,7 +834,11 @@ public class AstonishingServlet extends HttpServlet {
 		// return to the inventory page ==============
 		else if (action.equals("saveBook")) {
 			// Retrieve book from session
-			Book currentBook = (Book) session.getAttribute(Constants.BOOK);
+			Book currentBook = new Book();
+					
+			this.AddNewBook((Book) session.getAttribute(Constants.BOOK), currentBook, mongoUtil, ops, request);;
+			
+			
 			
 			System.out.println("book to save: " + currentBook.getName());
 			
@@ -864,7 +869,7 @@ public class AstonishingServlet extends HttpServlet {
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);
-//			currentBook.setCoverImageLink(coverImageLink);
+			//currentBook.setCoverImageLink(coverImageLink);
 
 			// send update to the database
 			// Update book in context
@@ -947,6 +952,50 @@ public class AstonishingServlet extends HttpServlet {
 		RequestDispatcher dispatcher = getServletConfig().getServletContext().getRequestDispatcher(url);
 		dispatcher.forward(request, response);
 
+	}
+		
+	public void AddNewBook(Book contextBook, Book newBook, MongoDbUtil mongoUtil, MongoTemplate ops, HttpServletRequest request) {
+		
+		if (contextBook != null) {
+			newBook = contextBook;
+		}
+		else {
+			
+			Book book = new Book();
+			// get updated book info from request object
+			String name = request.getParameter("name");
+			String author = request.getParameter("author");
+			String genre = request.getParameter("genre");
+			String price = request.getParameter("price");
+			String description = request.getParameter("description");
+			book.setName(name);
+			book.setAuthor(author);
+			book.setGenre(genre);
+			book.setPublishedDate(new Date());
+			book.setPrice( Double.parseDouble(price));
+			book.setDescription(description);
+			book.setCoverImageLink("/coverImages/"+ this.convertToCamelCase(name));
+			mongoUtil.AddOrDeleteBook(Constants.ADD, book, ops);
+			newBook = mongoUtil.FindBookByname(newBook.getName(), ops);
+			int me = 0;
+		}	
+	}
+	
+	private String convertToCamelCase(String title) {
+		
+		if (title.length() == 0) return "";
+		
+		String result = "";
+		String [] tArray = title.split(" ");
+		result += tArray[0].toLowerCase();
+		for (int i = 1; i < tArray.length; i++) {
+			
+			String temp = "";
+			temp += tArray[i].substring(0, 1).toUpperCase();
+			temp += tArray[i].substring(1).toLowerCase();
+			result += temp;
+		}		
+		return result;
 	}
 
 	private String newBooksIndex(MongoTemplate ops, ServletContext context) {

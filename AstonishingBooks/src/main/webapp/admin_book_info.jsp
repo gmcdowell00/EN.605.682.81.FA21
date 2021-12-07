@@ -3,6 +3,19 @@
 <c:import url="./header.jsp" />
 <c:import url="./menu.jsp" />
 
+<!-- Ajax to Java File Upload Logic -->
+  <script>
+  async function uploadFile() {
+    let formData = new FormData(); 
+    formData.append("file", coverFile.files[0]);
+    await fetch('FileUploadServlet', {
+      method: "POST", 
+      body: formData
+    }); 
+    alert('The file upload with Ajax and Java was a success!');
+  }
+  </script>
+
 <section>
 	<h1>Edit Book Information</h1>
 </section>
@@ -17,7 +30,8 @@
 					<c:if test="${empty book.coverImageLink}"> 
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
 					</c:if>
-					<input type="file" name="coverImageLink" value="${book.coverImageLink}" id="coverFile">
+					<input type="file" name="coverImageLink" value="${book.coverImageLink}" id="coverFile" >
+					<input type="button" value="Upload" onclick="uploadFile()">
 				</td>
 				<td class="book-info">
 					<table>
