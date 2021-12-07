@@ -11,22 +11,26 @@
 				<c:if test="${(not empty user) && (user.isAdmin)}">
 					<form action="AstonishingServlet" method="post">
 						<input type="hidden" name="action" value="deleteBook">
+						<input type="hidden" name="bookId" value="${book.id}">
 						<input type="submit" class="grey-button book-info-button" value="Delete Book">
 					</form>
 					<br>
 					<form action="AstonishingServlet" method="post">
 						<input type="hidden" name="action" value="editBook">
+						<input type="hidden" name="bookId" value="${book.id}">
 						<input type="submit" class="book-info-button orange-button" value="Edit Book Information">
 					</form>
 				</c:if>
 				<c:if test="${(empty user) || ((not empty user) && (not user.isAdmin))}">
 					<form action="AstonishingServlet" method="post">
 						<input type="hidden" name="action" value="addCart">
+						<input type="hidden" name="bookId" value="${book.id}">
 						<input type="submit" class="book-info-button orange-button" value="Add to Cart"><br><br>
 					</form>
 					<c:if test="${user.id != '61aa68b78a5d542ac9f844b9'}">
 						<form action="AstonishingServlet" method="post">
 							<input type="hidden" name="action" value="saveList">
+							<input type="hidden" name="bookId" value="${book.id}">
 							<input type="submit" class="book-info-button grey-button" value="Save to List"><br><br>
 						</form>
 					</c:if>
@@ -38,6 +42,9 @@
 				<hr>
 				<br>
 				<b>Price: $${book.price}</b>	
+				<br>
+				<br>
+				Published Date: ${book.getPublishedDateString()}
 				<br>
 				<br>
 				Summary: 

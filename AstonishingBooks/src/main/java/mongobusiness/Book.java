@@ -2,6 +2,8 @@ package mongobusiness;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -88,5 +90,8 @@ public class Book {
 		this.description = description;
 	}
 
-	
+	public String getPublishedDateString() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(publishedDate);
+	}
 }
