@@ -898,19 +898,19 @@ public class AstonishingServlet extends HttpServlet {
 //			Book currentBook = new Book();
 //					
 //			this.AddNewBook((Book) session.getAttribute(Constants.BOOK), currentBook, mongoUtil, ops, request);;
-//			
-//			System.out.println("book to save: " + currentBook.getName());
-//			
-//			// return all of the books 
-////			List<Book> books = (ArrayList<Book>) context.getAttribute(Constants.BOOKS);
-//			
-//			Book bookInContext = books.stream().filter(b -> currentBook.getId().equals(b.getId())).findFirst()
-////					.orElse(null);
-//			
-//			// Find index of book to be updated
-//			int bookIndex = books.indexOf(bookInContext);
-//			
-//			System.out.println("index of book to save: " + bookIndex);
+			
+			System.out.println("book to save: " + currentBook.getName());
+			
+			// return all of the books 
+			List<Book> books = (ArrayList<Book>) context.getAttribute(Constants.BOOKS);
+			
+			Book bookInContext = books.stream().filter(b -> currentBook.getId().equals(b.getId())).findFirst()
+					.orElse(null);
+			
+			// Find index of book to be updated
+			int bookIndex = books.indexOf(bookInContext);
+			
+			System.out.println("index of book to save: " + bookIndex);
 
 			// get updated book info from request object
 			String name = request.getParameter("name");
@@ -948,7 +948,7 @@ public class AstonishingServlet extends HttpServlet {
 			Query query = new Query();
 			
 			// return all of the books after the update
-			List<Book> books = ops.find(query, Book.class);
+			books = ops.find(query, Book.class);
 			
 			System.out.println("books after update: " + books.size());
 			
