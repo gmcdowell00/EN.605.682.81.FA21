@@ -43,16 +43,17 @@ public class DbContextListener implements ServletContextListener {
 					.build();
 			System.out.println("Initialzing databse");
 			MongoClient client = MongoClients.create(mongoClientSettings);
-			MongoTemplate ops = new MongoTemplate(client, "astonishingbooks");			
+			MongoTemplate ops = new MongoTemplate(client, "astonishingbooks");		
+
 			System.out.println("Databse initalized");
 			
 			System.out.println("Querying books");
 			Criteria criteria = new Criteria();
 			
-//			criteria.andOperator(
-//		            Criteria.where("name").ne(null),
-//		            Criteria.where("publishedDate").ne(null),
-//		            Criteria.where("description").ne(null));
+			criteria.andOperator(
+		            Criteria.where("name").ne(null),
+		            Criteria.where("publishedDate").ne(null),
+		            Criteria.where("description").ne(null));
 			
 			Query query = new Query(criteria);
 			
@@ -62,11 +63,8 @@ public class DbContextListener implements ServletContextListener {
 			// create a BookHelper object
 			BookHelper bookHelper = new BookHelper();
 			
-			// remove any book from DB that has null or empty string for a title
-			List<Book> remainingBooks = bookHelper.removeNulls(books, ops);
-			
 			// sort the books by date, return the 12 newest that are not magazines
-			List<Book> sortedBooks = bookHelper.newestBooks(remainingBooks);
+			List<Book> sortedBooks = bookHelper.newestBooks(books, ops);
 
 			// set the sorted list of books as a context attribute
 			context.setAttribute(Constants.BOOKS, sortedBooks);  
