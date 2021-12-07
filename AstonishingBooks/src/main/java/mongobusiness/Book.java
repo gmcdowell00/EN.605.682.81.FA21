@@ -91,7 +91,11 @@ public class Book {
 	}
 
 	public String getPublishedDateString() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		return dateFormat.format(publishedDate);
+		if (publishedDate != null) {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			return dateFormat.format(publishedDate);
+		} 
+		
+		return null;
 	}
 }
