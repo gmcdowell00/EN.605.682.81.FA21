@@ -50,10 +50,10 @@ public class DbContextListener implements ServletContextListener {
 			System.out.println("Querying books");
 			Criteria criteria = new Criteria();
 			
-			criteria.andOperator(
-		            Criteria.where("name").ne(null),
-		            Criteria.where("publishedDate").ne(null),
-		            Criteria.where("description").ne(null));
+//			criteria.andOperator(
+//		            Criteria.where("name").ne(null),
+//		            Criteria.where("publishedDate").ne(null),
+//		            Criteria.where("description").ne(null));
 			
 			Query query = new Query(criteria);
 			

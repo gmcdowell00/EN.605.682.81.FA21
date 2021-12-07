@@ -24,12 +24,7 @@
 		<table class="book-info-table">
 			<tr>
 				<td class="align-top">
-					<c:if test="${not empty book.coverImageLink}"> 
-						<img src=".${book.coverImageLink}.jpg" class="book-info-img"><br><br>
-					</c:if>
-					<c:if test="${empty book.coverImageLink}"> 
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
-					</c:if>
 					<input type="text" name="coverImageLink" id="coverFile" >
 					<input type="button" value="Upload" onclick="uploadFile()">
 				</td>
