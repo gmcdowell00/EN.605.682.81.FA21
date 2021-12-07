@@ -45,7 +45,7 @@
 						</tr>
 						<tr>
 							<td class="label"><label>Published Date: </label></td>
-							<td class="input"><input type="date" name="publishedDate" value="${book.publishedDate}" class="user-input" required></td> 
+							<td class="input"><input type="date" name="publishedDate" value="${book.getPublishedDateString()}" class="user-input" required></td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Genre: </label></td>
