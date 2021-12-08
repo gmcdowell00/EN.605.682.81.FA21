@@ -233,7 +233,7 @@ public class AstonishingServlet extends HttpServlet {
 								}
 							}
 							// if the book is not found in the user's cart, transfer it over
-							if (!isFound) {
+							if (!isFound && currentBooks != null) {
 								currentBooks.add(guestBooks.get(guestCounter));
 							}
 						}

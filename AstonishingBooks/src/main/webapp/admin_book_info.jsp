@@ -25,7 +25,7 @@
 			<tr>
 				<td class="align-top">
 					<c:if test="${not empty book.coverImageLink}"> 
-						<img src=".${book.coverImageLink}.jpg" class="book-info-img"><br><br>
+						<img src=".${book.coverImageLink}" class="book-info-img"><br><br>
 					</c:if>
 					<c:if test="${empty book.coverImageLink}"> 
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
