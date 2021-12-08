@@ -47,22 +47,26 @@
 	<table class="book-grid-table">
 		<c:forEach items="${checkoutUser.cart.books}" var="book">
 			<tr>
-				<td class="book-list-img"><img class="book-img-list" alt="" src=".${book.coverImageLink}.jpg"></td>
+				<td class="book-list-img"><img class="book-img-list" alt="" src="${book.coverImageLink}"></td>
 				<td class="book-list-info">${book.name} by ${book.author}</td>
 				<td class="book-list-info">$${book.price}</td>
-				<td class="book-list-info">
-					<form action="AstonishingServlet" method="post">
-						<input type="hidden" name="action" value="removeFromCart">
-						<input type="hidden" name="removeBookFromCart" value="bookid">
-						<input type="image" class="delete-pic" src="images/delete.png" alt="Delete">
-					</form>
-				</td>
 			</tr>
 		</c:forEach>
 		<tr>
 			<td></td>
 			<td><br><br><b>Total:</b></td>
 			<td><br><br><b>$${checkoutUser.cart.getTotal()}</b></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<br><br><br>
+				<form action="AstonishingServlet" method="post">
+					<input type="hidden" name="action" value="cart">
+					<input type="submit" class="grey-button submit-button" value="Edit Cart">
+				</form>
+			</td>
+			<td></td>
 		</tr>
 	</table>	
 </section>
