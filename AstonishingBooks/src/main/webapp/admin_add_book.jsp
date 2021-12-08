@@ -47,7 +47,15 @@
 						</tr>
 						<tr>
 							<td class="label"><label>Genre: </label></td>
-							<td class="input"><input type="text" name="genre" class="user-input" required></td> 
+							<td class="input">
+								<select name="genre" class="user-input">
+									<option value="Fiction" required>Fiction</option>
+									<option value="Non-Fiction">Non-Fiction</option>
+									<option value="Magazine">Magazine</option>
+									<option value="Reference">Reference</option>
+								</select>
+								<!-- input type="text" name="genre" class="user-input" required-->
+							</td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Price: </label></td>

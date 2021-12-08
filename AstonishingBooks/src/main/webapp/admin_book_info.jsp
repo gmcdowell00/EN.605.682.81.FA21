@@ -25,7 +25,7 @@
 			<tr>
 				<td class="align-top">
 					<c:if test="${not empty book.coverImageLink}"> 
-						<img src=".${book.coverImageLink}" class="book-info-img"><br><br>
+						<img src="${book.coverImageLink}" class="book-info-img"><br><br>
 					</c:if>
 					<c:if test="${empty book.coverImageLink}"> 
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
@@ -52,7 +52,15 @@
 						</tr>
 						<tr>
 							<td class="label"><label>Genre: </label></td>
-							<td class="input"><input type="text" name="genre" value="${book.genre}" class="user-input" required></td> 
+							<td class="input">
+								<select name="genre" class="user-input">
+									<option value="Fiction" ${book.genre == 'Fiction' ? 'selected' : '' } required>Fiction</option>
+									<option value="Non-Fiction" ${book.genre == 'Non-Fiction' ? 'selected' : ''}>Non-Fiction</option>
+									<option value="Magazine" ${book.genre == 'Magazine' ? 'selected' : ''}>Magazine</option>
+									<option value="Reference" ${book.genre == 'Reference' ? 'selected' : ''}>Reference</option>
+								</select>
+								<!-- input type="text" name="genre" value="${book.genre}" class="user-input" required-->
+							</td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Price: </label></td>
