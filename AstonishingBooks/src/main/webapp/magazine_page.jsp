@@ -30,7 +30,7 @@
 						<form action="AstonishingServlet" method="post" class="book-grid-item" id="${book}"> 
 							<input type="hidden" name="action" value="showBookInfo">
 							<input type="hidden" name="bookId" value="${book.id}">
-							<input type="image" class="book-img-grid" alt="" src=".${book.coverImageLink}"><br>
+							<input type="image" class="book-img-grid" alt="${book.name} cover" src=".${book.coverImageLink}"><br>
 							${book.name}<br>
 							${book.author}<br>
 						</form>
@@ -45,7 +45,7 @@
 						<form action="AstonishingServlet" method="post" class="book-grid-item" id="${book}"> 
 							<input type="hidden" name="action" value="showBookInfo">
 							<input type="hidden" name="bookId" value="${book.id}">
-							<input type="image" class="book-img-grid" alt="" src=".${book.coverImageLink}"><br>
+							<input type="image" class="book-img-grid" alt="${book.name} cover" src=".${book.coverImageLink}"><br>
 							${book.name}<br>
 							${book.author}<br>
 						</form>
