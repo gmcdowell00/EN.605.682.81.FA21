@@ -318,6 +318,11 @@ public class MongoDbUtil {
 		}
 	}
 	
+	public Book FindBookByname(String name, MongoTemplate mongoOperation) {
+		Query query = new Query(Criteria.where("name").is(name));
+		return mongoOperation.findOne(query, Book.class);
+	}
+	
 	public void UpdateBook(Book book, MongoTemplate mongoOperation) {
 		Query query = new Query(Criteria.where("_id").is(book.getId()));
 		

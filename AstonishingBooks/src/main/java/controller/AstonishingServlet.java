@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 // default imports
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,7 +107,7 @@ public class AstonishingServlet extends HttpServlet {
 			}
 
 			// sort the books by genre string
-			List<Book> sortedBooks = bookHelper.searchBooks(books, genreString);
+			List<Book> sortedBooks = bookHelper.searchBooks(books, genreString, ops);
 
 			// make the sorted books available for display
 			context.setAttribute(Constants.BOOKS, sortedBooks);
@@ -124,10 +125,10 @@ public class AstonishingServlet extends HttpServlet {
 			BookHelper bookHelper = new BookHelper();
 
 			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID);
+			Book foundBook = bookHelper.bookById(books, bookID, ops);
 
 			// make the selected book available for display
-			context.setAttribute(Constants.BOOK, foundBook);
+			session.setAttribute(Constants.BOOK, foundBook);
 
 			// set the url for the book info page
 			url = "/book_info.jsp";
@@ -147,7 +148,7 @@ public class AstonishingServlet extends HttpServlet {
 			String searchTerm = request.getParameter("searchQuery");
 
 			// sort the books by searchTerm
-			List<Book> sortedBooks = bookHelper.searchBooks(books, searchTerm);
+			List<Book> sortedBooks = bookHelper.searchBooks(books, searchTerm, ops);
 
 			// if the results are null, instantiate an empty list
 			if (sortedBooks == null) {
@@ -358,7 +359,7 @@ public class AstonishingServlet extends HttpServlet {
 			List<Book> books = cart.getBooks();
 
 			// get the selected book from the context
-			Book addBookToCart = (Book) context.getAttribute(Constants.BOOK);
+			Book addBookToCart = (Book) session.getAttribute(Constants.BOOK);
 
 			// check whether the book is already in the list
 			boolean found = false;
@@ -447,7 +448,7 @@ public class AstonishingServlet extends HttpServlet {
 			List<Book> wishlist = user.getWishlist();
 
 			// get the selected book from the context
-			Book addBookToWishlist = (Book) context.getAttribute(Constants.BOOK);
+			Book addBookToWishlist = (Book) session.getAttribute(Constants.BOOK);
 
 			// check whether the book is already in the list
 			boolean found = false;
@@ -772,7 +773,7 @@ public class AstonishingServlet extends HttpServlet {
 			BookHelper bookHelper = new BookHelper();
 
 			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID);
+			Book foundBook = bookHelper.bookById(books, bookID, ops);
 
 			// make the selected book available for display
 			session.setAttribute(Constants.BOOK, foundBook);
@@ -785,7 +786,9 @@ public class AstonishingServlet extends HttpServlet {
 		// this deletes a selected book from the DB
 		else if (action.equals("deleteBook")) {
 			// get the ID of the book to be removed
-			String bookID = request.getParameter("bookID");
+			String bookID = request.getParameter("bookId");
+			
+			System.out.println("Book ID: " + bookID);
 
 			// create a new query
 			Query query = new Query();
@@ -797,7 +800,7 @@ public class AstonishingServlet extends HttpServlet {
 			BookHelper bookHelper = new BookHelper();
 
 			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID);
+			Book foundBook = bookHelper.bookById(books, bookID, ops);
 
 			// if the book is found in the DB, delete it
 			if (foundBook != null) {
@@ -816,17 +819,71 @@ public class AstonishingServlet extends HttpServlet {
 
 		// this adds a new book to the DB
 		else if (action.equals("addBook")) {
-			// create an empty book object
+
+			// go to the admin add book page to fill in the fields
+			url = "/admin_add_book.jsp";
+		}
+		
+		else if (action.equals("createBook")) {
+			
+			// get the book parameters
+			String name = request.getParameter("name");
+			String author = request.getParameter("author");
+			String publishedDateString = request.getParameter("publishedDate");
+			String genre = request.getParameter("genre");
+			String priceString = request.getParameter("price");
+			String description = request.getParameter("description");
+			String coverImageLink = request.getParameter("coverImageLink");
+			
+			// convert date string to date object
+			Date publishedDate = null;
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");		
+			
+			try {
+				publishedDate = formatter.parse(publishedDateString);
+			} catch (Exception e) {
+				System.out.println("An error has occured");
+				System.out.println(e.getMessage());
+			}
+			
+			// convert the price string to a double
+			double price = Double.parseDouble(priceString);
+			
+			// create a book object
 			Book newBook = new Book();
-
-			// add the book to the DB so it will get an ID
+			
+			// add the parameters to the book
+			newBook.setName(name);
+			newBook.setAuthor(author);
+			newBook.setPublishedDate(publishedDate);
+			newBook.setGenre(genre);
+			newBook.setPrice(price);
+			newBook.setDescription(description);
+			newBook.setCoverImageLink(coverImageLink);
+			
+			// add the book to the DB
 			mongoUtil.AddOrDeleteBook(Constants.ADD, newBook, ops);
+			
+			// get the book back from the DB 
+			Book book = mongoUtil.FindBookByname(newBook.getName(), ops);
+			
+			// see what got saved
+			System.out.println("ID: " + book.getId());
+			System.out.println("name: " + book.getName());
+			System.out.println("author: " + book.getAuthor());
+			System.out.println("publishedDate: " + book.getPublishedDate());
+			System.out.println("genre: " + book.getGenre());
+			System.out.println("price: " + book.getPrice());
+			System.out.println("description: " + book.getDescription());
+			System.out.println("coverImageLink: " + book.getCoverImageLink());
+			
 
-			// make the book available to the edit page
-			context.setAttribute(Constants.BOOK, newBook);
-
-			// go to the admin book info page to fill in the fields
-			url = "/admin_book_info.jsp";
+			
+			// save the book for display
+			session.setAttribute(Constants.BOOK, book);
+			
+			// redirect to the book info page
+			url = "/book_info.jsp";
 		}
 
 		// this part needs to save info from the admin_book_info page into the DB and
@@ -835,12 +892,17 @@ public class AstonishingServlet extends HttpServlet {
 			// Retrieve book from session
 			Book currentBook = (Book) session.getAttribute(Constants.BOOK);
 			
+			System.out.println("currentBook ID: " + currentBook.getId());
+			System.out.println("currentBook name: " + currentBook.getName());
+			
+//			Book currentBook = new Book();
+//					
+//			this.AddNewBook((Book) session.getAttribute(Constants.BOOK), currentBook, mongoUtil, ops, request);;
+			
 			System.out.println("book to save: " + currentBook.getName());
 			
 			// return all of the books 
 			List<Book> books = (ArrayList<Book>) context.getAttribute(Constants.BOOKS);
-
-			System.out.println("books.size(): " + books.size());
 			
 			Book bookInContext = books.stream().filter(b -> currentBook.getId().equals(b.getId())).findFirst()
 					.orElse(null);
@@ -853,22 +915,35 @@ public class AstonishingServlet extends HttpServlet {
 			// get updated book info from request object
 			String name = request.getParameter("name");
 			String author = request.getParameter("author");
+			String publishedDateString = request.getParameter("publishedDate");
 			String genre = request.getParameter("genre");
 			String price = request.getParameter("price");
 			String description = request.getParameter("description");
 //			String coverImageLink = request.getParameter("coverImageLink");
+			
+			// convert date string to date object
+			Date publishedDate = null;
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");		
+			
+			try {
+				publishedDate = formatter.parse(publishedDateString);
+			} catch (Exception e) {
+				System.out.println("An error has occured");
+				System.out.println(e.getMessage());
+			}
 
 			// store the updated data in the book object
 			currentBook.setName(name);
 			currentBook.setAuthor(author);
+			currentBook.setPublishedDate(publishedDate);
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);
-//			currentBook.setCoverImageLink(coverImageLink);
+			//currentBook.setCoverImageLink(coverImageLink);
 
 			// send update to the database
 			// Update book in context
-			books.set(bookIndex, currentBook);
+//			books.set(bookIndex, currentBook);
 
 			System.out.println("Before DB update");
 			System.out.println("ID: " + currentBook.getId());
@@ -893,7 +968,7 @@ public class AstonishingServlet extends HttpServlet {
 			// create a BookHelper object
 			BookHelper bookHelper = new BookHelper();
 			
-			Book afterDBUpdate = bookHelper.bookById(books, currentBook.getId());
+			Book afterDBUpdate = bookHelper.bookById(books, currentBook.getId(), ops);
 			
 			System.out.println("\nAfter DB update");
 			System.out.println("ID: " + afterDBUpdate.getId());
@@ -948,6 +1023,50 @@ public class AstonishingServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 
 	}
+		
+	public void AddNewBook(Book contextBook, Book newBook, MongoDbUtil mongoUtil, MongoTemplate ops, HttpServletRequest request) {
+		
+		if (contextBook != null) {
+			newBook = contextBook;
+		}
+		else {
+			
+			Book book = new Book();
+			// get updated book info from request object
+			String name = request.getParameter("name");
+			String author = request.getParameter("author");
+			String genre = request.getParameter("genre");
+			String price = request.getParameter("price");
+			String description = request.getParameter("description");
+			book.setName(name);
+			book.setAuthor(author);
+			book.setGenre(genre);
+			book.setPublishedDate(new Date());
+			book.setPrice( Double.parseDouble(price));
+			book.setDescription(description);
+			book.setCoverImageLink("/coverImages/"+ this.convertToCamelCase(name));
+			mongoUtil.AddOrDeleteBook(Constants.ADD, book, ops);
+			newBook = mongoUtil.FindBookByname(newBook.getName(), ops);
+			int me = 0;
+		}	
+	}
+	
+	private String convertToCamelCase(String title) {
+		
+		if (title.length() == 0) return "";
+		
+		String result = "";
+		String [] tArray = title.split(" ");
+		result += tArray[0].toLowerCase();
+		for (int i = 1; i < tArray.length; i++) {
+			
+			String temp = "";
+			temp += tArray[i].substring(0, 1).toUpperCase();
+			temp += tArray[i].substring(1).toLowerCase();
+			result += temp;
+		}		
+		return result;
+	}
 
 	private String newBooksIndex(MongoTemplate ops, ServletContext context) {
 		// create a new query
@@ -960,7 +1079,7 @@ public class AstonishingServlet extends HttpServlet {
 		BookHelper bookHelper = new BookHelper();
 
 		// sort the books by date, return the 12 newest that are not magazines
-		List<Book> sortedBooks = bookHelper.newestBooks(books);
+		List<Book> sortedBooks = bookHelper.newestBooks(books, ops);
 
 		// make the sorted books available for display
 		context.setAttribute(Constants.BOOKS, sortedBooks);

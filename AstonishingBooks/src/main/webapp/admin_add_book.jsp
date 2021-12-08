@@ -17,50 +17,45 @@
   </script>
 
 <section>
-	<h1>Edit Book Information</h1>
+	<h1>Add Book Information</h1>
 </section>
 <form action="AstonishingServlet" method="post" class="inline">
 	<section>
 		<table class="book-info-table">
 			<tr>
 				<td class="align-top">
-					<c:if test="${not empty book.coverImageLink}"> 
-						<img src=".${book.coverImageLink}.jpg" class="book-info-img"><br><br>
-					</c:if>
-					<c:if test="${empty book.coverImageLink}"> 
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
-					</c:if>
-					<input type="file" name="coverImageLink" value="${book.coverImageLink}" id="coverFile" >
+					<input type="text" name="coverImageLink" id="coverFile" >
 					<input type="button" value="Upload" onclick="uploadFile()">
 				</td>
 				<td class="book-info">
 					<table>
 						<tr>
 							<td class="label"><label>Title: </label></td>
-							<td class="input"><input type="text" name="name" value="${book.name}" class="user-input" required></td> 
+							<td class="input"><input type="text" name="name" class="user-input" required></td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Author: </label></td>
-							<td class="input"><input type="text" name="author" value="${book.author}" class="user-input" required></td> 
+							<td class="input"><input type="text" name="author" class="user-input" required></td> 
 						</tr>
 						<tr>
-							<td class="label"><label>Published Date: </label></td>
+							<td class="label"><label>Published Date (mm/dd/yyyy): </label></td>
+					<!-- 		<td class="input"><input type="date" name="publishedDate" class="user-input" required></td>   -->
 							<td class="input">
-							<!-- 	<input type="date" name="publishedDate" value="${book.getPublishedDateString()}" class="user-input" required>  -->
-								<input type="text" pattern="\d{2}\/\d{2}\/\d{4}" class="user-input" value="${book.getPublishedDateString()}" name="publishedDate" title="Please enter the date as mm/dd/yyyy" required/>
+								<input type="text" pattern="\d{2}\/\d{2}\/\d{4}" class="user-input" name="publishedDate" title="Please enter the date as mm/dd/yyyy" required/>
 							</td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Genre: </label></td>
-							<td class="input"><input type="text" name="genre" value="${book.genre}" class="user-input" required></td> 
+							<td class="input"><input type="text" name="genre" class="user-input" required></td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Price: </label></td>
-							<td class="input"><input type="text" step="0.01" name="price" value="${book.price}" class="user-input" required></td> 
+							<td class="input"><input type="text" step="0.01" name="price" class="user-input" required></td> 
 						</tr>
 						<tr>
 							<td class="label"><label>Description: </label></td>
-							<td class="input"><textarea id="description" name="description"  class="user-input user-input-big" required>${book.description}</textarea></td> 
+							<td class="input"><textarea id="description" name="description"  class="user-input user-input-big" required></textarea></td> 
 						</tr>
 					</table>
 				</td>
@@ -69,10 +64,8 @@
 	</section>
 	<hr>
 	<section class="center">
-		<input type="hidden" name="bookId" value="${book.id}">
-		<input type="hidden" name="book" value="${book}">
 		<input type="hidden" name="prefix" value="admin">
-		<input type="hidden" name="action" value="saveBook">
+		<input type="hidden" name="action" value="createBook">
 		<input type="submit" class="orange-button submit-button inline" value="Save Changes">
 	</section>
 	</form>
