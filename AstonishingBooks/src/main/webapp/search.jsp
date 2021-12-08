@@ -20,7 +20,7 @@
 						<form action="AstonishingServlet" method="post" id="${book}"> 
 							<input type="hidden" name="action" value="showBookInfo">
 							<input type="hidden" name="bookId" value="${book.id}">
-							<input type="image" class="book-img-grid" alt="" src=".${book.coverImageLink}.jpg">
+							<input type="image" class="book-img-grid" alt="" src="${book.coverImageLink}">
 						</form>							
 					</td>
 					<td class="book-search-info">

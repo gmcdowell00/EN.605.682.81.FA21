@@ -7,7 +7,7 @@
 	<table class="book-info-table">
 		<tr>
 			<td>
-				<img src=".${book.coverImageLink}" class="book-info-img"><br><br>
+				<img src="${book.coverImageLink}" class="book-info-img"><br><br>
 				<c:if test="${(not empty user) && (user.isAdmin)}">
 					<form action="AstonishingServlet" method="post">
 						<input type="hidden" name="action" value="deleteBook">

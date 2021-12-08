@@ -18,7 +18,7 @@
 	<table class="book-grid-table center">
 		<c:forEach items="${Books}" var="book">
 			<tr>
-				<td class="book-list-img"><img class="book-img-list" alt="cover" src=".${book.coverImageLink}.jpg"></td>
+				<td class="book-list-img"><img class="book-img-list" alt="cover" src="${book.coverImageLink}"></td>
 				<td class="book-list-info">${book.name} by ${book.author}</td>
 				<td class="book-list-info">$${book.price}</td>
 				<td class="book-list-info">
