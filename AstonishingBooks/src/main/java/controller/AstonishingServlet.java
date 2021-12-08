@@ -835,6 +835,12 @@ public class AstonishingServlet extends HttpServlet {
 			String description = request.getParameter("description");
 			String coverImageLink = request.getParameter("coverImageLink");
 			
+//			// check whether the image exists
+//			String checkLink = "C:\\Users\\troyt\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp" + coverImageLink + ".jpg";
+//			File tempFile = new File(checkLink);
+//			boolean exists = tempFile.exists();
+//			System.out.println("cover image exists: " + exists);
+			
 			// convert date string to date object
 			Date publishedDate = null;
 			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");		
@@ -877,8 +883,6 @@ public class AstonishingServlet extends HttpServlet {
 			System.out.println("description: " + book.getDescription());
 			System.out.println("coverImageLink: " + book.getCoverImageLink());
 			
-
-			
 			// save the book for display
 			session.setAttribute(Constants.BOOK, book);
 			
@@ -919,7 +923,14 @@ public class AstonishingServlet extends HttpServlet {
 			String genre = request.getParameter("genre");
 			String price = request.getParameter("price");
 			String description = request.getParameter("description");
-//			String coverImageLink = request.getParameter("coverImageLink");
+			String coverImageLink = request.getParameter("coverImageLink");
+			
+//			// check whether the image exists
+//			String checkLink = "C:\\Users\\troyt\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp" + coverImageLink + ".jpg";
+//			File tempFile = new File(checkLink);
+//			boolean exists = tempFile.exists();
+//			System.out.println("cover image exists: " + exists); 
+
 			
 			// convert date string to date object
 			Date publishedDate = null;
@@ -939,7 +950,7 @@ public class AstonishingServlet extends HttpServlet {
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);
-			//currentBook.setCoverImageLink(coverImageLink);
+			currentBook.setCoverImageLink(coverImageLink);
 
 			// send update to the database
 			// Update book in context

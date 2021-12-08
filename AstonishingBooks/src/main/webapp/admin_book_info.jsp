@@ -30,7 +30,7 @@
 					<c:if test="${empty book.coverImageLink}"> 
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
 					</c:if>
-					<input type="file" name="coverImageLink" value="${book.coverImageLink}" id="coverFile" >
+					<input type="text" name="coverImageLink" value="${book.coverImageLink}" id="coverFile" >
 					<input type="button" value="Upload" onclick="uploadFile()">
 				</td>
 				<td class="book-info">
