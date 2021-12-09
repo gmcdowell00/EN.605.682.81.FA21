@@ -40,10 +40,16 @@
 			<table class="book-grid-table">
 				<c:forEach items="${user.wishlist}" var="book">
 					<tr>
-						<td class="book-list-img"><img class="book-img-list" alt="" src=".${book.coverImageLink}.jpg"></td>
+						<td class="book-list-img">
+							<form action="AstonishingServlet" method="post">
+								<input type="hidden" name="action" value="showBookInfo">
+								<input type="hidden" name="bookId" value="${book.id}">
+								<input type="image" class="book-img-list" alt="" src="${book.coverImageLink}">
+							</form>
+						</td>
 						<td class="book-list-info">${book.name} by ${book.author}</td>
 						<td class="book-list-info">
-							<form action="" method="post">
+							<form action="AstonishingServlet" method="post">
 								<input type="hidden" name="action" value="removeFromList">
 								<input type="hidden" name="removeBookFromList" value="${book.id}">
 								<input type="image" class="delete-pic" src="images/delete.png" alt="Delete">
