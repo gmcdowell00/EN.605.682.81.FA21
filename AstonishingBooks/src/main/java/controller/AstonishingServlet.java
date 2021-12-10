@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -75,7 +76,9 @@ public class AstonishingServlet extends HttpServlet {
 		// create a mongo utility object
 		MongoDbUtil mongoUtil = new MongoDbUtil();
 		
-		context.setAttribute(Constants.FILEUPLOADPATH, "./coverImages/");
+		//context.setAttribute(Constants.FILEUPLOADPATH, "./coverImages/");
+		context.setAttribute(Constants.FILEUPLOADPATH, "C:\\Users\\GMcDo\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp\\coverImages\\");
+		
 		if (request.getServerName().contains("dev8")) {
 			
 		}
@@ -843,6 +846,7 @@ public class AstonishingServlet extends HttpServlet {
 			String description = request.getParameter("description");
 			String coverImageLink = request.getParameter("coverImageLink");
 			
+			
 //			// check whether the image exists
 //			String checkLink = "C:\\Users\\troyt\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp" + coverImageLink + ".jpg";
 //			File tempFile = new File(checkLink);
@@ -873,7 +877,7 @@ public class AstonishingServlet extends HttpServlet {
 			newBook.setGenre(genre);
 			newBook.setPrice(price);
 			newBook.setDescription(description);
-			newBook.setCoverImageLink(appPath +coverImageLink);
+			newBook.setCoverImageLink("./coverImages/"+coverImageLink);
 			
 			// add the book to the DB
 			mongoUtil.AddOrDeleteBook(Constants.ADD, newBook, ops);
@@ -958,7 +962,7 @@ public class AstonishingServlet extends HttpServlet {
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);
-			currentBook.setCoverImageLink(coverImageLink);
+			currentBook.setCoverImageLink("./coverImages/"+name);
 
 			// send update to the database
 			// Update book in context

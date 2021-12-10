@@ -12,6 +12,7 @@
       method: "POST", 
       body: formData
     }); 
+    
     alert('The file upload with Ajax and Java was a success!');
   }
   </script>

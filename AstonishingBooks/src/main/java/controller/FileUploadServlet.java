@@ -76,11 +76,12 @@ public class FileUploadServlet extends HttpServlet {
 		}
 		
 		//String rpath = "src/main/webapp/coverImages/";
-		//String rpath = "/src/main/webapp/coverImages/";
+		String rpath = "../coverImages/";
 		//String appPath = context.getRealPath(request.getContextPath());
+		//String appPath = "C:\\Users\\GMcDo\\OneDrive\\Documents\\apache-tomcat-8.5.61\\webapps\\images\\";
 		String appPath = "C:\\Users\\GMcDo\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp\\coverImages\\";//request.getContextPath() + rpath;
 		//String appPath = (String) context.getAttribute(Constants.FILEUPLOADPATH);
-
+		//String appPath = rpath;
 		//String path = appPath + rpath;
 		// Verify the content type
 		String contentType = request.getContentType();
