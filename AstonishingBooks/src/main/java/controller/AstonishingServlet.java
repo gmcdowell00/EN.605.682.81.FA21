@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 // default imports
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,9 +74,16 @@ public class AstonishingServlet extends HttpServlet {
 
 		// create a mongo utility object
 		MongoDbUtil mongoUtil = new MongoDbUtil();
+		
+		context.setAttribute(Constants.FILEUPLOADPATH, "./coverImages/");
+		if (request.getServerName().contains("dev8")) {
+			
+		}
+		
 
 		if (action.equals("goToHome")) {
 
+			//mongoUtil.MapImagsToBooks(ops);
 			// pull the new books and redirect to the index page
 			url = newBooksIndex(ops, context);
 		} else if (action.equals("goToFiction") || action.equals("goToNonFiction") || action.equals("goToMagazine")
@@ -857,7 +865,7 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// create a book object
 			Book newBook = new Book();
-			
+			String appPath = (String)context.getAttribute(Constants.FILEUPLOADPATH);
 			// add the parameters to the book
 			newBook.setName(name);
 			newBook.setAuthor(author);
@@ -865,7 +873,7 @@ public class AstonishingServlet extends HttpServlet {
 			newBook.setGenre(genre);
 			newBook.setPrice(price);
 			newBook.setDescription(description);
-			newBook.setCoverImageLink(coverImageLink);
+			newBook.setCoverImageLink(appPath +coverImageLink);
 			
 			// add the book to the DB
 			mongoUtil.AddOrDeleteBook(Constants.ADD, newBook, ops);
@@ -1055,7 +1063,7 @@ public class AstonishingServlet extends HttpServlet {
 			book.setPublishedDate(new Date());
 			book.setPrice( Double.parseDouble(price));
 			book.setDescription(description);
-			book.setCoverImageLink("/coverImages/"+ this.convertToCamelCase(name));
+			book.setCoverImageLink("./coverImages/"+ this.convertToCamelCase(name));
 			mongoUtil.AddOrDeleteBook(Constants.ADD, book, ops);
 			newBook = mongoUtil.FindBookByname(newBook.getName(), ops);
 			int me = 0;

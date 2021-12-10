@@ -8,4 +8,5 @@ public final class Constants {
 	public static final String DELETE = "delete";
 	public static final String USER = "user";
 	public static final String USERS = "users";
+	public static final String FILEUPLOADPATH= "appPath";
 }

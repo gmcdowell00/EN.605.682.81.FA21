@@ -2,7 +2,9 @@ package contextlisteners;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -10,6 +12,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.BulkOperations.BulkMode;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -54,6 +57,7 @@ public class DbContextListener implements ServletContextListener {
 //		            Criteria.where("name").ne(null),
 //		            Criteria.where("publishedDate").ne(null),
 //		            Criteria.where("description").ne(null));
+
 			
 			Query query = new Query(criteria);
 			
@@ -65,9 +69,18 @@ public class DbContextListener implements ServletContextListener {
 			
 			// sort the books by date, return the 12 newest that are not magazines
 			List<Book> sortedBooks = bookHelper.newestBooks(books, ops);
-
+			/*
+			for (Book book : sortedBooks) {
+				String link = book.getCoverImageLink().replace(".jpg", "");
+				book.setCoverImageLink(link);
+			}
+*/
 			// set the sorted list of books as a context attribute
-			context.setAttribute(Constants.BOOKS, sortedBooks);  
+			context.setAttribute(Constants.BOOKS, sortedBooks);
+			/*List<Book> test = new ArrayList<Book>();
+			test.add(sortedBooks.get(0));
+			test.add(sortedBooks.get(0));
+			context.setAttribute(Constants.BOOKS, test);*/
 			
 			// make the database available to the whole app
 			context.setAttribute(Constants.DATABASE, ops);
@@ -129,5 +142,5 @@ public class DbContextListener implements ServletContextListener {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 }

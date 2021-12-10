@@ -17,6 +17,8 @@ import org.apache.commons.fileupload.disk.*;
 import org.apache.commons.fileupload.servlet.*;
 import org.apache.commons.io.output.*;
 
+import utils.Constants;
+
 /**
  * Servlet implementation class FileUploadServlet
  */
@@ -68,10 +70,16 @@ public class FileUploadServlet extends HttpServlet {
 		// String filePath = getServletContext().getRealPath(/files);
 		ServletContext context = getServletContext();
 		
+		String servername = request.getServerName();
+		if (servername.contains("dev8")) {
+			
+		}
+		
 		//String rpath = "src/main/webapp/coverImages/";
-		String rpath = "/src/main/webapp/coverImages/";
+		//String rpath = "/src/main/webapp/coverImages/";
 		//String appPath = context.getRealPath(request.getContextPath());
-		String appPath = "C:\\Users\\GMcDo\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp\\coverImages\\";//request.getContextPath() + rpath; 
+		String appPath = "C:\\Users\\GMcDo\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp\\coverImages\\";//request.getContextPath() + rpath;
+		//String appPath = (String) context.getAttribute(Constants.FILEUPLOADPATH);
 
 		//String path = appPath + rpath;
 		// Verify the content type

@@ -25,7 +25,8 @@
 			<tr>
 				<td class="align-top">
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
-					<input type="text" name="coverImageLink" id="coverFile" >
+					<input type="file" name="coverImageLink" id="coverFile" >
+					    
 					<input type="button" value="Upload" onclick="uploadFile()">
 				</td>
 				<td class="book-info">

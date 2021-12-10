@@ -1,23 +1,43 @@
 package utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.BulkOperations.BulkMode;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.IOUtils;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.BulkOperations;
 
 import mongobusiness.Book;
 import mongobusiness.Cart;
+import mongobusiness.Image;
 import mongobusiness.Payment;
 import mongobusiness.Test;
 import mongobusiness.User;
 import utils.Constants;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class MongoDbUtil {
 
@@ -1077,9 +1097,135 @@ public class MongoDbUtil {
 
 			}
 		};
+		
+		
+		for (Book book : books) {
+			String link = book.getCoverImageLink().replace(".jpg", "");
+			book.setCoverImageLink("." + link);
+		}
+
 
 		int inserted = this.BulkInsertBook(books, mongoOperation);
 
 		System.out.println("Number of books inserted: " + inserted);
 	}
+	
+
+	
+	public void UploadImages(MongoTemplate mongoOperation) throws URISyntaxException {
+
+		List<Image> images = new ArrayList<Image>();
+		
+		// Creating a File object for directory
+		String appPath = "C:\\coverImages";
+		
+		File directoryPath = new File("C:\\coverImages");
+		
+		
+		// List of all files and directories
+		File filesList[] = directoryPath.listFiles();
+		for (File file : filesList) {
+			
+			try {
+				
+				//File file = new File("src/test/resources/input.txt");
+				FileInputStream input = new FileInputStream(file);
+				MultipartFile multipartFile = new MockMultipartFile("file",
+				            file.getName(), "text/plain", IOUtils.toByteArray(input));
+				images.add(addImage(file.getName(), multipartFile));
+			} catch (Exception e ) {
+				System.out.println("Crap");
+			}
+			
+		}
+
+		mongoOperation.bulkOps(BulkMode.UNORDERED, Image.class).insert(images).execute();
+	}
+
+	public Image addImage(String title, MultipartFile file) throws IOException { 
+        Image image = new Image(title); 
+        image.setImage(
+          new Binary(BsonBinarySubType.BINARY, file.getBytes())); 
+        return image; 
+    }
+	/*
+	public void MapImagsToBooks(MongoTemplate mongoOperation) {
+		
+		List<Book> books = this.findAllBooks(mongoOperation);
+		List<Image> images = mongoOperation.findAll(Image.class);
+		Map<String, String> map = this.getMap();
+		for (Book book : books) {
+			
+			if (map.containsKey(book.getName())) {
+				String lowerBook = map.get(book.getName());
+				
+				Image image = images.stream()
+						.filter(i -> this.chagneCoverLink(i.getTitle()).equals(lowerBook))
+						.findFirst()
+						.orElse(null);
+				
+				if (image != null) {
+					book.setImage(image);
+					book.setShortName(lowerBook);
+					this.UpdateBook(book, mongoOperation);
+				}
+			}
+			
+			
+			
+		}
+		
+		
+	}
+	*/
+	
+	private String chagneCoverLink(String s) {
+		String[] temp = s.split("/");
+		s = temp[temp.length-1];
+		StringBuffer text = new StringBuffer(s);
+		text.replace(text.indexOf("."), text.length(), "");
+		return text.toString().toLowerCase();
+		
+	}
+	private String changeMe(String s) {
+		
+		return s.replaceAll("\\s", "").toLowerCase();
+	}
+	
+
+	public Map<String, String> getMap(){
+		Map<String, String> mymap = new HashMap<>();
+		mymap.put("The Complete Sherlock Holmes", "sherlockHolmes.jpg");
+		mymap.put("The Picture of Dorian Gray", "dorianGray.jpg");
+		mymap.put("The Lord of the Rings", "LOTR.jpg");
+		mymap.put("The Mysterious Rider", "mysteriousRider.jpg");
+		mymap.put("The Lyrics: 1956 to the Present", "theLyrics.jpg");
+		mymap.put("Madhouse at the End of the Earth", "madhouse.jpg");
+		mymap.put("The Intelligent Investor", "intelligentInvestor.jpg");
+		mymap.put("The Fabric of Civilization", "fabricOfCivilization.jpg");
+		mymap.put("The Rise and Fall of the Dinosaurs", "riseFallDinosaurs.jpg");
+		mymap.put("The Baseball 100", "baseball100.jpg");
+		mymap.put("The Storyteller", "storyteller.jpg");
+		mymap.put("The Code Breaker", "codeBreaker.jpg");
+		mymap.put("National Geographic", "natGeo.jpg");
+		mymap.put("Reader’s Digest", "readersDigest.jpg");
+		mymap.put("TIME Magazine", "timeMagazine.jpg");
+		mymap.put("The New Yorker", "newYorker.jpg");
+		mymap.put("HGTV Magazine", "hgtv.jpg");
+		mymap.put("Desk Reference to the Diagnostic Criteria From DSM-5", "diagnosticCriteria.jpg");
+		mymap.put("Merriam-Webster Pocket Thesaurus", "thesaurus.jpg");
+		mymap.put("Merriam-Webster's Collegiate Dictionary", "dictionary.jpg");
+		mymap.put("The Product Manager's Desk Reference", "PMDeskRef.jpg");
+		mymap.put("red Eyed Tree Frog", "redeyedtreefrog.png");
+		mymap.put("The Musical Instrument Desk Reference", "musicalInstrument.jpg");
+		mymap.put("Patent, Copyright & Trademark: An Intellectual Property Desk Reference", "intellectualProperty.jpg");
+		mymap.put("Oxford Desk Reference: Clinical Genetics and Genomics", "genetics.jpg");
+		mymap.put("Rand McNally Road Atlas 2022", "roadAtlas.jpg");
+		mymap.put("Essential World Atlas", "worldAtlas.jpg");
+		mymap.put("Personal Finance Desk Reference", "financeDeskRef.jpg");
+		mymap.put("Pharmacy Law Desk Reference", "pharmacyLawDeskRef.jpg");
+		mymap.put("The Writer's Essential Desk Reference", "writersDeskRef.jpg");
+		return mymap;
+	}
+
 }
