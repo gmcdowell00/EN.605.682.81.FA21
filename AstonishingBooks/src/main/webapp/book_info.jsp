@@ -56,4 +56,17 @@
 	</table>
 </section>
 
+<script>
+	if(document.URL.indexOf("#") == -1)
+	{
+	    // Set the URL to whatever it was plus "#".
+	    url = document.URL+"#";
+	    location = "#";
+	
+	    //Reload the page
+	    location.reload();
+	
+	}
+</script>
+
 <c:import url="/footer.jsp" />
