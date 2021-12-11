@@ -63,6 +63,10 @@ public class AstonishingServlet extends HttpServlet {
 
 		// extract the action to perform from the request object
 		String action = request.getParameter("action");
+		
+//		if (action == null) {
+//			action = "showBookInfo";
+//		}
 
 		// get the session object
 		HttpSession session = request.getSession();
@@ -77,6 +81,9 @@ public class AstonishingServlet extends HttpServlet {
 		MongoDbUtil mongoUtil = new MongoDbUtil();
 		
 		//context.setAttribute(Constants.FILEUPLOADPATH, "./coverImages/");
+
+		context.setAttribute(Constants.FILEUPLOADPATH, "C:\\Users\\Puji\\Documents\\Masters\\605-682-WebAppDevJava\\astonishing-books-proj\\AstonishingBooks\\src\\main\\webapp\\coverImages\\");
+
 		
 		String servername = request.getServerName();
 		if (servername.contains("dev8")) {
@@ -129,21 +136,24 @@ public class AstonishingServlet extends HttpServlet {
 		} else if (action.equals("showBookInfo")) {
 			// get the ID of the book to display
 			String bookID = request.getParameter("bookId");
+			
+			//if (bookID != null && !bookID.isEmpty()) {
 
-			// create a new query
-			Query query = new Query();
-
-			// return all of the books
-			List<Book> books = ops.find(query, Book.class);
-
-			// create a BookHelper object
-			BookHelper bookHelper = new BookHelper();
-
-			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID, ops);
-
-			// make the selected book available for display
-			session.setAttribute(Constants.BOOK, foundBook);
+				// create a new query
+				Query query = new Query();
+	
+				// return all of the books
+				List<Book> books = ops.find(query, Book.class);
+	
+				// create a BookHelper object
+				BookHelper bookHelper = new BookHelper();
+	
+				// get the selected book
+				Book foundBook = bookHelper.bookById(books, bookID, ops);
+	
+				// make the selected book available for display
+				session.setAttribute(Constants.BOOK, foundBook);
+		//	}
 
 			// set the url for the book info page
 			url = "/book_info.jsp";
@@ -901,6 +911,7 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// save the book for display
 			session.setAttribute(Constants.BOOK, book);
+			//response.setIntHeader("refresh", 1);
 			
 			// redirect to the book info page
 			url = "/book_info.jsp";
@@ -966,7 +977,15 @@ public class AstonishingServlet extends HttpServlet {
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);
+
 			currentBook.setCoverImageLink((String)context.getAttribute(Constants.IMAGEPATH)+name);
+
+			/*
+			if (coverImageLink != null && !coverImageLink.isEmpty()) {
+				currentBook.setCoverImageLink("./coverImages/"+coverImageLink);
+			}
+			*/
+			//>>>>>>> branch 'TestFileUpload' of https://github.com/gmcdowell00/EN.605.682.81.FA21.git
 
 			// send update to the database
 			// Update book in context
@@ -1011,7 +1030,7 @@ public class AstonishingServlet extends HttpServlet {
 			context.setAttribute(Constants.BOOKS, books);  
 
 			// redirect to the manage inventory page
-			url = "/admin_manage_inventory.jsp";
+			url = "/book_info.jsp";
 		}
 
 		// need a way to navigate to the manage users page
