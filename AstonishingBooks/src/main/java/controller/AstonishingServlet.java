@@ -77,12 +77,16 @@ public class AstonishingServlet extends HttpServlet {
 		MongoDbUtil mongoUtil = new MongoDbUtil();
 		
 		//context.setAttribute(Constants.FILEUPLOADPATH, "./coverImages/");
-		context.setAttribute(Constants.FILEUPLOADPATH, "C:\\Users\\GMcDo\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp\\coverImages\\");
 		
-		if (request.getServerName().contains("dev8")) {
+		String servername = request.getServerName();
+		if (servername.contains("dev8")) {
 			
+			context.setAttribute(Constants.FILEUPLOADPATH, "/var/local/pkg/apache-tomcat-8.0.18/webapps/images/");
+			context.setAttribute(Constants.IMAGEPATH, "/images/");
+		} else {
+			context.setAttribute(Constants.FILEUPLOADPATH, "C:\\Users\\GMcDo\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp\\coverImages\\");
+			context.setAttribute(Constants.IMAGEPATH, "./coverImages/");
 		}
-		
 
 		if (action.equals("goToHome")) {
 
@@ -877,7 +881,7 @@ public class AstonishingServlet extends HttpServlet {
 			newBook.setGenre(genre);
 			newBook.setPrice(price);
 			newBook.setDescription(description);
-			newBook.setCoverImageLink("./coverImages/"+coverImageLink);
+			newBook.setCoverImageLink((String)context.getAttribute(Constants.IMAGEPATH)+coverImageLink);
 			
 			// add the book to the DB
 			mongoUtil.AddOrDeleteBook(Constants.ADD, newBook, ops);
@@ -962,7 +966,7 @@ public class AstonishingServlet extends HttpServlet {
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);
-			currentBook.setCoverImageLink("./coverImages/"+name);
+			currentBook.setCoverImageLink((String)context.getAttribute(Constants.IMAGEPATH)+name);
 
 			// send update to the database
 			// Update book in context
@@ -1048,7 +1052,7 @@ public class AstonishingServlet extends HttpServlet {
 	}
 		
 	public void AddNewBook(Book contextBook, Book newBook, MongoDbUtil mongoUtil, MongoTemplate ops, HttpServletRequest request) {
-		
+		/*
 		if (contextBook != null) {
 			newBook = contextBook;
 		}
@@ -1067,11 +1071,11 @@ public class AstonishingServlet extends HttpServlet {
 			book.setPublishedDate(new Date());
 			book.setPrice( Double.parseDouble(price));
 			book.setDescription(description);
-			book.setCoverImageLink("./coverImages/"+ this.convertToCamelCase(name));
+			book.setCoverImageLink( name);
 			mongoUtil.AddOrDeleteBook(Constants.ADD, book, ops);
 			newBook = mongoUtil.FindBookByname(newBook.getName(), ops);
 			int me = 0;
-		}	
+		}	*/
 	}
 	
 	private String convertToCamelCase(String title) {
