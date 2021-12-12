@@ -3,8 +3,10 @@ package controller;
 import java.io.File;
 // default imports
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -61,6 +63,10 @@ public class AstonishingServlet extends HttpServlet {
 
 		// extract the action to perform from the request object
 		String action = request.getParameter("action");
+		
+//		if (action == null) {
+//			action = "showBookInfo";
+//		}
 
 		// get the session object
 		HttpSession session = request.getSession();
@@ -73,9 +79,25 @@ public class AstonishingServlet extends HttpServlet {
 
 		// create a mongo utility object
 		MongoDbUtil mongoUtil = new MongoDbUtil();
+		
+		//context.setAttribute(Constants.FILEUPLOADPATH, "./coverImages/");
+
+		context.setAttribute(Constants.FILEUPLOADPATH, "C:\\Users\\Puji\\Documents\\Masters\\605-682-WebAppDevJava\\astonishing-books-proj\\AstonishingBooks\\src\\main\\webapp\\coverImages\\");
+
+		
+		String servername = request.getServerName();
+		if (servername.contains("dev8")) {
+			
+			context.setAttribute(Constants.FILEUPLOADPATH, "/var/local/pkg/apache-tomcat-8.0.18/webapps/images/");
+			context.setAttribute(Constants.IMAGEPATH, "/images/");
+		} else {
+			context.setAttribute(Constants.FILEUPLOADPATH, "C:\\Users\\GMcDo\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp\\coverImages\\");
+			context.setAttribute(Constants.IMAGEPATH, "./coverImages/");
+		}
 
 		if (action.equals("goToHome")) {
 
+			//mongoUtil.MapImagsToBooks(ops);
 			// pull the new books and redirect to the index page
 			url = newBooksIndex(ops, context);
 		} else if (action.equals("goToFiction") || action.equals("goToNonFiction") || action.equals("goToMagazine")
@@ -114,21 +136,24 @@ public class AstonishingServlet extends HttpServlet {
 		} else if (action.equals("showBookInfo")) {
 			// get the ID of the book to display
 			String bookID = request.getParameter("bookId");
+			
+			//if (bookID != null && !bookID.isEmpty()) {
 
-			// create a new query
-			Query query = new Query();
-
-			// return all of the books
-			List<Book> books = ops.find(query, Book.class);
-
-			// create a BookHelper object
-			BookHelper bookHelper = new BookHelper();
-
-			// get the selected book
-			Book foundBook = bookHelper.bookById(books, bookID, ops);
-
-			// make the selected book available for display
-			session.setAttribute(Constants.BOOK, foundBook);
+				// create a new query
+				Query query = new Query();
+	
+				// return all of the books
+				List<Book> books = ops.find(query, Book.class);
+	
+				// create a BookHelper object
+				BookHelper bookHelper = new BookHelper();
+	
+				// get the selected book
+				Book foundBook = bookHelper.bookById(books, bookID, ops);
+	
+				// make the selected book available for display
+				session.setAttribute(Constants.BOOK, foundBook);
+		//	}
 
 			// set the url for the book info page
 			url = "/book_info.jsp";
@@ -835,6 +860,7 @@ public class AstonishingServlet extends HttpServlet {
 			String description = request.getParameter("description");
 			String coverImageLink = request.getParameter("coverImageLink");
 			
+			
 //			// check whether the image exists
 //			String checkLink = "C:\\Users\\troyt\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp" + coverImageLink + ".jpg";
 //			File tempFile = new File(checkLink);
@@ -857,7 +883,7 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// create a book object
 			Book newBook = new Book();
-			
+			String appPath = (String)context.getAttribute(Constants.FILEUPLOADPATH);
 			// add the parameters to the book
 			newBook.setName(name);
 			newBook.setAuthor(author);
@@ -865,7 +891,7 @@ public class AstonishingServlet extends HttpServlet {
 			newBook.setGenre(genre);
 			newBook.setPrice(price);
 			newBook.setDescription(description);
-			newBook.setCoverImageLink(coverImageLink);
+			newBook.setCoverImageLink((String)context.getAttribute(Constants.IMAGEPATH)+coverImageLink);
 			
 			// add the book to the DB
 			mongoUtil.AddOrDeleteBook(Constants.ADD, newBook, ops);
@@ -885,6 +911,7 @@ public class AstonishingServlet extends HttpServlet {
 			
 			// save the book for display
 			session.setAttribute(Constants.BOOK, book);
+			//response.setIntHeader("refresh", 1);
 			
 			// redirect to the book info page
 			url = "/book_info.jsp";
@@ -950,7 +977,15 @@ public class AstonishingServlet extends HttpServlet {
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);
-			currentBook.setCoverImageLink(coverImageLink);
+
+			currentBook.setCoverImageLink((String)context.getAttribute(Constants.IMAGEPATH)+name);
+
+			/*
+			if (coverImageLink != null && !coverImageLink.isEmpty()) {
+				currentBook.setCoverImageLink("./coverImages/"+coverImageLink);
+			}
+			*/
+			//>>>>>>> branch 'TestFileUpload' of https://github.com/gmcdowell00/EN.605.682.81.FA21.git
 
 			// send update to the database
 			// Update book in context
@@ -995,7 +1030,7 @@ public class AstonishingServlet extends HttpServlet {
 			context.setAttribute(Constants.BOOKS, books);  
 
 			// redirect to the manage inventory page
-			url = "/admin_manage_inventory.jsp";
+			url = "/book_info.jsp";
 		}
 
 		// need a way to navigate to the manage users page
@@ -1036,7 +1071,7 @@ public class AstonishingServlet extends HttpServlet {
 	}
 		
 	public void AddNewBook(Book contextBook, Book newBook, MongoDbUtil mongoUtil, MongoTemplate ops, HttpServletRequest request) {
-		
+		/*
 		if (contextBook != null) {
 			newBook = contextBook;
 		}
@@ -1055,11 +1090,11 @@ public class AstonishingServlet extends HttpServlet {
 			book.setPublishedDate(new Date());
 			book.setPrice( Double.parseDouble(price));
 			book.setDescription(description);
-			book.setCoverImageLink("/coverImages/"+ this.convertToCamelCase(name));
+			book.setCoverImageLink( name);
 			mongoUtil.AddOrDeleteBook(Constants.ADD, book, ops);
 			newBook = mongoUtil.FindBookByname(newBook.getName(), ops);
 			int me = 0;
-		}	
+		}	*/
 	}
 	
 	private String convertToCamelCase(String title) {

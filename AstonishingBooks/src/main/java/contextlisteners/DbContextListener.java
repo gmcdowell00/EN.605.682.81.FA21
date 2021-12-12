@@ -2,7 +2,9 @@ package contextlisteners;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -10,6 +12,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.BulkOperations.BulkMode;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -49,12 +52,7 @@ public class DbContextListener implements ServletContextListener {
 			
 			System.out.println("Querying books");
 			Criteria criteria = new Criteria();
-			
-//			criteria.andOperator(
-//		            Criteria.where("name").ne(null),
-//		            Criteria.where("publishedDate").ne(null),
-//		            Criteria.where("description").ne(null));
-			
+						
 			Query query = new Query(criteria);
 			
 			List<Book> books = ops.find(query, Book.class);
@@ -65,9 +63,9 @@ public class DbContextListener implements ServletContextListener {
 			
 			// sort the books by date, return the 12 newest that are not magazines
 			List<Book> sortedBooks = bookHelper.newestBooks(books, ops);
-
+			
 			// set the sorted list of books as a context attribute
-			context.setAttribute(Constants.BOOKS, sortedBooks);  
+			context.setAttribute(Constants.BOOKS, sortedBooks);
 			
 			// make the database available to the whole app
 			context.setAttribute(Constants.DATABASE, ops);
@@ -117,6 +115,7 @@ public class DbContextListener implements ServletContextListener {
 
 			// make the empty guest user available to the app
 			context.setAttribute(Constants.USER, updatedGuestUser);
+			
 					
 		} catch (Exception e) {
 			System.out.println("An error has occured");
@@ -129,5 +128,5 @@ public class DbContextListener implements ServletContextListener {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 }

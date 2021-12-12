@@ -15,12 +15,12 @@
 
 	<listener>
 		<listener-class>contextlisteners.DbContextListener</listener-class>
-	</listener>
-	
+	</listener>	
 	<error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error_page.jsp</location>
     </error-page>
+
 	
 
 </web-app>

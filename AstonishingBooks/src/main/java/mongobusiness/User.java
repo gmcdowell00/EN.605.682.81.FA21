@@ -1,5 +1,6 @@
 package mongobusiness;
 
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -35,6 +36,7 @@ public class User {
 	private Payment payment;
 	@DBRef
 	private  Cart cart;
+
 	@DBRef
     private List<Book> wishlist;
 	
@@ -159,5 +161,4 @@ public class User {
 	public void setWishlist(List<Book> wishlist) {
 		this.wishlist = wishlist;
 	}
-	
 }

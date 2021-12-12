@@ -12,6 +12,7 @@
       method: "POST", 
       body: formData
     }); 
+    
     alert('The file upload with Ajax and Java was a success!');
   }
   </script>
@@ -25,8 +26,9 @@
 			<tr>
 				<td class="align-top">
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
-					<input type="text" name="coverImageLink" id="coverFile" >
-					<input type="button" value="Upload" onclick="uploadFile()">
+					<input type="file" name="coverImageLink" id="coverFile" >
+					    
+					<input type="button" value="Upload" onclick="uploadFile()" class="orange-button submit-button">
 				</td>
 				<td class="book-info">
 					<table>
@@ -74,6 +76,8 @@
 	<section class="center">
 		<input type="hidden" name="prefix" value="admin">
 		<input type="hidden" name="action" value="createBook">
+		<i>Reminder: Upload cover image file before saving changes!</i>
+		<br><br>
 		<input type="submit" class="orange-button submit-button inline" value="Save Changes">
 	</section>
 	</form>

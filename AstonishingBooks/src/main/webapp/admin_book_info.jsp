@@ -30,8 +30,9 @@
 					<c:if test="${empty book.coverImageLink}"> 
 						<img src="./images/no-image-book.jpg" class="book-info-img"><br><br>
 					</c:if>
-					<input type="text" name="coverImageLink" value="${book.coverImageLink}" id="coverFile" >
-					<input type="button" value="Upload" onclick="uploadFile()">
+					<!-- input type="text" name="coverImageLink" value="${book.coverImageLink}" id="coverFile" -->
+					<input type="file" name="coverImageLink" id="coverFile" >
+					<input type="button" value="Upload" onclick="uploadFile()" class="orange-button submit-button">
 				</td>
 				<td class="book-info">
 					<table>
@@ -81,6 +82,8 @@
 		<input type="hidden" name="book" value="${book}">
 		<input type="hidden" name="prefix" value="admin">
 		<input type="hidden" name="action" value="saveBook">
+		<i>Reminder: If uploading a new cover image, upload cover image file before saving changes!</i>
+		<br><br>
 		<input type="submit" class="orange-button submit-button inline" value="Save Changes">
 	</section>
 	</form>

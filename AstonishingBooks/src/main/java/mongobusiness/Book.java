@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -16,6 +18,8 @@ public class Book {
 	private String id;
 	@Field
 	private String name;           // name = title
+	@Field
+	private String shortName;
 	@Field
 	private String author;
 	@Field
@@ -28,8 +32,9 @@ public class Book {
 	private String coverImageLink;  // link to the image in webapps/coverImages folder
 	@Field
 	private String description;
-
-	
+	//@DBRef
+	//private Image image;
+	//private String img;
 	public Book() {}
 	
 	public Book(String name, String author, Date publishedDate, String genre, double price, 
@@ -88,7 +93,14 @@ public class Book {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}/*
+	public Image getImage() {
+		return image;
 	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}*/
 
 	public String getPublishedDateString() {
 		if (publishedDate != null) {
@@ -101,4 +113,23 @@ public class Book {
 		
 		return null;
 	}
+	
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+	/*
+	public String getImg() {
+		return this.getImage() == null 
+				? ""
+				: Base64.getEncoder().encodeToString(this.getImage().getImage().getData());
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}*/
+
 }

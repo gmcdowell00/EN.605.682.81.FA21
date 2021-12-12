@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,14 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import java.awt.image.BufferedImage;
+
 import java.io.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.imageio.ImageIO;
 import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.disk.*;
 import org.apache.commons.fileupload.servlet.*;
 import org.apache.commons.io.output.*;
+
+import utils.Constants;
 
 /**
  * Servlet implementation class FileUploadServlet
@@ -53,28 +60,14 @@ public class FileUploadServlet extends HttpServlet {
 		// get the session object
 		HttpSession session = request.getSession();
 
-		// Get book info
-		String title = request.getParameter("name");
-		String author = request.getParameter("author");
-		String date = request.getParameter("publishDate");
-		String genre = request.getParameter("genre");
-		String price = request.getParameter("price");
-		String description = request.getParameter("description");
-
 		File file;
 		int maxFileSize = 5000 * 1024;
 		int maxMemSize = 5000 * 1024;
-		// ServletContext context = pageContext.getServletContext();
-		// String filePath = getServletContext().getRealPath(/files);
-		ServletContext context = getServletContext();
-		
-		//String rpath = "src/main/webapp/coverImages/";
-		String rpath = "/src/main/webapp/coverImages/";
-		//String appPath = context.getRealPath(request.getContextPath());
-		String appPath = "C:\\Users\\GMcDo\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp\\coverImages\\";//request.getContextPath() + rpath; 
 
-		//String path = appPath + rpath;
-		// Verify the content type
+		ServletContext context = getServletContext();
+
+		String appPath = (String) context.getAttribute(Constants.FILEUPLOADPATH);
+
 		String contentType = request.getContentType();
 
 		if ((contentType.indexOf("multipart/form-data") >= 0)) {
@@ -97,14 +90,9 @@ public class FileUploadServlet extends HttpServlet {
 
 				// Process the uploaded file items
 				Iterator i = fileItems.iterator();
-				/*
-				 * out.println("<html>"); out.println("<head>");
-				 * out.println("<title>JSP File upload</title>"); out.println("</head>");
-				 * out.println("<body>");
-				 */
-				
-				  String webappRoot = context.getRealPath("/");
-				  
+
+				String webappRoot = context.getRealPath("/");
+
 				while (i.hasNext()) {
 					FileItem fi = (FileItem) i.next();
 					if (!fi.isFormField()) {
@@ -120,29 +108,40 @@ public class FileUploadServlet extends HttpServlet {
 						} else {
 							file = new File(appPath + fileName.substring(fileName.lastIndexOf("\\") + 1));
 						}
-						fi.write(file);
-						// out.println("Uploaded Filename: " + filePath +
-						// ileName + "<br>");
+
+						if (!file.getName().contains(".jpg") && request.getServerName().contains("dev8")) {
+							Path target = Paths.get(appPath + file.getName() + ".jpg");
+
+							BufferedImage originalImage = ImageIO.read(file);
+							// create a blank, RGB, same width and height
+							BufferedImage newBufferedImage = new BufferedImage(originalImage.getWidth(),
+									originalImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+							// draw a white background and puts the originalImage on it.
+							newBufferedImage.createGraphics().drawImage(originalImage, 0, 0, java.awt.Color.WHITE,
+									null);
+
+							// save an image
+							ImageIO.write(newBufferedImage, "jpg", target.toFile());
+						} else {
+							fi.write(file);
+						}
+
 					}
 				}
-				// out.println("</body>");
-				// out.println("</html>");
 			} catch (Exception ex) {
 				System.out.println(ex);
 			}
 		} else {
-			/*
-			 * out.println("<html>"); out.println("<head>");
-			 * out.println("<title>Servlet upload</title>"); out.println("</head>");
-			 * out.println("<body>"); out.println("<p>No file uploaded</p>");
-			 * out.println("</body>"); out.println("</html>");
-			 */
+
+			RequestDispatcher dispatcher = getServletConfig().getServletContext()
+					.getRequestDispatcher("/error_page.jsp");
+			dispatcher.forward(request, response);
 		}
 
 		RequestDispatcher dispatcher = getServletConfig().getServletContext()
 				.getRequestDispatcher("/admin_book_info.jsp");
 		dispatcher.forward(request, response);
-		// doGet(request, response);
 	}
 
 }
