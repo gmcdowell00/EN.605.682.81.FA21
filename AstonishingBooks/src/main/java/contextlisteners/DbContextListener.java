@@ -56,6 +56,12 @@ public class DbContextListener implements ServletContextListener {
 			Query query = new Query(criteria);
 			
 			List<Book> books = ops.find(query, Book.class);
+			/*
+			if (books.size() == 0) {
+				new MongoDbUtil().PrePopulateBookCollection(ops);
+				books =  ops.find(query, Book.class);
+			}
+			*/
 			System.out.println("Queried " + books.size() + " books" );
 			
 			// create a BookHelper object

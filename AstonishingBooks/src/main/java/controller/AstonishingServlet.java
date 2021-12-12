@@ -80,9 +80,9 @@ public class AstonishingServlet extends HttpServlet {
 		// create a mongo utility object
 		MongoDbUtil mongoUtil = new MongoDbUtil();
 		
-		//context.setAttribute(Constants.FILEUPLOADPATH, "./coverImages/");
 
 		context.setAttribute(Constants.FILEUPLOADPATH, "C:\\Users\\Puji\\Documents\\Masters\\605-682-WebAppDevJava\\astonishing-books-proj\\AstonishingBooks\\src\\main\\webapp\\coverImages\\");
+		context.setAttribute(Constants.IMAGEPATH, "./coverImages/");
 
 		
 		String servername = request.getServerName();
@@ -90,11 +90,13 @@ public class AstonishingServlet extends HttpServlet {
 			
 			context.setAttribute(Constants.FILEUPLOADPATH, "/var/local/pkg/apache-tomcat-8.0.18/webapps/images/");
 			context.setAttribute(Constants.IMAGEPATH, "/images/");
-		} else {
+		} 
+		/*
+		else {
 			context.setAttribute(Constants.FILEUPLOADPATH, "C:\\Users\\GMcDo\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp\\coverImages\\");
 			context.setAttribute(Constants.IMAGEPATH, "./coverImages/");
 		}
-
+*/
 		if (action.equals("goToHome")) {
 
 			//mongoUtil.MapImagsToBooks(ops);
@@ -925,11 +927,6 @@ public class AstonishingServlet extends HttpServlet {
 			
 			System.out.println("currentBook ID: " + currentBook.getId());
 			System.out.println("currentBook name: " + currentBook.getName());
-			
-//			Book currentBook = new Book();
-//					
-//			this.AddNewBook((Book) session.getAttribute(Constants.BOOK), currentBook, mongoUtil, ops, request);;
-			
 			System.out.println("book to save: " + currentBook.getName());
 			
 			// return all of the books 
@@ -951,14 +948,7 @@ public class AstonishingServlet extends HttpServlet {
 			String price = request.getParameter("price");
 			String description = request.getParameter("description");
 			String coverImageLink = request.getParameter("coverImageLink");
-			
-//			// check whether the image exists
-//			String checkLink = "C:\\Users\\troyt\\git\\EN.605.682.81.FA21\\AstonishingBooks\\src\\main\\webapp" + coverImageLink + ".jpg";
-//			File tempFile = new File(checkLink);
-//			boolean exists = tempFile.exists();
-//			System.out.println("cover image exists: " + exists); 
-
-			
+						
 			// convert date string to date object
 			Date publishedDate = null;
 			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");		
@@ -979,17 +969,6 @@ public class AstonishingServlet extends HttpServlet {
 			currentBook.setDescription(description);
 
 			currentBook.setCoverImageLink((String)context.getAttribute(Constants.IMAGEPATH)+name);
-
-			/*
-			if (coverImageLink != null && !coverImageLink.isEmpty()) {
-				currentBook.setCoverImageLink("./coverImages/"+coverImageLink);
-			}
-			*/
-			//>>>>>>> branch 'TestFileUpload' of https://github.com/gmcdowell00/EN.605.682.81.FA21.git
-
-			// send update to the database
-			// Update book in context
-//			books.set(bookIndex, currentBook);
 
 			System.out.println("Before DB update");
 			System.out.println("ID: " + currentBook.getId());
@@ -1069,34 +1048,7 @@ public class AstonishingServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 
 	}
-		
-	public void AddNewBook(Book contextBook, Book newBook, MongoDbUtil mongoUtil, MongoTemplate ops, HttpServletRequest request) {
-		/*
-		if (contextBook != null) {
-			newBook = contextBook;
-		}
-		else {
-			
-			Book book = new Book();
-			// get updated book info from request object
-			String name = request.getParameter("name");
-			String author = request.getParameter("author");
-			String genre = request.getParameter("genre");
-			String price = request.getParameter("price");
-			String description = request.getParameter("description");
-			book.setName(name);
-			book.setAuthor(author);
-			book.setGenre(genre);
-			book.setPublishedDate(new Date());
-			book.setPrice( Double.parseDouble(price));
-			book.setDescription(description);
-			book.setCoverImageLink( name);
-			mongoUtil.AddOrDeleteBook(Constants.ADD, book, ops);
-			newBook = mongoUtil.FindBookByname(newBook.getName(), ops);
-			int me = 0;
-		}	*/
-	}
-	
+
 	private String convertToCamelCase(String title) {
 		
 		if (title.length() == 0) return "";
