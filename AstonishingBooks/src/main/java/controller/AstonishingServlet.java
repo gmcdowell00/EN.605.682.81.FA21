@@ -967,8 +967,10 @@ public class AstonishingServlet extends HttpServlet {
 			currentBook.setGenre(genre);
 			currentBook.setPrice(Double.parseDouble(price));
 			currentBook.setDescription(description);
-
-			currentBook.setCoverImageLink((String)context.getAttribute(Constants.IMAGEPATH)+name);
+			
+			if (coverImageLink != null && !coverImageLink.isEmpty()) {
+				currentBook.setCoverImageLink((String)context.getAttribute(Constants.IMAGEPATH)+coverImageLink);
+			}
 
 			System.out.println("Before DB update");
 			System.out.println("ID: " + currentBook.getId());
