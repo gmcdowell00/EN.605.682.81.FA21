@@ -319,14 +319,17 @@ public class MongoDbUtil {
 	 * 
 	 * @param name
 	 * @param mongoOperation
-	 */
+	 */	
 	public void AddOrDeleteBook(String action, Book book, MongoTemplate mongoOperation) {
 
 		Query query = new Query(Criteria.where("_id").is(book.getId()));
 		switch (action) {
 		case Constants.ADD:
-			mongoOperation.save(book);
-			this.allBooks.add(book);
+			Book checkBook = this.FindBookByname(book.getName(), mongoOperation);
+			if (checkBook == null) {
+				mongoOperation.save(book);
+				this.allBooks.add(book);
+			}
 			break;
 		case Constants.DELETE:
 			mongoOperation.remove(query, Book.class);
@@ -337,6 +340,7 @@ public class MongoDbUtil {
 
 		}
 	}
+
 	
 	public Book FindBookByname(String name, MongoTemplate mongoOperation) {
 		Query query = new Query(Criteria.where("name").is(name));
