@@ -73,7 +73,7 @@
 <hr>
 <section class="center">
 	<form action="AstonishingServlet" method="post" class="inline">
-		<input type="hidden" name="action" value="reviewInfo">
+		<input type="hidden" name="action" value="checkout">
 		<input type="submit" value="Edit Information" class="grey-button submit-button"> 
 	</form>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
